@@ -1,0 +1,63 @@
+﻿using LabGuru.BAL.Enums;
+using LabGuru.BAL.Repo;
+using LabGuru.DAL;
+using LabGuru.WebAPI.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
+
+namespace LabGuru.WebAPI.Controllers
+{
+    [Route("api/[controller]/[action]")]
+    [ApiController]
+    [Authorize]
+    public class UserController : ControllerBase
+    {
+        private readonly IAuthentication authentication;
+        private readonly IDoctor doctor;
+
+        public UserController(IAuthentication authentication, IDoctor doctor)
+        {
+            this.authentication = authentication;
+            this.doctor = doctor;
+        }
+        [HttpGet]
+        public IActionResult Profile()
+        {
+            ResponceMessages responceMessages = new ResponceMessages();
+            try
+            {
+                var UserIdentity = (ClaimsIdentity)User.Identity;
+                var Loginuser = authentication.GetLogin(UserIdentity.Name);
+                switch (Loginuser.ReferanceType)
+                {
+                    case LoginReference.Doctor:
+                        var Doctor = doctor.GetDoctorDetails(Loginuser.ReferanceID);
+                        return Ok(Doctor);
+                    default:
+                        responceMessages = new ResponceMessages()
+                        {
+                            isSuccess = false,
+                            Message = "User Not Found"
+                        };
+                        return NotFound(responceMessages);
+                }
+                return Ok();
+            }
+            catch (Exception exp)
+            {
+                responceMessages = new ResponceMessages()
+                {
+                    isSuccess = false,
+                    Message = exp.Message
+                };
+                return BadRequest(responceMessages);
+            }
+        }
+    }
+}
