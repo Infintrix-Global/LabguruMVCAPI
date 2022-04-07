@@ -10,5 +10,33 @@ namespace LabGuru.WebAPI.Models
         public bool isSuccess{ get; set; }
         public string Message { get; set; }
         public object Data { get; set; }
+
+        public ResponceMessages Failed(string Message)
+        {
+            this.isSuccess = false;
+            this.Message = Message;
+            return this;
+        }
+        public ResponceMessages Failed(string Message, object data )
+        {
+            this.isSuccess = false;
+            this.Message = Message;
+            this.Data = data;
+            return this;
+        }
+
+        public ResponceMessages Success(string Message)
+        {
+            this.isSuccess = true;
+            this.Message = Message;
+            return this;
+        }
+        public ResponceMessages Success(string Message, object data)
+        {
+            this.isSuccess = true;
+            this.Message = Message;
+            this.Data = data;
+            return this;
+        }
     }
 }
