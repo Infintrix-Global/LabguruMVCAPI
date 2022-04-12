@@ -62,7 +62,7 @@ namespace LabGuru.DAL
 
         public List<OrderDetails> GetOrderDetails(int UserID)
         {
-            return dbContext.OrderDetails.Where(w => w.UserID == UserID).ToList();
+            return dbContext.OrderDetails.Where(w => w.UserID == UserID).OrderByDescending(O=>O.CreatedDate).ToList();
         }
     }
 }

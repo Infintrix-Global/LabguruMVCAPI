@@ -23,4 +23,8 @@
     <ProjectReference Include="..\LabGuru.DAL\LabGuru.DAL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Document\Impration\" />
+  </ItemGroup>
+
 </Project>

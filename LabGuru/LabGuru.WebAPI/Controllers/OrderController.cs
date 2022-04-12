@@ -19,11 +19,17 @@ namespace LabGuru.WebAPI.Controllers
     {
         private readonly IOrderManage orderManage;
         private readonly IAuthentication authentication;
+        private readonly IOrderStatus _orderStatus;
+        private readonly ResponceMessages responceMessages;
 
-        public OrderController(IOrderManage orderManage, IAuthentication authentication)
+        public OrderController(IOrderManage orderManage, IAuthentication authentication, IOrderStatus _orderStatus,
+            ResponceMessages responceMessages)
+
         {
             this.orderManage = orderManage;
             this.authentication = authentication;
+            this._orderStatus = _orderStatus;
+            this.responceMessages = responceMessages;
         }
 
         [HttpPost]
@@ -36,7 +42,7 @@ namespace LabGuru.WebAPI.Controllers
             OrderDetails orderDetails = new OrderDetails()
             {
                 CreatorIP = orderCreate.CreatorIP,
-                OrderNumber = "ORD-"+ OrderNo,
+                OrderNumber = "ORD-" + OrderNo,
                 PatientAge = orderCreate.PatientAge,
                 PatientGender = orderCreate.PatientGender,
                 PatientName = orderCreate.PatientName,
@@ -46,7 +52,7 @@ namespace LabGuru.WebAPI.Controllers
                 ProcessID = orderCreate.ProcessID,
                 LaboratiryID = orderCreate.LaboratiryID
             };
-            if(orderManage.CreateOrder(orderDetails) > 0)
+            if (orderManage.CreateOrder(orderDetails) > 0)
             {
                 ProductOrder productOrder = new ProductOrder()
                 {
@@ -96,12 +102,12 @@ namespace LabGuru.WebAPI.Controllers
         {
             var orderDetails = orderManage.GetOrderDetail(orderID);
             var productOrders = orderManage.GetProductOrders(orderID);
-            if(orderDetails == null)
+            if (orderDetails == null)
             {
                 return NotFound("Invalid Order Search");
             }
             List<vm_OrderProductView> _OrderProductViews = new List<vm_OrderProductView>();
-            foreach(var pd in productOrders)
+            foreach (var pd in productOrders)
             {
                 _OrderProductViews.Add(new vm_OrderProductView()
                 {
@@ -134,6 +140,57 @@ namespace LabGuru.WebAPI.Controllers
                 totalPrice = orderDetails.TotalPrice
             };
             return Ok(_OrderView);
+        }
+
+        [HttpPost]
+        public IActionResult AddOrderStatus(vm_OrderStatus orderStatus)
+        {
+            try
+            {
+                OrderStatus status = new OrderStatus()
+                {
+                    OrderID = orderStatus.OrderID,
+                    Remarks = orderStatus.Remarks,
+                    Status = orderStatus.StatusText
+                };
+                var result = _orderStatus.AddOrderStatus(status);
+                if (result > 0)
+                {
+                    responceMessages.Success("Successfully Added Order Status");
+                }
+                else
+                {
+                    responceMessages.Failed("Someting went wrong");
+                }
+                return Ok(responceMessages);
+            }
+            catch (Exception exp)
+            {
+                responceMessages.Failed(exp.Message);
+                return BadRequest(responceMessages);
+            }
+        }
+
+        [HttpGet]
+        public IActionResult GetOrderStatus(int OrderID)
+        {
+            try
+            {
+                var result = _orderStatus.GetOrderStatuses(OrderID);
+                List<vm_OrderStatus> _OS = result.Select(s => new vm_OrderStatus
+                {
+                    id = s.id,
+                    Remarks = s.Remarks,
+                    StatusText = s.Status,
+                    CreateDate = s.CreateDate
+                }).ToList();
+                return Ok(_OS);
+            }
+            catch (Exception exp)
+            {
+                responceMessages.Failed(exp.Message);
+                return BadRequest(responceMessages);
+            }
         }
     }
 }

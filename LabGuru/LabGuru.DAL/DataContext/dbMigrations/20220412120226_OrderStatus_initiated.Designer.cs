@@ -3,14 +3,16 @@ using System;
 using LabGuru.DAL.DataContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LabGuru.DAL.DataContext.dbMigrations
 {
     [DbContext(typeof(LabGuruDbContext))]
-    partial class LabGuruDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220412120226_OrderStatus_initiated")]
+    partial class OrderStatus_initiated
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -261,30 +263,6 @@ namespace LabGuru.DAL.DataContext.dbMigrations
                     b.HasKey("DoctorDetailsID");
 
                     b.ToTable("DoctorDetails");
-                });
-
-            modelBuilder.Entity("LabGuru.BAL.DoctorLabMapping", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int>("ClinicID")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime");
-
-                    b.Property<int>("LabID")
-                        .HasColumnType("int");
-
-                    b.HasKey("id");
-
-                    b.HasIndex("ClinicID");
-
-                    b.HasIndex("LabID");
-
-                    b.ToTable("DoctorLabMappings");
                 });
 
             modelBuilder.Entity("LabGuru.BAL.Laboratory", b =>
@@ -852,25 +830,6 @@ namespace LabGuru.DAL.DataContext.dbMigrations
                         .IsRequired();
 
                     b.Navigation("DoctorDetails");
-                });
-
-            modelBuilder.Entity("LabGuru.BAL.DoctorLabMapping", b =>
-                {
-                    b.HasOne("LabGuru.BAL.DoctorClinic", "doctorClinic")
-                        .WithMany()
-                        .HasForeignKey("ClinicID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LabGuru.BAL.Laboratory", "laboratory")
-                        .WithMany()
-                        .HasForeignKey("LabID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("doctorClinic");
-
-                    b.Navigation("laboratory");
                 });
 
             modelBuilder.Entity("LabGuru.BAL.OrderDetails", b =>

@@ -63,6 +63,8 @@ namespace LabGuru.WebAPI
             services.AddScoped<ILaboratory, LaboratoryDAL>();
             services.AddScoped<IOrderProcessMaster, OrderProcessMasterDAL>();
             services.AddScoped<IProductSetting, ProductSettingDAL>();
+            services.AddScoped<IOrderStatus, OrderStatusDAL>();
+            services.AddScoped<IDoctorLabMapping, DoctorLabMappingDAL>();
             services.AddSingleton<ResponceMessages, ResponceMessages>();
 
         }

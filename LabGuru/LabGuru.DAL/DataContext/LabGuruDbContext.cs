@@ -34,7 +34,8 @@ namespace LabGuru.DAL.DataContext
         public DbSet<DoctorClinic> DoctorClinics { get; set; }
         public DbSet<Laboratory> Laboratories { get; set; }
         public DbSet<OrderProcessMaster> OrderProcessMasters { get; set; }
-
+        public DbSet<OrderStatus> orderStatuses { get; set; }
+        public DbSet<DoctorLabMapping> DoctorLabMappings { get; set; }
         public DbSet<ProductSetting> ProductSettings { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
