@@ -37,6 +37,8 @@ namespace LabGuru.DAL.DataContext
         public DbSet<OrderStatus> orderStatuses { get; set; }
         public DbSet<DoctorLabMapping> DoctorLabMappings { get; set; }
         public DbSet<ProductSetting> ProductSettings { get; set; }
+        public DbSet<OrderStatusMaster> OrderStatusMasters { get; set; }
+        public DbSet<DoctorStatusSetting> DoctorStatusSettings { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -44,6 +46,6 @@ namespace LabGuru.DAL.DataContext
                 optionsBuilder.UseMySQL("server=92.204.4.195; user=root; database=admin_labguru; password=LabGuru@123; port=3306");
             }
         }
-
+      
     }
 }

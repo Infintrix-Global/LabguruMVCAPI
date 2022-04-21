@@ -3,14 +3,16 @@ using System;
 using LabGuru.DAL.DataContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LabGuru.DAL.DataContext.dbMigrations
 {
     [DbContext(typeof(LabGuruDbContext))]
-    partial class LabGuruDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220413090333_OrderStatusMaster_initiated")]
+    partial class OrderStatusMaster_initiated
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -285,38 +287,6 @@ namespace LabGuru.DAL.DataContext.dbMigrations
                     b.HasIndex("LabID");
 
                     b.ToTable("DoctorLabMappings");
-                });
-
-            modelBuilder.Entity("LabGuru.BAL.DoctorStatusSetting", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int>("DoctorID")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("Include")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<int>("LaboratoryID")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("ShowToDoctor")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<int>("StatusMasterID")
-                        .HasColumnType("int");
-
-                    b.HasKey("id");
-
-                    b.HasIndex("DoctorID");
-
-                    b.HasIndex("LaboratoryID");
-
-                    b.HasIndex("StatusMasterID");
-
-                    b.ToTable("DoctorStatusSettings");
                 });
 
             modelBuilder.Entity("LabGuru.BAL.Laboratory", b =>
@@ -730,8 +700,6 @@ namespace LabGuru.DAL.DataContext.dbMigrations
 
                     b.HasIndex("ProductMaterialID");
 
-                    b.HasIndex("ProductOrderID");
-
                     b.HasIndex("ProductShadeID");
 
                     b.HasIndex("ProductTypeID");
@@ -932,33 +900,6 @@ namespace LabGuru.DAL.DataContext.dbMigrations
                     b.Navigation("doctorClinic");
 
                     b.Navigation("laboratory");
-                });
-
-            modelBuilder.Entity("LabGuru.BAL.DoctorStatusSetting", b =>
-                {
-                    b.HasOne("LabGuru.BAL.DoctorDetails", "doctorDetails")
-                        .WithMany()
-                        .HasForeignKey("DoctorID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LabGuru.BAL.Laboratory", "laboratory")
-                        .WithMany()
-                        .HasForeignKey("LaboratoryID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LabGuru.BAL.OrderStatusMaster", "StatusMaster")
-                        .WithMany()
-                        .HasForeignKey("StatusMasterID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("doctorDetails");
-
-                    b.Navigation("laboratory");
-
-                    b.Navigation("StatusMaster");
                 });
 
             modelBuilder.Entity("LabGuru.BAL.OrderDetails", b =>

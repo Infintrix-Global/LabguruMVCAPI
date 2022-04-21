@@ -94,7 +94,9 @@ namespace LabGuru.WebAPI.Controllers
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             int LoginUserID = authentication.GetLogin(claimsIdentity.Name).UserID;
-            var result = orderManage.GetOrderDetails(LoginUserID);
+            //var result = orderManage.GetOrderDetails(LoginUserID);
+            var result = orderManage.GetOrdersForDoctor(LoginUserID);
+            
             return Ok(result);
         }
         [HttpGet]
@@ -134,7 +136,7 @@ namespace LabGuru.WebAPI.Controllers
                 creatorIP = orderDetails.CreatorIP,
                 orderID = orderDetails.OrderID,
                 orderNumber = orderDetails.OrderNumber,
-                patientAge = orderDetails.PatientAge,
+                patientAge = (int)orderDetails.PatientAge,
                 patientGender = orderDetails.PatientGender,
                 patientName = orderDetails.PatientName,
                 totalPrice = orderDetails.TotalPrice

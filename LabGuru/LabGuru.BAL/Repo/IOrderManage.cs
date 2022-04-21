@@ -12,5 +12,7 @@ namespace LabGuru.BAL.Repo
         OrderDetails GetOrderDetail(int OrderID);
         List<ProductOrder> GetProductOrders(int OrderID);
 
+        List<OrderDetails> GetOrdersForDoctor(int DoctorID);
+        List<OrderDetails> GetOrdersForLab(int LabID);
     }
 }

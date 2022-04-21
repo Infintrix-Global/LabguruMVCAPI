@@ -24,5 +24,9 @@ namespace LabGuru.DAL
                 throw new ArgumentException("Invalid Doctor");
             return Doctor;
         }
+        public List<DoctorDetails> GetDoctorDetails()
+        {
+            return dbContext.DoctorDetails.OrderBy(o=>o.FirstName).ToList();
+        }
     }
 }

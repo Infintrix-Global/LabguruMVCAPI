@@ -7,5 +7,6 @@ namespace LabGuru.BAL.Repo
     public interface IDoctor
     {
         DoctorDetails GetDoctorDetails(int DoctorDetailsID);
+        List<DoctorDetails> GetDoctorDetails();
     }
 }

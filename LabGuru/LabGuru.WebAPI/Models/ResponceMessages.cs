@@ -15,6 +15,7 @@ namespace LabGuru.WebAPI.Models
         {
             this.isSuccess = false;
             this.Message = Message;
+            this.Data = null;
             return this;
         }
         public ResponceMessages Failed(string Message, object data )
@@ -29,6 +30,7 @@ namespace LabGuru.WebAPI.Models
         {
             this.isSuccess = true;
             this.Message = Message;
+            this.Data = null;
             return this;
         }
         public ResponceMessages Success(string Message, object data)

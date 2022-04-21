@@ -21,22 +21,32 @@ namespace LabGuru.WebAPI.Controllers
         private readonly IAuthentication authentication;
         private readonly IDoctorLabMapping labMapping;
         private readonly ResponceMessages responceMessages;
+        private readonly IDoctorStatusSetting _doctorStatusSetting;
+        private readonly IOrderStatusMaster _orderStatus;
+        private readonly IDoctor _doctor;
 
-        public DoctorController(IDoctorClinic doctorClinic, IAuthentication authentication, 
+        public DoctorController(IDoctorClinic doctorClinic, IAuthentication authentication,
             IDoctorLabMapping labMapping,
-            ResponceMessages responceMessages)
+            ResponceMessages responceMessages,
+            IDoctorStatusSetting _doctorStatusSetting,
+            IOrderStatusMaster _orderStatus,
+            IDoctor doctor)
         {
             this.doctorClinic = doctorClinic;
             this.authentication = authentication;
             this.labMapping = labMapping;
             this.responceMessages = responceMessages;
+            this._doctorStatusSetting = _doctorStatusSetting;
+            this._orderStatus = _orderStatus;
+            this._doctor = doctor;
         }
-        //[HttpGet]
-        //public IActionResult GetAllProductType()
-        //{
-        //    var productTypes =productType.GetProductTypes();
-        //    return Ok(productTypes);
-        //}
+        
+        [HttpGet]
+        public IActionResult GetDoctorList()
+        {
+           var result = _doctor.GetDoctorDetails();
+            return Ok(result);
+        }
 
         [HttpGet]
         public IActionResult GetClinics()
@@ -45,7 +55,7 @@ namespace LabGuru.WebAPI.Controllers
             int LoginUserID = authentication.GetLogin(claimsIdentity.Name).UserID;
             var result = doctorClinic.GetDoctorClinics(LoginUserID);
             List<VM_DoctorClinic> listDC = new List<VM_DoctorClinic>();
-            foreach(var res in result)
+            foreach (var res in result)
             {
                 listDC.Add(new VM_DoctorClinic()
                 {
@@ -67,7 +77,8 @@ namespace LabGuru.WebAPI.Controllers
         {
             try
             {
-                if (!labMapping.isExistsLab(CliniclabMapping.ClinicID, CliniclabMapping.LabID)) {
+                if (!labMapping.isExistsLab(CliniclabMapping.ClinicID, CliniclabMapping.LabID))
+                {
 
                     var result = labMapping.AddClinicLab(CliniclabMapping);
                     if (result > 0)
@@ -79,7 +90,7 @@ namespace LabGuru.WebAPI.Controllers
                 {
                     return Ok(responceMessages.Failed("Already Exists"));
                 }
-                
+
             }
             catch (Exception exp)
             {
@@ -93,5 +104,53 @@ namespace LabGuru.WebAPI.Controllers
             var result = labMapping.Laboratorys(clinicID);
             return Ok(result);
         }
+        [HttpPost]
+        public IActionResult UpdateDoctorOrderStatus(List<DoctorStatusSetting> statusSettings)
+        {
+            try
+            {
+                var claimsIdentity = (ClaimsIdentity)User.Identity;
+                var LoginUser = authentication.GetLogin(claimsIdentity.Name);
+                if (LoginUser.ReferanceType != BAL.Enums.LoginReference.Laboratory)
+                    return Ok(responceMessages.Success("Invalid User Access"));
+                int newRecord = 0;
+                int updatedRecord = 0;
+                foreach (var statusSetting in statusSettings)
+                {
+                    statusSetting.LaboratoryID = LoginUser.ReferanceID;
+                    if (_doctorStatusSetting.isExistsOrderStatus(statusSetting.DoctorID, statusSetting.LaboratoryID, statusSetting.StatusMasterID))
+                    {
+                        updatedRecord += _doctorStatusSetting.UpdateOrderStatus(statusSetting);
+                    }
+                    else
+                    {
+                        newRecord += _doctorStatusSetting.AddOrderStatus(statusSetting);
+                    }
+                }
+                return Ok(responceMessages.Success("Successfullly", new { NewRecord = newRecord, UpdatedRecord = updatedRecord }));
+            }
+            catch (Exception exp)
+            {
+                return Ok(responceMessages.Failed(exp.Message));
+            }
+        }
+
+        [HttpGet]
+        public IActionResult GetDoctorOrderStatus(int DoctorClinicID)
+        {
+            try
+            {
+                var claimsIdentity = (ClaimsIdentity)User.Identity;
+                var LoginUser = authentication.GetLogin(claimsIdentity.Name).ReferanceID;
+                var result = _doctorStatusSetting.GetDoctorStatusSettings(DoctorClinicID, LoginUser);
+               
+                return Ok(result);
+            }
+            catch (Exception exp)
+            {
+                return Ok(responceMessages.Failed(exp.Message));
+            }
+        }
+
     }
 }

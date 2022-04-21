@@ -65,8 +65,9 @@ namespace LabGuru.WebAPI
             services.AddScoped<IProductSetting, ProductSettingDAL>();
             services.AddScoped<IOrderStatus, OrderStatusDAL>();
             services.AddScoped<IDoctorLabMapping, DoctorLabMappingDAL>();
+            services.AddScoped<IOrderStatusMaster, OrderStatusMasterDAL>();
             services.AddSingleton<ResponceMessages, ResponceMessages>();
-
+            services.AddScoped<IDoctorStatusSetting, DoctorStatusSettingDAL>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

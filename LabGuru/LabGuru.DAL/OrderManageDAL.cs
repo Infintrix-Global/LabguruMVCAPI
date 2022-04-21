@@ -43,7 +43,7 @@ namespace LabGuru.DAL
                          {
                              ProductOrderID = OP.ProductOrderID,
                              Quantity = OP.Quantity,
-                             PricePerUnit  = OP.PricePerUnit,
+                             PricePerUnit = OP.PricePerUnit,
                              TotalPrice = OP.TotalPrice,
                              CreatedDate = OP.CreatedDate,
                              CreatorIP = OP.CreatorIP,
@@ -62,7 +62,27 @@ namespace LabGuru.DAL
 
         public List<OrderDetails> GetOrderDetails(int UserID)
         {
-            return dbContext.OrderDetails.Where(w => w.UserID == UserID).OrderByDescending(O=>O.CreatedDate).ToList();
+
+            return dbContext.OrderDetails.Where(w => w.UserID == UserID).OrderByDescending(O => O.CreatedDate).ToList();
+        }
+
+        public List<OrderDetails> GetOrdersForDoctor(int DoctorID)
+        {
+            var result = from ord in dbContext.OrderDetails
+                         join ordProd in dbContext.ProductOrders on ord.OrderID equals ordProd.OrderID
+                         join Prod in dbContext.ProductTypes on ordProd.ProductTypeID equals Prod.ProductTypeID
+                         where ord.UserID == DoctorID
+                         select new OrderDetails
+                         {
+                             OrderID = ord.OrderID,
+                            
+                         };
+            return result.ToList();
+        }
+
+        public List<OrderDetails> GetOrdersForLab(int LabID)
+        {
+            throw new NotImplementedException();
         }
     }
 }

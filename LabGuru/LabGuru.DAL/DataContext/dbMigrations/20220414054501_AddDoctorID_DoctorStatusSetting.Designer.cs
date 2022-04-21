@@ -3,14 +3,16 @@ using System;
 using LabGuru.DAL.DataContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LabGuru.DAL.DataContext.dbMigrations
 {
     [DbContext(typeof(LabGuruDbContext))]
-    partial class LabGuruDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220414054501_AddDoctorID_DoctorStatusSetting")]
+    partial class AddDoctorID_DoctorStatusSetting
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -293,6 +295,9 @@ namespace LabGuru.DAL.DataContext.dbMigrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<int>("DoctorClinicID")
+                        .HasColumnType("int");
+
                     b.Property<int>("DoctorID")
                         .HasColumnType("int");
 
@@ -309,6 +314,8 @@ namespace LabGuru.DAL.DataContext.dbMigrations
                         .HasColumnType("int");
 
                     b.HasKey("id");
+
+                    b.HasIndex("DoctorClinicID");
 
                     b.HasIndex("DoctorID");
 
@@ -730,8 +737,6 @@ namespace LabGuru.DAL.DataContext.dbMigrations
 
                     b.HasIndex("ProductMaterialID");
 
-                    b.HasIndex("ProductOrderID");
-
                     b.HasIndex("ProductShadeID");
 
                     b.HasIndex("ProductTypeID");
@@ -936,6 +941,12 @@ namespace LabGuru.DAL.DataContext.dbMigrations
 
             modelBuilder.Entity("LabGuru.BAL.DoctorStatusSetting", b =>
                 {
+                    b.HasOne("LabGuru.BAL.DoctorClinic", "DoctorClinic")
+                        .WithMany()
+                        .HasForeignKey("DoctorClinicID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("LabGuru.BAL.DoctorDetails", "doctorDetails")
                         .WithMany()
                         .HasForeignKey("DoctorID")
@@ -953,6 +964,8 @@ namespace LabGuru.DAL.DataContext.dbMigrations
                         .HasForeignKey("StatusMasterID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("DoctorClinic");
 
                     b.Navigation("doctorDetails");
 

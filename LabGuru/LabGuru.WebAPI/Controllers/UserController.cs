@@ -20,11 +20,13 @@ namespace LabGuru.WebAPI.Controllers
     {
         private readonly IAuthentication authentication;
         private readonly IDoctor doctor;
+        private readonly ILaboratory laboratory;
 
-        public UserController(IAuthentication authentication, IDoctor doctor)
+        public UserController(IAuthentication authentication, IDoctor doctor, ILaboratory laboratory)
         {
             this.authentication = authentication;
             this.doctor = doctor;
+            this.laboratory = laboratory;
         }
         [HttpGet]
         public IActionResult Profile()
@@ -39,6 +41,9 @@ namespace LabGuru.WebAPI.Controllers
                     case LoginReference.Doctor:
                         var Doctor = doctor.GetDoctorDetails(Loginuser.ReferanceID);
                         return Ok(Doctor);
+                    case LoginReference.Laboratory:
+                        var Lab = laboratory.GetLaboratory(Loginuser.ReferanceID);
+                        return Ok(Lab);
                     default:
                         responceMessages = new ResponceMessages()
                         {

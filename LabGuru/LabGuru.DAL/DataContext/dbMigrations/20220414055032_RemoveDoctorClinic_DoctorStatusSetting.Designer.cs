@@ -3,14 +3,16 @@ using System;
 using LabGuru.DAL.DataContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LabGuru.DAL.DataContext.dbMigrations
 {
     [DbContext(typeof(LabGuruDbContext))]
-    partial class LabGuruDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220414055032_RemoveDoctorClinic_DoctorStatusSetting")]
+    partial class RemoveDoctorClinic_DoctorStatusSetting
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -729,8 +731,6 @@ namespace LabGuru.DAL.DataContext.dbMigrations
                     b.HasIndex("OrderID");
 
                     b.HasIndex("ProductMaterialID");
-
-                    b.HasIndex("ProductOrderID");
 
                     b.HasIndex("ProductShadeID");
 
