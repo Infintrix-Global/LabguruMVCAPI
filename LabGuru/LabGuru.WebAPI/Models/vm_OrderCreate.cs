@@ -11,12 +11,12 @@ namespace LabGuru.WebAPI.Models
         public int UserID { get; set; }
         public string PatientName { get; set; }
         public string PatientGender { get; set; }
-        public int PatientAge { get; set; }
+        public int? PatientAge { get; set; }
         public decimal TotalPrice { get; set; }
         public string CreatorIP { get; set; }
         public int ProductTypeID { get; set; }
-        public int ProductMaterialID { get; set; }
-        public int ProductShadID { get; set; }
+        public int? ProductMaterialID { get; set; }
+        public int? ProductShadID { get; set; }
         public string ToothNo { get; set; }
         public string Field1 { get; set; }
         public string Field2 { get; set; }

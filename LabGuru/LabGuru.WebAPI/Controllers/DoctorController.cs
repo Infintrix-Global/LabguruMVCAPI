@@ -102,7 +102,21 @@ namespace LabGuru.WebAPI.Controllers
         public IActionResult GetMapedLaboratorys(int clinicID)
         {
             var result = labMapping.Laboratorys(clinicID);
-            return Ok(result);
+            List<VM_Labratory> VM_Labratorys = new List<VM_Labratory>();
+            foreach(var res in result)
+            {
+                VM_Labratorys.Add(new VM_Labratory()
+                {
+                    id = res.id,
+                    LabID = res.laboratory.id,
+                    Name = res.laboratory.LabName,
+                    labAddress = res.laboratory.LabAddress,
+                    isDefault = res.isDefault
+                });
+            }
+
+           
+            return Ok(VM_Labratorys);
         }
         [HttpPost]
         public IActionResult UpdateDoctorOrderStatus(List<DoctorStatusSetting> statusSettings)

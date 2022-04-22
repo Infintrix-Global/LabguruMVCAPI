@@ -26,5 +26,7 @@ namespace LabGuru.BAL
         public string ClinicDist { get; set; }
         [MaxLength(50)]
         public string ClinicState { get; set; }
+
+        public bool isDefault { get; set; } = false;
     }
 }

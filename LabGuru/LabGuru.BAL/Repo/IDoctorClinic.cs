@@ -8,6 +8,7 @@ namespace LabGuru.BAL.Repo
     {
         DoctorClinic GetDoctorClinic(int id);
         List<DoctorClinic> GetDoctorClinics(int DoctorID);
+        int SetDefaultClinic(int DoctorID, int ClinicID);
 
     }
 }

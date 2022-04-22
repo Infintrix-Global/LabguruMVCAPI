@@ -20,5 +20,7 @@ namespace LabGuru.BAL
         [Required, MaxLength(15)]
         public string UpdatorIP { get; set; }
 
+        public bool isImpressionMindatory { get; set; } = false;
+
     }
 }

@@ -23,7 +23,7 @@ namespace LabGuru.BAL
 		public string PatientName { get; set; }
 		[MaxLength(50)]
 		public string PatientGender { get; set; }
-		public int PatientAge { get; set; }
+		public int? PatientAge { get; set; }
 		public decimal TotalPrice { get; set; }
 		public DateTime CreatedDate { get; set; } = DateTime.Now;
 		public DateTime? UpdatedDate { get; set; }

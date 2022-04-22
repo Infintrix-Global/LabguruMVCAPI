@@ -21,15 +21,19 @@ namespace LabGuru.WebAPI.Controllers
         private readonly IAuthentication authentication;
         private readonly IOrderStatus _orderStatus;
         private readonly ResponceMessages responceMessages;
+        private readonly IDoctorLabMapping labMapping;
+        private readonly IDoctorClinic doctorClinic;
 
         public OrderController(IOrderManage orderManage, IAuthentication authentication, IOrderStatus _orderStatus,
-            ResponceMessages responceMessages)
+            ResponceMessages responceMessages, IDoctorLabMapping labMapping, IDoctorClinic doctorClinic)
 
         {
             this.orderManage = orderManage;
             this.authentication = authentication;
             this._orderStatus = _orderStatus;
             this.responceMessages = responceMessages;
+            this.labMapping = labMapping;
+            this.doctorClinic = doctorClinic;
         }
 
         [HttpPost]
@@ -82,6 +86,8 @@ namespace LabGuru.WebAPI.Controllers
                         isSuccess = true,
                         Message = "Order Placed Successfully"
                     };
+                    labMapping.SetDefaultLab(orderCreate.ClinicID, orderCreate.LaboratiryID);
+                    doctorClinic.SetDefaultClinic(LoginUser.UserID, orderCreate.ClinicID);
                     return Ok(responceMessages);
                 }
             }

@@ -41,5 +41,13 @@ namespace LabGuru.DAL
                 throw new Exception(exp.Message);
             }
         }
+
+        public int SetDefaultClinic(int DoctorID, int ClinicID)
+        {
+            var ClinitList = dbContext.DoctorClinics.Where(w => w.UserID == DoctorID).ToList();
+            ClinitList.ForEach(e => e.isDefault = false);
+            ClinitList.Where(w => w.id == ClinicID).ToList().ForEach(e => e.isDefault = true);
+            return dbContext.SaveChanges();
+        }
     }
 }

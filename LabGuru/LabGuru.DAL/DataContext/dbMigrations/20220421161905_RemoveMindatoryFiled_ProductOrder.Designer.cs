@@ -3,14 +3,16 @@ using System;
 using LabGuru.DAL.DataContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LabGuru.DAL.DataContext.dbMigrations
 {
     [DbContext(typeof(LabGuruDbContext))]
-    partial class LabGuruDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220421161905_RemoveMindatoryFiled_ProductOrder")]
+    partial class RemoveMindatoryFiled_ProductOrder
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -72,9 +74,6 @@ namespace LabGuru.DAL.DataContext.dbMigrations
 
                     b.Property<int>("UserID")
                         .HasColumnType("int");
-
-                    b.Property<bool>("isDefault")
-                        .HasColumnType("tinyint(1)");
 
                     b.HasKey("id");
 
@@ -281,9 +280,6 @@ namespace LabGuru.DAL.DataContext.dbMigrations
                     b.Property<int>("LabID")
                         .HasColumnType("int");
 
-                    b.Property<bool>("isDefault")
-                        .HasColumnType("tinyint(1)");
-
                     b.HasKey("id");
 
                     b.HasIndex("ClinicID");
@@ -470,7 +466,7 @@ namespace LabGuru.DAL.DataContext.dbMigrations
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
 
-                    b.Property<int?>("PatientAge")
+                    b.Property<int>("PatientAge")
                         .HasColumnType("int");
 
                     b.Property<string>("PatientGender")
@@ -854,9 +850,6 @@ namespace LabGuru.DAL.DataContext.dbMigrations
                         .IsRequired()
                         .HasMaxLength(15)
                         .HasColumnType("varchar(15)");
-
-                    b.Property<bool>("isImpressionMindatory")
-                        .HasColumnType("tinyint(1)");
 
                     b.HasKey("ProductTypeID");
 

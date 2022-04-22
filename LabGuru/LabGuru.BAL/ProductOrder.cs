@@ -13,8 +13,8 @@ namespace LabGuru.BAL
 		public int OrderID { get; set; }
 		public int UserID { get; set; }
 		public int ProductTypeID { get; set; }
-		public int ProductMaterialID { get; set; }
-		public int ProductShadeID { get; set; }
+		public int? ProductMaterialID { get; set; }
+		public int? ProductShadeID { get; set; }
 		public string ToothSelection { get; set; }
 		public int Quantity { get; set; }
 		public decimal PricePerUnit { get; set; }

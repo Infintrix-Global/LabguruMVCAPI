@@ -18,5 +18,6 @@ namespace LabGuru.BAL
 
         [ForeignKey("LabID")]
         public Laboratory laboratory { get; set; }
+        public bool isDefault { get; set; } = false;
     }
 }

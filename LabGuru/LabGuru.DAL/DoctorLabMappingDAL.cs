@@ -8,7 +8,7 @@ using System.Text;
 
 namespace LabGuru.DAL
 {
-   public class DoctorLabMappingDAL : IDoctorLabMapping
+    public class DoctorLabMappingDAL : IDoctorLabMapping
     {
         private readonly LabGuruDbContext db;
 
@@ -27,9 +27,22 @@ namespace LabGuru.DAL
             return db.DoctorLabMappings.Any(a => a.ClinicID == ClinicID && a.LabID == LabID);
         }
 
-        public List<Laboratory> Laboratorys(int ClinicID)
+        public List<DoctorLabMapping> Laboratorys(int ClinicID)
         {
-            return db.DoctorLabMappings.Where(a => a.ClinicID == ClinicID).Select(S=>S.laboratory).ToList();
+            return db.DoctorLabMappings.Where(a => a.ClinicID == ClinicID).Select(s => new DoctorLabMapping
+            {
+                id = s.id,
+                laboratory = s.laboratory,
+                isDefault = s.isDefault
+            }).ToList();
+        }
+
+        public int SetDefaultLab(int clinicID, int LabID)
+        {
+            var lblist = db.DoctorLabMappings.Where(w => w.ClinicID == clinicID).ToList();
+            lblist.ForEach(e => e.isDefault =false);
+            lblist.Where(w => w.LabID == LabID).ToList().ForEach(e => e.isDefault = true);
+            return db.SaveChanges();
         }
     }
 }

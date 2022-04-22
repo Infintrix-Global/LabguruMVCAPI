@@ -8,6 +8,7 @@ namespace LabGuru.BAL.Repo
     {
         int AddClinicLab(DoctorLabMapping doctorLabMapping);
         bool isExistsLab(int ClinicID, int LabID);
-        List<Laboratory> Laboratorys(int ClinicID);
+        List<DoctorLabMapping> Laboratorys(int ClinicID);
+        int SetDefaultLab(int clinicID, int LabID);
     }
 }
