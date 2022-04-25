@@ -8,9 +8,8 @@ namespace LabGuru.WebAPI.Models
     public class VM_Labratory
     {
         public int id { get; set; }
-        public int LabID { get; set; }
-        public string Name { get; set; }
-        public string labAddress { get; set; }
+        public string LabName { get; set; }
+        public string LabAddress { get; set; }
         public bool isDefault { get; set; }
 
     }

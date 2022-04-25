@@ -9,8 +9,6 @@ namespace LabGuru.WebAPI.Models
     {
         public int id { get; set; }
         public int OrderID { get; set; }
-        public string StatusText { get; set; }
-        public string Remarks { get; set; }
-        public DateTime CreateDate { get; set; }
+        public int StatusID { get; set; }
     }
 }

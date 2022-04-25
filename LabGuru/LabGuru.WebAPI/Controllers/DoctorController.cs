@@ -66,6 +66,7 @@ namespace LabGuru.WebAPI.Controllers
                     ClinicPincode = res.ClinicPincode,
                     ClinicState = res.ClinicState,
                     id = res.id,
+                    isDefault = res.isDefault,
                 });
             }
             return Ok(listDC);
@@ -77,7 +78,7 @@ namespace LabGuru.WebAPI.Controllers
         {
             try
             {
-                if (!labMapping.isExistsLab(CliniclabMapping.ClinicID, CliniclabMapping.LabID))
+                if (!labMapping.isExistsLab(CliniclabMapping.DoctorID, CliniclabMapping.LabID))
                 {
 
                     var result = labMapping.AddClinicLab(CliniclabMapping);
@@ -99,23 +100,22 @@ namespace LabGuru.WebAPI.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetMapedLaboratorys(int clinicID)
+        public IActionResult GetMapedLaboratorys()
         {
-            var result = labMapping.Laboratorys(clinicID);
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            int LoginUserID = authentication.GetLogin(claimsIdentity.Name).UserID;
+            var result = labMapping.Laboratorys(LoginUserID);
             List<VM_Labratory> VM_Labratorys = new List<VM_Labratory>();
             foreach(var res in result)
             {
                 VM_Labratorys.Add(new VM_Labratory()
                 {
                     id = res.id,
-                    LabID = res.laboratory.id,
-                    Name = res.laboratory.LabName,
-                    labAddress = res.laboratory.LabAddress,
+                    LabName = res.laboratory.LabName,
+                    LabAddress = res.laboratory.LabAddress,
                     isDefault = res.isDefault
                 });
             }
-
-           
             return Ok(VM_Labratorys);
         }
         [HttpPost]

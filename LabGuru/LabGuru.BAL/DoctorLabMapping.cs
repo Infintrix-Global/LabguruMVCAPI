@@ -10,11 +10,12 @@ namespace LabGuru.BAL
     {
         [Key]
         public int id { get; set; }
-        public int ClinicID { get; set; }
+        public int DoctorID { get; set; }
         public int LabID { get; set; }
         public DateTime CreateDate { get; set; } = DateTime.Now;
-        [ForeignKey("ClinicID")]
-        public DoctorClinic doctorClinic { get; set; }
+        
+        [ForeignKey("DoctorID")]
+        public DoctorDetails doctorDetails { get; set; }
 
         [ForeignKey("LabID")]
         public Laboratory laboratory { get; set; }

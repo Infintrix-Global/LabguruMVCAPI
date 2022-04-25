@@ -23,8 +23,8 @@ namespace LabGuru.WebAPI.Models
         public string Field3 { get; set; }
         public string Field4 { get; set; }
 
-        public int ClinicID { get; set; }
+        public int? ClinicID { get; set; }
         public int ProcessID { get; set; }
-        public int LaboratiryID { get; set; }
+        public int? LaboratiryID { get; set; }
     }
 }

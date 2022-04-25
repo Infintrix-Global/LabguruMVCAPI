@@ -23,7 +23,9 @@ namespace LabGuru.BAL
 		public decimal TotalPrice { get; set; }
 		public DateTime CreatedDate { get; set; } = DateTime.Now;
 		public DateTime? UpdatedDate { get; set; }
-		[MaxLength(50)]
+		public DateTime DeliveryDate { get; set; } = DateTime.Now.AddDays(4);
+
+        [MaxLength(50)]
 		public string CreatorIP { get; set; }
 		[MaxLength(50)]
 		public string UpdatorIP { get; set; }

@@ -14,5 +14,7 @@ namespace LabGuru.WebAPI.Models
         public string ClinicPincode { get; set; }
         public string ClinicDist { get; set; }
         public string ClinicState { get; set; }
+
+        public bool isDefault { get; set; }
     }
 }

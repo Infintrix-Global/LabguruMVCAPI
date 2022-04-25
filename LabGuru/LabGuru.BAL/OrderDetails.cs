@@ -31,19 +31,23 @@ namespace LabGuru.BAL
 		public string CreatorIP { get; set; }
 		[MaxLength(50)]
 		public string UpdatorIP { get; set; }
-		[ForeignKey("UserID")]
-        public Login loginuser { get; set; }
-
         public ICollection<ProductOrder> ProductOrders { get; set; }
-
-        public int ClinicID { get; set; }
-        public int LaboratiryID { get; set; }
+        public int? ClinicID { get; set; }
+        public int? LaboratiryID { get; set; }
         public int ProcessID { get; set; }
+		public int CurrentOrderStatusID { get; set; }
+
+
+
+		[ForeignKey("UserID")]
+		public Login loginuser { get; set; }
 		[ForeignKey("ClinicID")]
 		public DoctorClinic doctorClinic { get; set; }
 		[ForeignKey("LaboratiryID")]
 		public Laboratory laboratory { get; set; }
 		[ForeignKey("ProcessID")]
 		public OrderProcessMaster orderProcessMaster { get; set; }
+		[ForeignKey("CurrentOrderStatusID")]
+		public OrderStatusMaster OrderStatusMast { get; set; }
 	}
 }

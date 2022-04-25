@@ -3,14 +3,16 @@ using System;
 using LabGuru.DAL.DataContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LabGuru.DAL.DataContext.dbMigrations
 {
     [DbContext(typeof(LabGuruDbContext))]
-    partial class LabGuruDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220424103634_OrderStatus_Modify")]
+    partial class OrderStatus_Modify
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -325,32 +327,6 @@ namespace LabGuru.DAL.DataContext.dbMigrations
                     b.ToTable("DoctorStatusSettings");
                 });
 
-            modelBuilder.Entity("LabGuru.BAL.LabAssignment", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int>("ChildLabID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OrderID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ParentLabID")
-                        .HasColumnType("int");
-
-                    b.HasKey("id");
-
-                    b.HasIndex("ChildLabID");
-
-                    b.HasIndex("OrderID");
-
-                    b.HasIndex("ParentLabID");
-
-                    b.ToTable("LabAssignments");
-                });
-
             modelBuilder.Entity("LabGuru.BAL.Laboratory", b =>
                 {
                     b.Property<int>("id")
@@ -541,27 +517,6 @@ namespace LabGuru.DAL.DataContext.dbMigrations
                     b.ToTable("OrderDetails");
                 });
 
-            modelBuilder.Entity("LabGuru.BAL.OrderProcess", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int>("OrderID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProcessMasterID")
-                        .HasColumnType("int");
-
-                    b.HasKey("id");
-
-                    b.HasIndex("OrderID");
-
-                    b.HasIndex("ProcessMasterID");
-
-                    b.ToTable("OrderProcesses");
-                });
-
             modelBuilder.Entity("LabGuru.BAL.OrderProcessMaster", b =>
                 {
                     b.Property<int>("id")
@@ -728,9 +683,6 @@ namespace LabGuru.DAL.DataContext.dbMigrations
                     b.Property<string>("CreatorIP")
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
-
-                    b.Property<DateTime>("DeliveryDate")
-                        .HasColumnType("datetime");
 
                     b.Property<string>("Field1")
                         .HasColumnType("text");
@@ -1019,33 +971,6 @@ namespace LabGuru.DAL.DataContext.dbMigrations
                     b.Navigation("StatusMaster");
                 });
 
-            modelBuilder.Entity("LabGuru.BAL.LabAssignment", b =>
-                {
-                    b.HasOne("LabGuru.BAL.Laboratory", "ChildLab")
-                        .WithMany()
-                        .HasForeignKey("ChildLabID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LabGuru.BAL.OrderDetails", "orderDetails")
-                        .WithMany()
-                        .HasForeignKey("OrderID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LabGuru.BAL.Laboratory", "ParentLab")
-                        .WithMany()
-                        .HasForeignKey("ParentLabID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ChildLab");
-
-                    b.Navigation("orderDetails");
-
-                    b.Navigation("ParentLab");
-                });
-
             modelBuilder.Entity("LabGuru.BAL.OrderDetails", b =>
                 {
                     b.HasOne("LabGuru.BAL.DoctorClinic", "doctorClinic")
@@ -1083,25 +1008,6 @@ namespace LabGuru.DAL.DataContext.dbMigrations
                     b.Navigation("orderProcessMaster");
 
                     b.Navigation("OrderStatusMast");
-                });
-
-            modelBuilder.Entity("LabGuru.BAL.OrderProcess", b =>
-                {
-                    b.HasOne("LabGuru.BAL.OrderDetails", "orderDetails")
-                        .WithMany()
-                        .HasForeignKey("OrderID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LabGuru.BAL.OrderProcessMaster", "orderProcess")
-                        .WithMany()
-                        .HasForeignKey("ProcessMasterID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("orderDetails");
-
-                    b.Navigation("orderProcess");
                 });
 
             modelBuilder.Entity("LabGuru.BAL.OrderStatus", b =>

@@ -23,9 +23,12 @@ namespace LabGuru.WebAPI.Controllers
         private readonly ResponceMessages responceMessages;
         private readonly IDoctorLabMapping labMapping;
         private readonly IDoctorClinic doctorClinic;
+        private readonly IProductSetting productSetting;
+        private readonly ILabAssignment labAssignment;
 
         public OrderController(IOrderManage orderManage, IAuthentication authentication, IOrderStatus _orderStatus,
-            ResponceMessages responceMessages, IDoctorLabMapping labMapping, IDoctorClinic doctorClinic)
+            ResponceMessages responceMessages, IDoctorLabMapping labMapping, IDoctorClinic doctorClinic,
+            IProductSetting productSetting, ILabAssignment labAssignment)
 
         {
             this.orderManage = orderManage;
@@ -34,6 +37,8 @@ namespace LabGuru.WebAPI.Controllers
             this.responceMessages = responceMessages;
             this.labMapping = labMapping;
             this.doctorClinic = doctorClinic;
+            this.productSetting = productSetting;
+            this.labAssignment = labAssignment;
         }
 
         [HttpPost]
@@ -58,6 +63,12 @@ namespace LabGuru.WebAPI.Controllers
             };
             if (orderManage.CreateOrder(orderDetails) > 0)
             {
+                var prodSett = productSetting.GetProductDeliveryDays(orderCreate.ProductTypeID);
+                int DeliveryDate = 0;
+                if (prodSett != null)
+                {
+                    DeliveryDate = prodSett.DeliveryDays;
+                }
                 ProductOrder productOrder = new ProductOrder()
                 {
                     CGST = 0,
@@ -75,7 +86,8 @@ namespace LabGuru.WebAPI.Controllers
                     SGST = 0,
                     ToothSelection = orderCreate.ToothNo,
                     TotalPrice = 0,
-                    UserID = LoginUser.UserID
+                    UserID = LoginUser.UserID,
+                    DeliveryDate = DateTime.Now.AddDays(DeliveryDate)
 
                 };
                 if (orderManage.CreateOrderProduct(productOrder) > 0)
@@ -86,8 +98,14 @@ namespace LabGuru.WebAPI.Controllers
                         isSuccess = true,
                         Message = "Order Placed Successfully"
                     };
-                    labMapping.SetDefaultLab(orderCreate.ClinicID, orderCreate.LaboratiryID);
-                    doctorClinic.SetDefaultClinic(LoginUser.UserID, orderCreate.ClinicID);
+                    if (orderCreate.ClinicID != null && orderCreate.LaboratiryID != null)
+                    {
+                        int ClinicID = (int)orderCreate.ClinicID;
+                        int LaboratiryID = (int)orderCreate.LaboratiryID;
+                        labMapping.SetDefaultLab(ClinicID, LaboratiryID);
+                        doctorClinic.SetDefaultClinic(LoginUser.UserID, ClinicID);
+                    }
+
                     return Ok(responceMessages);
                 }
             }
@@ -99,11 +117,21 @@ namespace LabGuru.WebAPI.Controllers
         public IActionResult GetOrderList()
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
-            int LoginUserID = authentication.GetLogin(claimsIdentity.Name).UserID;
+            var LoginUser = authentication.GetLogin(claimsIdentity.Name);
+            if (LoginUser.ReferanceType == BAL.Enums.LoginReference.Doctor)
+            {
+                var result = orderManage.GetOrdersForDoctor(LoginUser.UserID);
+                return Ok(result);
+            }
+            else
+            {
+                var result = orderManage.GetOrdersForLab(LoginUser.UserID);
+                return Ok(result);
+            }
             //var result = orderManage.GetOrderDetails(LoginUserID);
-            var result = orderManage.GetOrdersForDoctor(LoginUserID);
-            
-            return Ok(result);
+
+
+
         }
         [HttpGet]
         public IActionResult GetOrderDetail(int orderID)
@@ -132,7 +160,8 @@ namespace LabGuru.WebAPI.Controllers
                     productTypeImagePath = pd.productType.ProductTypeImagePath,
                     productTypeName = pd.productType.ProductTypeName,
                     quantity = pd.Quantity,
-                    toothSelection = pd.ToothSelection
+                    toothSelection = pd.ToothSelection,
+                    DeliveryDate = pd.DeliveryDate
                 });
             }
             vm_OrderView _OrderView = new vm_OrderView()
@@ -158,12 +187,13 @@ namespace LabGuru.WebAPI.Controllers
                 OrderStatus status = new OrderStatus()
                 {
                     OrderID = orderStatus.OrderID,
-                    Remarks = orderStatus.Remarks,
-                    Status = orderStatus.StatusText
+                    OrderStatusMasterID = orderStatus.StatusID
                 };
+
                 var result = _orderStatus.AddOrderStatus(status);
                 if (result > 0)
                 {
+                    orderManage.SetCurrentStatus(orderStatus.OrderID, orderStatus.StatusID);
                     responceMessages.Success("Successfully Added Order Status");
                 }
                 else
@@ -188,9 +218,7 @@ namespace LabGuru.WebAPI.Controllers
                 List<vm_OrderStatus> _OS = result.Select(s => new vm_OrderStatus
                 {
                     id = s.id,
-                    Remarks = s.Remarks,
-                    StatusText = s.Status,
-                    CreateDate = s.CreateDate
+
                 }).ToList();
                 return Ok(_OS);
             }
@@ -199,6 +227,36 @@ namespace LabGuru.WebAPI.Controllers
                 responceMessages.Failed(exp.Message);
                 return BadRequest(responceMessages);
             }
+        }
+
+        [HttpPost]
+        public IActionResult OrderAssigntoLab(LabAssignment assignment)
+        {
+            
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var LoginUser = authentication.GetLogin(claimsIdentity.Name);
+            if(LoginUser.ReferanceType == BAL.Enums.LoginReference.Laboratory)
+            {
+                assignment.ParentLabID = LoginUser.UserID;
+                var resp = labAssignment.AssignmentToLab(assignment);
+                if (resp > 0)
+                {
+                    responceMessages.Success("SUccessfully Assign to Lab");
+                    return Ok(responceMessages);
+                }
+                else
+                {
+                    responceMessages.Failed("Oops something went wrong");
+                    return BadRequest(responceMessages);
+                }
+            }
+            else
+            {
+                responceMessages.Failed("Invalid User Login");
+                return BadRequest(responceMessages);
+            }
+            
+
         }
     }
 }

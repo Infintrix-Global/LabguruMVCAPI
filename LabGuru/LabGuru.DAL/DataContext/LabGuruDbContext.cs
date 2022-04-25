@@ -39,6 +39,8 @@ namespace LabGuru.DAL.DataContext
         public DbSet<ProductSetting> ProductSettings { get; set; }
         public DbSet<OrderStatusMaster> OrderStatusMasters { get; set; }
         public DbSet<DoctorStatusSetting> DoctorStatusSettings { get; set; }
+        public DbSet<LabAssignment> LabAssignments { get; set; }
+        public DbSet<OrderProcess> OrderProcesses { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)

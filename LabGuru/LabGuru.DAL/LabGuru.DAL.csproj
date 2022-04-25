@@ -18,4 +18,8 @@
     <ProjectReference Include="..\LabGuru.BAL\LabGuru.BAL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Component\" />
+  </ItemGroup>
+
 </Project>

@@ -3,14 +3,16 @@ using System;
 using LabGuru.DAL.DataContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LabGuru.DAL.DataContext.dbMigrations
 {
     [DbContext(typeof(LabGuruDbContext))]
-    partial class LabGuruDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220424152443_LabAssignment_initiated")]
+    partial class LabAssignment_initiated
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -541,27 +543,6 @@ namespace LabGuru.DAL.DataContext.dbMigrations
                     b.ToTable("OrderDetails");
                 });
 
-            modelBuilder.Entity("LabGuru.BAL.OrderProcess", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int>("OrderID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProcessMasterID")
-                        .HasColumnType("int");
-
-                    b.HasKey("id");
-
-                    b.HasIndex("OrderID");
-
-                    b.HasIndex("ProcessMasterID");
-
-                    b.ToTable("OrderProcesses");
-                });
-
             modelBuilder.Entity("LabGuru.BAL.OrderProcessMaster", b =>
                 {
                     b.Property<int>("id")
@@ -1083,25 +1064,6 @@ namespace LabGuru.DAL.DataContext.dbMigrations
                     b.Navigation("orderProcessMaster");
 
                     b.Navigation("OrderStatusMast");
-                });
-
-            modelBuilder.Entity("LabGuru.BAL.OrderProcess", b =>
-                {
-                    b.HasOne("LabGuru.BAL.OrderDetails", "orderDetails")
-                        .WithMany()
-                        .HasForeignKey("OrderID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LabGuru.BAL.OrderProcessMaster", "orderProcess")
-                        .WithMany()
-                        .HasForeignKey("ProcessMasterID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("orderDetails");
-
-                    b.Navigation("orderProcess");
                 });
 
             modelBuilder.Entity("LabGuru.BAL.OrderStatus", b =>

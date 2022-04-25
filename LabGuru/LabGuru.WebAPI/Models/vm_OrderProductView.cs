@@ -21,6 +21,6 @@ namespace LabGuru.WebAPI.Models
         public string productTypeImagePath { get; set; }
         public string productMatrialName { get; set; }
         public string productShadeName { get; set; }
-
+        public DateTime DeliveryDate { get; set; }
     }
 }

@@ -18,20 +18,15 @@ namespace LabGuru.DAL
         }
         public int AddOrderStatus(OrderStatus orderStatus)
         {
-            using (db)
-            {
-                db.orderStatuses.Add(orderStatus);
-                return db.SaveChanges();
-            }
+            db.orderStatuses.Add(orderStatus);
+            return db.SaveChanges();
         }
 
         public List<OrderStatus> GetOrderStatuses(int OrderID)
         {
-            using (db)
-            {
-                var result = db.orderStatuses.Where(w => w.OrderID == OrderID).ToList();
-                return result;
-            }
+            var result = db.orderStatuses.Where(w => w.OrderID == OrderID).ToList();
+            return result;
         }
+
     }
 }

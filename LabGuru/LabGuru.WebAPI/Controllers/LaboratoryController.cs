@@ -1,10 +1,12 @@
 ﻿using LabGuru.BAL.Repo;
+using LabGuru.WebAPI.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace LabGuru.WebAPI.Controllers
@@ -16,18 +18,43 @@ namespace LabGuru.WebAPI.Controllers
     {
         private readonly ILaboratory laboratory;
         private readonly IAuthentication authentication;
+        private readonly IDoctorLabMapping labMapping;
 
-        public LaboratoryController(ILaboratory laboratory, IAuthentication authentication)
+        public LaboratoryController(ILaboratory laboratory, 
+            IAuthentication authentication,
+            IDoctorLabMapping labMapping)
         {
             this.laboratory = laboratory;
             this.authentication = authentication;
+            this.labMapping = labMapping;
         }
 
         [HttpGet]
         public IActionResult GetLaboratory()
         {
-            var result = laboratory.GetLaboratories();
-            return Ok(result);
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var LoginUser = authentication.GetLogin(claimsIdentity.Name);
+            if (LoginUser.ReferanceType == BAL.Enums.LoginReference.Doctor)
+            {
+                var result = labMapping.Laboratorys(LoginUser.UserID);
+                List<VM_Labratory> VM_Labratorys = new List<VM_Labratory>();
+                foreach (var res in result)
+                {
+                    VM_Labratorys.Add(new VM_Labratory()
+                    {
+                        id = res.laboratory.id,
+                        LabName = res.laboratory.LabName,
+                        LabAddress = res.laboratory.LabAddress,
+                        isDefault = res.isDefault
+                    });
+                }
+                return Ok(VM_Labratorys);
+            }
+            else
+            {
+                var result = laboratory.GetLaboratories();
+                return Ok(result);
+            }
         }
     }
 }

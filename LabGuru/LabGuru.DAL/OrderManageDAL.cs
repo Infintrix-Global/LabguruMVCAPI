@@ -1,4 +1,5 @@
 ﻿using LabGuru.BAL;
+using LabGuru.BAL.Component;
 using LabGuru.BAL.Repo;
 using LabGuru.DAL.DataContext;
 using System;
@@ -66,23 +67,63 @@ namespace LabGuru.DAL
             return dbContext.OrderDetails.Where(w => w.UserID == UserID).OrderByDescending(O => O.CreatedDate).ToList();
         }
 
-        public List<OrderDetails> GetOrdersForDoctor(int DoctorID)
+        public List<OrderListWithProduct> GetOrdersForDoctor(int DoctorID)
         {
             var result = from ord in dbContext.OrderDetails
                          join ordProd in dbContext.ProductOrders on ord.OrderID equals ordProd.OrderID
                          join Prod in dbContext.ProductTypes on ordProd.ProductTypeID equals Prod.ProductTypeID
                          where ord.UserID == DoctorID
-                         select new OrderDetails
+                         select new OrderListWithProduct
                          {
                              OrderID = ord.OrderID,
-                            
+                             OrderNumber = ord.OrderNumber,
+                             CreatedDate = ord.CreatedDate,
+                             PatientName = ord.PatientName,
+                             PatientAge = ord.PatientAge,
+                             PatientGender = ord.PatientGender,
+                             ProductName = Prod.ProductTypeName,
+                             ProductImage = Prod.ProductTypeImagePath,
+                             ProductTypeID = Prod.ProductTypeID,
+                             TotalPrice = ord.TotalPrice,
+                             DeliveryDate = ordProd.DeliveryDate,
+                             CurrentOrderStatus = (dbContext.OrderStatusMasters.Where(w=>w.id == ord.CurrentOrderStatusID).Select(s=>s.StatusText).FirstOrDefault())
                          };
             return result.ToList();
         }
 
-        public List<OrderDetails> GetOrdersForLab(int LabID)
+        public List<OrderListWithProduct> GetOrdersForLab(int LabID)
         {
-            throw new NotImplementedException();
+            var result = from ord in dbContext.OrderDetails
+                         join ordProd in dbContext.ProductOrders on ord.OrderID equals ordProd.OrderID
+                         join Prod in dbContext.ProductTypes on ordProd.ProductTypeID equals Prod.ProductTypeID
+                         where ord.LaboratiryID == LabID
+                         orderby ord.CreatedDate descending
+                         select new OrderListWithProduct
+                         {
+                             OrderID = ord.OrderID,
+                             OrderNumber = ord.OrderNumber,
+                             CreatedDate = ord.CreatedDate,
+                             PatientName = ord.PatientName,
+                             PatientAge = ord.PatientAge,
+                             PatientGender = ord.PatientGender,
+                             ProductName = Prod.ProductTypeName,
+                             ProductImage = Prod.ProductTypeImagePath,
+                             ProductTypeID = Prod.ProductTypeID,
+                             TotalPrice = ord.TotalPrice,
+                             DeliveryDate = ordProd.DeliveryDate
+                         };
+            return result.ToList();
+        }
+
+        public int SetCurrentStatus(int OrderID, int StatusID)
+        {
+            var orderD = dbContext.OrderDetails.Where(w => w.OrderID == OrderID).FirstOrDefault();
+            if(orderD != null)
+            {
+                orderD.CurrentOrderStatusID = StatusID;
+                return dbContext.SaveChanges();
+            }
+            return 0;
         }
     }
 }

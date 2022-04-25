@@ -27,5 +27,7 @@ namespace LabGuru.DAL
             var result = dbContext.ProductTypes.Where(w=>w.ProductTypeID == ProductTypeID).FirstOrDefault();
             return result;
         }
+
+
     }
 }
