@@ -10,6 +10,8 @@ namespace LabGuru.DAL.DataContext
     {
         public LabGuruDbContext()
         {
+            //Add - Migration Menu_initiated - context LabGuruDbContext - o "DataContext\dbMigrations"
+            //update - database - context LabGuruDbContext
 
         }
         public LabGuruDbContext(DbContextOptions<LabGuruDbContext> options) : base(options)
