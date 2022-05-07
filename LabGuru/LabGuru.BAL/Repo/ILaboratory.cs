@@ -8,5 +8,7 @@ namespace LabGuru.BAL.Repo
     {
         List<Laboratory> GetLaboratories();
         Laboratory GetLaboratory(int id);
+
+        int CreateLaboratoryUsers(Laboratory lab);
     }
 }

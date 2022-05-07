@@ -1,4 +1,5 @@
-﻿using LabGuru.BAL.Repo;
+﻿using LabGuru.BAL;
+using LabGuru.BAL.Repo;
 using LabGuru.WebAPI.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -19,14 +20,16 @@ namespace LabGuru.WebAPI.Controllers
         private readonly ILaboratory laboratory;
         private readonly IAuthentication authentication;
         private readonly IDoctorLabMapping labMapping;
+        private readonly ResponceMessages responceMessages;
 
         public LaboratoryController(ILaboratory laboratory, 
             IAuthentication authentication,
-            IDoctorLabMapping labMapping)
+            IDoctorLabMapping labMapping, ResponceMessages responceMessages)
         {
             this.laboratory = laboratory;
             this.authentication = authentication;
             this.labMapping = labMapping;
+            this.responceMessages = responceMessages;
         }
 
         [HttpGet]
@@ -55,6 +58,14 @@ namespace LabGuru.WebAPI.Controllers
                 var result = laboratory.GetLaboratories();
                 return Ok(result);
             }
+        }
+
+        [HttpPost]
+        public IActionResult CreateLaboratoryUser(Laboratory lab)
+        {
+            var result = laboratory.CreateLaboratoryUsers(lab);
+            return result > 0 ? Ok(responceMessages.Success("Successfully Added")) : Ok(responceMessages.Failed("Oops something went wrong"));
+
         }
     }
 }
