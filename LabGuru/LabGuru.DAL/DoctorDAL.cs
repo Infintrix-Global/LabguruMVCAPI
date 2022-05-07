@@ -17,6 +17,40 @@ namespace LabGuru.DAL
             this.dbContext = dbContext;
         }
 
+        public int CreateDoctors(DoctorDetails doctorDetails)
+        {
+            dbContext.DoctorDetails.Add(doctorDetails);
+            int result = dbContext.SaveChanges();
+
+            Login login = new Login();
+            if (result > 0)
+            {
+                login.ReferanceID = doctorDetails.DoctorDetailsID;
+                login.UserName = doctorDetails.UserName;
+                string encryptedPassword = EncryptPassword((doctorDetails.UserName).Replace(" ", "") + "@2022");
+
+                login.Password = encryptedPassword;
+                login.isActive = true;
+                login.RoleID = "Doctor";
+                login.ReferanceType = BAL.Enums.LoginReference.Doctor;
+                login.IMEI = "Test";
+
+                dbContext.Logins.Add(login);
+                dbContext.SaveChanges();
+                return doctorDetails.DoctorDetailsID;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
+        public string EncryptPassword(string password)
+        {
+            string encryptPassword = BCrypt.Net.BCrypt.HashPassword(password);
+            return encryptPassword;
+        }
+
         public DoctorDetails GetDoctorDetails(int DoctorDetailsID)
         {
             var Doctor = dbContext.DoctorDetails.Where(w => w.DoctorDetailsID == DoctorDetailsID).FirstOrDefault();

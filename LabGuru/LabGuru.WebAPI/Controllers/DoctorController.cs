@@ -166,5 +166,13 @@ namespace LabGuru.WebAPI.Controllers
             }
         }
 
+        [HttpPost]
+        public IActionResult CreateDoctor(DoctorDetails doctorDetails)
+        {
+            var result = _doctor.CreateDoctors(doctorDetails);
+            return result > 0 ? Ok(responceMessages.Success("Successfully Added")) : Ok(responceMessages.Failed("Oops something went wrong"));
+
+        }
+
     }
 }

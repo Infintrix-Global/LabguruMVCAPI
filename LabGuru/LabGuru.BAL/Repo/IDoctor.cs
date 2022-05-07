@@ -8,5 +8,7 @@ namespace LabGuru.BAL.Repo
     {
         DoctorDetails GetDoctorDetails(int DoctorDetailsID);
         List<DoctorDetails> GetDoctorDetails();
+
+        int CreateDoctors(DoctorDetails doctorDetails);
     }
 }
