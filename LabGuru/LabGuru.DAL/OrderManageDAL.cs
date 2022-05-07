@@ -12,10 +12,12 @@ namespace LabGuru.DAL
     public class OrderManageDAL : IOrderManage
     {
         private readonly LabGuruDbContext dbContext;
+        private readonly IDoctorStatusSetting doctorStatus;
 
-        public OrderManageDAL(LabGuruDbContext dbContext)
+        public OrderManageDAL(LabGuruDbContext dbContext, IDoctorStatusSetting doctorStatus)
         {
             this.dbContext = dbContext;
+            this.doctorStatus = doctorStatus;
         }
         public int CreateOrder(OrderDetails orderDetails)
         {
@@ -86,13 +88,14 @@ namespace LabGuru.DAL
                              ProductTypeID = Prod.ProductTypeID,
                              TotalPrice = ord.TotalPrice,
                              DeliveryDate = ordProd.DeliveryDate,
-                             CurrentOrderStatus = (dbContext.OrderStatusMasters.Where(w=>w.id == ord.CurrentOrderStatusID).Select(s=>s.StatusText).FirstOrDefault())
+                             CurrentOrderStatus = (dbContext.OrderStatusMasters.Where(w => w.id == ord.CurrentOrderStatusID).Select(s => s.StatusText).FirstOrDefault())
                          };
             return result.ToList();
         }
 
         public List<OrderListWithProduct> GetOrdersForLab(int LabID)
         {
+
             var result = from ord in dbContext.OrderDetails
                          join ordProd in dbContext.ProductOrders on ord.OrderID equals ordProd.OrderID
                          join Prod in dbContext.ProductTypes on ordProd.ProductTypeID equals Prod.ProductTypeID
@@ -110,7 +113,21 @@ namespace LabGuru.DAL
                              ProductImage = Prod.ProductTypeImagePath,
                              ProductTypeID = Prod.ProductTypeID,
                              TotalPrice = ord.TotalPrice,
-                             DeliveryDate = ordProd.DeliveryDate
+                             DeliveryDate = ordProd.DeliveryDate,
+                             isAccepted = ord.isAccepted,
+                             
+                             StatusList = (from DSS in dbContext.DoctorStatusSettings
+                                           join Status in dbContext.OrderStatusMasters on DSS.StatusMasterID equals Status.id
+                                           where Status.LaboratoryID == LabID &&
+                                                     DSS.DoctorID == ord.UserID && DSS.Include
+                                           select new DoctorStatusSetting
+                                           {
+                                               id = DSS.id,
+                                               Include = DSS.Include,
+                                               LaboratoryID = DSS.LaboratoryID,
+                                               ShowToDoctor = DSS.ShowToDoctor,
+                                               StatusMaster = Status
+                                           }).OrderBy(o => o.StatusMaster.DispalyOrder).ToList()
                          };
             return result.ToList();
         }
@@ -118,9 +135,32 @@ namespace LabGuru.DAL
         public int SetCurrentStatus(int OrderID, int StatusID)
         {
             var orderD = dbContext.OrderDetails.Where(w => w.OrderID == OrderID).FirstOrDefault();
-            if(orderD != null)
+            if (orderD != null)
             {
                 orderD.CurrentOrderStatusID = StatusID;
+                return dbContext.SaveChanges();
+            }
+            return 0;
+        }
+
+        public int AcceptOrder(int OrderID)
+        {
+
+            var orderD = dbContext.OrderDetails.Where(w => w.OrderID == OrderID).FirstOrDefault();
+            if (orderD != null)
+            {
+                orderD.isAccepted = true;
+                return dbContext.SaveChanges();
+            }
+            return 0;
+        }
+
+        public int NotAcceptOrder(int OrderID)
+        {
+            var orderD = dbContext.OrderDetails.Where(w => w.OrderID == OrderID).FirstOrDefault();
+            if (orderD != null)
+            {
+                orderD.isAccepted = false;
                 return dbContext.SaveChanges();
             }
             return 0;

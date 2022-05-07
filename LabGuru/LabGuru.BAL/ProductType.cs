@@ -13,8 +13,8 @@ namespace LabGuru.BAL
         public string ProductTypeName { get; set; }
         public string ProductTypeImagePath { get; set; }
         [Required]
-        public DateTime CreatedDate { get; set; }
-        public DateTime? UpdatedDate { get; set; }
+        public DateTime CreatedDate { get; set; } = DateTime.Now;
+        public DateTime? UpdatedDate { get; set; } = DateTime.Now;
         [Required, MaxLength(15)]
         public string CreatorIP { get; set; }
         [Required, MaxLength(15)]

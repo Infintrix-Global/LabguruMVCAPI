@@ -52,7 +52,6 @@ namespace LabGuru.WebAPI.Controllers
                         };
                         return NotFound(responceMessages);
                 }
-                return Ok();
             }
             catch (Exception exp)
             {

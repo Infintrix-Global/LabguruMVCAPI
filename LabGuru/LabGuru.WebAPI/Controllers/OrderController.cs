@@ -28,7 +28,7 @@ namespace LabGuru.WebAPI.Controllers
 
         public OrderController(IOrderManage orderManage, IAuthentication authentication, IOrderStatus _orderStatus,
             ResponceMessages responceMessages, IDoctorLabMapping labMapping, IDoctorClinic doctorClinic,
-            IProductSetting productSetting, ILabAssignment labAssignment)
+            IProductSetting productSetting, ILabAssignment labAssignment, IDoctorStatusSetting doctorStatusSetting)
 
         {
             this.orderManage = orderManage;
@@ -61,55 +61,66 @@ namespace LabGuru.WebAPI.Controllers
                 ProcessID = orderCreate.ProcessID,
                 LaboratiryID = orderCreate.LaboratiryID
             };
-            if (orderManage.CreateOrder(orderDetails) > 0)
+            if(LoginUser.ReferanceType == BAL.Enums.LoginReference.Doctor)
             {
-                var prodSett = productSetting.GetProductDeliveryDays(orderCreate.ProductTypeID);
-                int DeliveryDate = 0;
-                if (prodSett != null)
+                if (orderManage.CreateOrder(orderDetails) > 0)
                 {
-                    DeliveryDate = prodSett.DeliveryDays;
-                }
-                ProductOrder productOrder = new ProductOrder()
-                {
-                    CGST = 0,
-                    CreatorIP = orderCreate.CreatorIP,
-                    Field1 = orderCreate.Field1,
-                    Field2 = orderCreate.Field2,
-                    Field3 = orderCreate.Field3,
-                    Field4 = orderCreate.Field4,
-                    PricePerUnit = 0,
-                    ProductMaterialID = orderCreate.ProductMaterialID,
-                    OrderID = orderDetails.OrderID,
-                    ProductShadeID = orderCreate.ProductShadID,
-                    ProductTypeID = orderCreate.ProductTypeID,
-                    Quantity = 1,
-                    SGST = 0,
-                    ToothSelection = orderCreate.ToothNo,
-                    TotalPrice = 0,
-                    UserID = LoginUser.UserID,
-                    DeliveryDate = DateTime.Now.AddDays(DeliveryDate)
-
-                };
-                if (orderManage.CreateOrderProduct(productOrder) > 0)
-                {
-                    ResponceMessages responceMessages = new ResponceMessages()
+                    var prodSett = productSetting.GetProductDeliveryDays(orderCreate.ProductTypeID);
+                    int DeliveryDate = 0;
+                    if (prodSett != null)
                     {
-                        Data = new { orderDetails.OrderNumber, orderDetails.OrderID },
-                        isSuccess = true,
-                        Message = "Order Placed Successfully"
-                    };
-                    if (orderCreate.ClinicID != null && orderCreate.LaboratiryID != null)
-                    {
-                        int ClinicID = (int)orderCreate.ClinicID;
-                        int LaboratiryID = (int)orderCreate.LaboratiryID;
-                        labMapping.SetDefaultLab(ClinicID, LaboratiryID);
-                        doctorClinic.SetDefaultClinic(LoginUser.UserID, ClinicID);
+                        DeliveryDate = prodSett.DeliveryDays;
                     }
+                    ProductOrder productOrder = new ProductOrder()
+                    {
+                        CGST = 0,
+                        CreatorIP = orderCreate.CreatorIP,
+                        Field1 = orderCreate.Field1,
+                        Field2 = orderCreate.Field2,
+                        Field3 = orderCreate.Field3,
+                        Field4 = orderCreate.Field4,
+                        PricePerUnit = 0,
+                        ProductMaterialID = orderCreate.ProductMaterialID,
+                        OrderID = orderDetails.OrderID,
+                        ProductShadeID = orderCreate.ProductShadID,
+                        ProductTypeID = orderCreate.ProductTypeID,
+                        Quantity = 1,
+                        SGST = 0,
+                        ToothSelection = orderCreate.ToothNo,
+                        TotalPrice = 0,
+                        UserID = LoginUser.UserID,
+                        DeliveryDate = DateTime.Now.AddDays(DeliveryDate)
 
-                    return Ok(responceMessages);
+                    };
+                    if (orderManage.CreateOrderProduct(productOrder) > 0)
+                    {
+                        ResponceMessages responceMessages = new ResponceMessages()
+                        {
+                            Data = new { orderDetails.OrderNumber, orderDetails.OrderID },
+                            isSuccess = true,
+                            Message = "Order Placed Successfully"
+                        };
+                        if (orderCreate.LaboratiryID != null)
+                        {
+                            int LaboratiryID = (int)orderCreate.LaboratiryID;
+                            labMapping.SetDefaultLab(LoginUser.UserID, LaboratiryID);
+                        }
+                        if(orderCreate.ClinicID != null)
+                        {
+                            int ClinicID = (int)orderCreate.ClinicID;
+                            doctorClinic.SetDefaultClinic(LoginUser.UserID, ClinicID);
+                        }
+
+                        return Ok(responceMessages);
+                    }
                 }
+                return BadRequest("Something want wrong");
             }
-            return BadRequest("Something want wrong");
+
+            else
+            {
+                return BadRequest("User not allowed to create order.");
+            }
 
         }
 
@@ -128,10 +139,6 @@ namespace LabGuru.WebAPI.Controllers
                 var result = orderManage.GetOrdersForLab(LoginUser.UserID);
                 return Ok(result);
             }
-            //var result = orderManage.GetOrderDetails(LoginUserID);
-
-
-
         }
         [HttpGet]
         public IActionResult GetOrderDetail(int orderID)
@@ -241,7 +248,8 @@ namespace LabGuru.WebAPI.Controllers
                 var resp = labAssignment.AssignmentToLab(assignment);
                 if (resp > 0)
                 {
-                    responceMessages.Success("SUccessfully Assign to Lab");
+                    orderManage.NotAcceptOrder(assignment.OrderID);
+                    responceMessages.Success("Successfully Assign to Lab");
                     return Ok(responceMessages);
                 }
                 else
@@ -256,6 +264,35 @@ namespace LabGuru.WebAPI.Controllers
                 return BadRequest(responceMessages);
             }
             
+
+        }
+
+        [HttpPost]
+        public IActionResult AcceptOrder(vm_OrderView order)
+        {
+
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var LoginUser = authentication.GetLogin(claimsIdentity.Name);
+            if (LoginUser.ReferanceType == BAL.Enums.LoginReference.Laboratory)
+            {
+               var resp =  orderManage.AcceptOrder(order.orderID);
+                if (resp > 0)
+                {
+                    responceMessages.Success("Successfully Accepted Order");
+                    return Ok(responceMessages);
+                }
+                else
+                {
+                    responceMessages.Failed("Oops something went wrong");
+                    return BadRequest(responceMessages);
+                }
+            }
+            else
+            {
+                responceMessages.Failed("Invalid User Login");
+                return BadRequest(responceMessages);
+            }
+
 
         }
     }

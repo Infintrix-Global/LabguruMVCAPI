@@ -20,6 +20,9 @@ namespace LabGuru.BAL.Component
         public string ProductImage { get; set; }
         public string CurrentOrderStatus { get; set; }
         public DateTime DeliveryDate { get; set; }
+        public bool? isAccepted { get; set; }
+
+        public List<DoctorStatusSetting> StatusList { get; set; }
 
     }
 }

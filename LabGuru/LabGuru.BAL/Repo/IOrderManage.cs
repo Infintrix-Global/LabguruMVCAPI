@@ -16,5 +16,7 @@ namespace LabGuru.BAL.Repo
 
         List<OrderListWithProduct> GetOrdersForDoctor(int DoctorID);
         List<OrderListWithProduct> GetOrdersForLab(int LabID);
+        int AcceptOrder(int OrderID);
+        int NotAcceptOrder(int OrderID);
     }
 }

@@ -10,5 +10,7 @@ namespace LabGuru.BAL.Repo
         int AddOrderStatus(DoctorStatusSetting doctorStatus);
         bool isExistsOrderStatus(int DoctorID, int LaboratoryID, int StatusID);
         List<DoctorStatusSetting> GetDoctorStatusSettings(int DoctorID, int LaboratoryID);
+        List<DoctorStatusSetting> GetShowToDoctor(int DoctorID, int LaboratoryID);
+        List<DoctorStatusSetting> GetInclude(int DoctorID, int LaboratoryID);
     }
 }

@@ -41,6 +41,46 @@ namespace LabGuru.DAL
             return result;
         }
 
+        public List<DoctorStatusSetting> GetInclude(int DoctorID, int LaboratoryID)
+        {
+            using (db)
+            {
+                var result = (from DSS in db.DoctorStatusSettings
+                              join Status in db.OrderStatusMasters on DSS.StatusMasterID equals Status.id
+                              where Status.LaboratoryID == LaboratoryID &&
+                                        DSS.LaboratoryID == LaboratoryID &&
+                                        DSS.DoctorID == DoctorID && DSS.Include
+                              select new DoctorStatusSetting
+                              {
+                                  id = DSS.id,
+                                  Include = DSS.Include,
+                                  LaboratoryID = DSS.LaboratoryID,
+                                  ShowToDoctor = DSS.ShowToDoctor,
+                                  StatusMaster = Status
+                              }).OrderBy(o => o.StatusMaster.DispalyOrder).ToList();
+                return result;
+            }
+          
+        }
+
+        public List<DoctorStatusSetting> GetShowToDoctor(int DoctorID, int LaboratoryID)
+        {
+            var result = (from DSS in db.DoctorStatusSettings
+                          join Status in db.OrderStatusMasters on DSS.StatusMasterID equals Status.id
+                          where Status.LaboratoryID == LaboratoryID &&
+                                    DSS.LaboratoryID == LaboratoryID &&
+                                    DSS.DoctorID == DoctorID && DSS.ShowToDoctor
+                          select new DoctorStatusSetting
+                          {
+                              id = DSS.id,
+                              Include = DSS.Include,
+                              LaboratoryID = DSS.LaboratoryID,
+                              ShowToDoctor = DSS.ShowToDoctor,
+                              StatusMaster = Status
+                          }).OrderBy(o => o.StatusMaster.DispalyOrder).ToList();
+            return result;
+        }
+
         public bool isExistsOrderStatus(int DoctorID, int LaboraroryID, int StatusID)
         {
             return db.DoctorStatusSettings.Any(a => a.DoctorID == DoctorID && a.LaboratoryID == LaboraroryID && a.StatusMasterID == StatusID);

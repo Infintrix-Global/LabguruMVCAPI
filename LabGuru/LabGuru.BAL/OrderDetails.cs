@@ -10,9 +10,7 @@ namespace LabGuru.BAL
     {
         public OrderDetails()
         {
-			
 			ProductOrders = new HashSet<ProductOrder>();
-
 		}
 		[Key]
 		public int OrderID { get; set; }
@@ -36,10 +34,8 @@ namespace LabGuru.BAL
         public int? LaboratiryID { get; set; }
         public int ProcessID { get; set; }
 		public int CurrentOrderStatusID { get; set; }
-
-
-
-		[ForeignKey("UserID")]
+		public bool? isAccepted { get; set; }
+        [ForeignKey("UserID")]
 		public Login loginuser { get; set; }
 		[ForeignKey("ClinicID")]
 		public DoctorClinic doctorClinic { get; set; }

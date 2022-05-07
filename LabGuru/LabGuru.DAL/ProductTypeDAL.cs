@@ -28,6 +28,10 @@ namespace LabGuru.DAL
             return result;
         }
 
-
+        public int CreateProductType(ProductType productType)
+        {
+            dbContext.ProductTypes.Add(productType);
+            return dbContext.SaveChanges();
+        }
     }
 }
