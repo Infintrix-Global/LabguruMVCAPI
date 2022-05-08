@@ -10,5 +10,7 @@ namespace LabGuru.BAL.Repo
         Laboratory GetLaboratory(int id);
 
         int CreateLaboratoryUsers(Laboratory lab);
+
+        int CreateLabEmployees(LabEmployee labEmployee);
     }
 }
