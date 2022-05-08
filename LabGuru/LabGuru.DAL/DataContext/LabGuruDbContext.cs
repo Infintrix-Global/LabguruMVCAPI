@@ -34,7 +34,7 @@ namespace LabGuru.DAL.DataContext
         public DbSet<ToothNoMaster> ToothNoMasters { get; set; }
         public DbSet<DoctorClinic> DoctorClinics { get; set; }
         public DbSet<Laboratory> Laboratories { get; set; }
-        public DbSet<ProcessMaster> OrderProcessMasters { get; set; }
+        public DbSet<ProcessMaster> ProcessMasters { get; set; }
         public DbSet<OrderStatus> orderStatuses { get; set; }
         public DbSet<DoctorLabMapping> DoctorLabMappings { get; set; }
         public DbSet<ProductSetting> ProductSettings { get; set; }

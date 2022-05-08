@@ -6,7 +6,7 @@ namespace LabGuru.BAL.Repo
 {
     public interface IAuthentication
     {
-        bool Authenticat(string Username, string Password);
+        bool Authenticate(string Username, string Password);
         Login GetLogin(string username);
     }
 }

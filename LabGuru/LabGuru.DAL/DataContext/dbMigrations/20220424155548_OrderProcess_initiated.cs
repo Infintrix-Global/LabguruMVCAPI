@@ -28,7 +28,7 @@ namespace LabGuru.DAL.DataContext.dbMigrations
                     table.ForeignKey(
                         name: "FK_OrderProcesses_OrderProcessMasters_ProcessMasterID",
                         column: x => x.ProcessMasterID,
-                        principalTable: "OrderProcessMasters",
+                        principalTable: "ProcessMasters",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });

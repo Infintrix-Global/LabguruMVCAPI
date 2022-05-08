@@ -8,7 +8,7 @@ namespace LabGuru.DAL.DataContext.dbMigrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "OrderProcessMasters",
+                name: "ProcessMasters",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "int", nullable: false)
@@ -24,7 +24,7 @@ namespace LabGuru.DAL.DataContext.dbMigrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "OrderProcessMasters");
+                name: "ProcessMasters");
         }
     }
 }

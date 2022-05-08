@@ -630,7 +630,7 @@ namespace LabGuru.DAL.DataContext.dbMigrations
 
                     b.HasKey("id");
 
-                    b.ToTable("OrderProcessMasters");
+                    b.ToTable("ProcessMasters");
                 });
 
             modelBuilder.Entity("LabGuru.BAL.Product", b =>

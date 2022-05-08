@@ -16,13 +16,12 @@ namespace LabGuru.DAL
         {
             this.dbContext = dbContext;
         }
-        public bool Authenticat(string Username, string Password)
+        public bool Authenticate(string Username, string Password)
         {
             var LoginUser = dbContext.Logins.FirstOrDefault(a => a.UserName == Username);
             if (LoginUser == null)
                 return false;
             var isValid = BCrypt.Net.BCrypt.Verify(Password, LoginUser.Password);
-
 
             return isValid;
         }
@@ -32,6 +31,7 @@ namespace LabGuru.DAL
             var Loginuser = dbContext.Logins.Where(w => w.UserName == username).FirstOrDefault();
             if (Loginuser == null)
                 throw new ArgumentException("Invalid User");
+            dbContext.Dispose();
             return Loginuser;
         }
     }

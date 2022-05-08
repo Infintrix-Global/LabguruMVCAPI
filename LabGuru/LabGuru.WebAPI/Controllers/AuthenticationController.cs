@@ -28,7 +28,7 @@ namespace LabGuru.WebAPI.Controllers
         public IActionResult Login(vm_UserLogin userLogin)
         {
             ResponceMessages responceMessages;
-            var isValidUser = authentication.Authenticat(userLogin.Username, userLogin.Password);
+            var isValidUser = authentication.Authenticate(userLogin.Username, userLogin.Password);
             if (isValidUser)
             {
                 var userDetail = authentication.GetLogin(userLogin.Username);
