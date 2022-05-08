@@ -1,4 +1,6 @@
-﻿using LabGuru.BAL.Repo;
+﻿using LabGuru.BAL;
+using LabGuru.BAL.Repo;
+using LabGuru.WebAPI.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,11 +19,13 @@ namespace LabGuru.WebAPI.Controllers
     {
         private readonly IOrderProcessMaster orderProcess;
         private readonly IAuthentication authentication;
+        private readonly ResponceMessages responceMessages;
 
-        public ProcessMasterController(IOrderProcessMaster orderProcess, IAuthentication authentication)
+        public ProcessMasterController(IOrderProcessMaster orderProcess, IAuthentication authentication, ResponceMessages responceMessages)
         {
             this.orderProcess = orderProcess;
             this.authentication = authentication;
+            this.responceMessages = responceMessages;
         }
 
         [HttpGet]
@@ -29,6 +33,14 @@ namespace LabGuru.WebAPI.Controllers
         {
             var result = orderProcess.GetOrderProcessMasters();
             return Ok(result);
+        }
+
+        [HttpPost]
+        public IActionResult CreateOrderProcessMaster(OrderProcessMaster orderProcessMaster)
+        {
+            var result = orderProcess.CreateOrderProcessMasters(orderProcessMaster);
+            return result > 0 ? Ok(responceMessages.Success("Successfully Added")) : Ok(responceMessages.Failed("Oops something went wrong"));
+
         }
     }
 }

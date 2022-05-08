@@ -8,5 +8,6 @@ namespace LabGuru.BAL.Repo
     {
         List<OrderProcessMaster> GetOrderProcessMasters();
         OrderProcessMaster GetOrderProcessMaster(int id);
+        int CreateOrderProcessMasters(OrderProcessMaster orderProcessMaster);
     }
 }

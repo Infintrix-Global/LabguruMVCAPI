@@ -24,5 +24,11 @@ namespace LabGuru.DAL
         {
             return dbContext.OrderProcessMasters.ToList();
         }
+
+        public int CreateOrderProcessMasters(OrderProcessMaster orderProcessMaster)
+        {
+            dbContext.OrderProcessMasters.Add(orderProcessMaster);
+            return dbContext.SaveChanges();            
+        }
     }
 }
