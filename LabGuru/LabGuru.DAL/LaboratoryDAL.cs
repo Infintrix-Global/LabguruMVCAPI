@@ -60,7 +60,7 @@ namespace LabGuru.DAL
         {
             dbContext.LabEmployees.Add(labEmployee);
             int result = dbContext.SaveChanges();
-            //dbContext.Dispose();
+            dbContext.Dispose();
 
             Login login = new Login();
             if (result > 0 && (labEmployee.RoleID == (int)BAL.Enums.LoginReference.LabAssitant ||
@@ -87,7 +87,7 @@ namespace LabGuru.DAL
 
                 dbContext.Logins.Add(login);
                 dbContext.SaveChanges();
-                //dbContext.Dispose();
+                dbContext.Dispose();
 
                 return labEmployee.LabEmployeeID;
             }
