@@ -7,6 +7,7 @@ namespace LabGuru.BAL.Enums
     public enum LoginReference
     {
         Doctor = 1,
-        Laboratory = 2
+        Laboratory = 2,
+        Admin = 3
     }
 }

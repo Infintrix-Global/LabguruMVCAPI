@@ -42,12 +42,9 @@ namespace LabGuru.WebAPI.Controllers
         {
             productType.CreatorIP = "Test";
             productType.UpdatorIP = "Test";
+            
             var res  = productTypeManage.CreateProductType(productType);
             return res > 0 ? Ok(responceMessages.Success("Successfully Added")) : Ok(responceMessages.Failed("Oops something went wrong"));
-
         }
-
-
-
     }
 }
