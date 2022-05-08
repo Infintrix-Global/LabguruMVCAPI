@@ -34,7 +34,7 @@ namespace LabGuru.WebAPI.Controllers
         {
             var UserIdentity = (ClaimsIdentity)User.Identity;
             var Loginuser = authentication.GetLogin(UserIdentity.Name);
-            if(Loginuser.ReferanceType != BAL.Enums.LoginReference.Laboratory)
+            if(Loginuser.ReferanceType != BAL.Enums.LoginReference.LabAssitant)
             {
                 return Ok(responceMessages.Failed("Invalid User Access"));
             }

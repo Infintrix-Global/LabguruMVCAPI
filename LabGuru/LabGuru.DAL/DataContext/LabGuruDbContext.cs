@@ -12,7 +12,6 @@ namespace LabGuru.DAL.DataContext
         {
             //Add - Migration Menu_initiated - context LabGuruDbContext - o "DataContext\dbMigrations"
             //update - database - context LabGuruDbContext
-
         }
         public LabGuruDbContext(DbContextOptions<LabGuruDbContext> options) : base(options)
         {
@@ -43,6 +42,7 @@ namespace LabGuru.DAL.DataContext
         public DbSet<DoctorStatusSetting> DoctorStatusSettings { get; set; }
         public DbSet<LabAssignment> LabAssignments { get; set; }
         public DbSet<OrderProcess> OrderProcesses { get; set; }
+        public DbSet<UserType> UserTypes { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)

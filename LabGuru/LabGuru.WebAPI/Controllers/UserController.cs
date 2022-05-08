@@ -41,7 +41,7 @@ namespace LabGuru.WebAPI.Controllers
                     case LoginReference.Doctor:
                         var Doctor = doctor.GetDoctorDetails(Loginuser.ReferanceID);
                         return Ok(Doctor);
-                    case LoginReference.Laboratory:
+                    case LoginReference.LabAssitant:
                         var Lab = laboratory.GetLaboratory(Loginuser.ReferanceID);
                         return Ok(Lab);
                     default:

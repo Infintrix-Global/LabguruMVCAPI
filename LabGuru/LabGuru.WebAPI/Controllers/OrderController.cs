@@ -242,7 +242,7 @@ namespace LabGuru.WebAPI.Controllers
             
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var LoginUser = authentication.GetLogin(claimsIdentity.Name);
-            if(LoginUser.ReferanceType == BAL.Enums.LoginReference.Laboratory)
+            if(LoginUser.ReferanceType == BAL.Enums.LoginReference.LabAssitant)
             {
                 assignment.ParentLabID = LoginUser.UserID;
                 var resp = labAssignment.AssignmentToLab(assignment);
@@ -273,7 +273,7 @@ namespace LabGuru.WebAPI.Controllers
 
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var LoginUser = authentication.GetLogin(claimsIdentity.Name);
-            if (LoginUser.ReferanceType == BAL.Enums.LoginReference.Laboratory)
+            if (LoginUser.ReferanceType == BAL.Enums.LoginReference.LabAssitant)
             {
                var resp =  orderManage.AcceptOrder(order.orderID);
                 if (resp > 0)

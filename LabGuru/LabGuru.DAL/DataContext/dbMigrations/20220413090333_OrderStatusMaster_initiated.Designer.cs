@@ -289,7 +289,7 @@ namespace LabGuru.DAL.DataContext.dbMigrations
                     b.ToTable("DoctorLabMappings");
                 });
 
-            modelBuilder.Entity("LabGuru.BAL.Laboratory", b =>
+            modelBuilder.Entity("LabGuru.BAL.LabAssitant", b =>
                 {
                     b.Property<int>("id")
                         .ValueGeneratedOnAdd()
@@ -891,7 +891,7 @@ namespace LabGuru.DAL.DataContext.dbMigrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LabGuru.BAL.Laboratory", "laboratory")
+                    b.HasOne("LabGuru.BAL.LabAssitant", "laboratory")
                         .WithMany()
                         .HasForeignKey("LabID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -910,7 +910,7 @@ namespace LabGuru.DAL.DataContext.dbMigrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LabGuru.BAL.Laboratory", "laboratory")
+                    b.HasOne("LabGuru.BAL.LabAssitant", "laboratory")
                         .WithMany()
                         .HasForeignKey("LaboratiryID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -950,7 +950,7 @@ namespace LabGuru.DAL.DataContext.dbMigrations
 
             modelBuilder.Entity("LabGuru.BAL.OrderStatusMaster", b =>
                 {
-                    b.HasOne("LabGuru.BAL.Laboratory", "laboratory")
+                    b.HasOne("LabGuru.BAL.LabAssitant", "laboratory")
                         .WithMany()
                         .HasForeignKey("LaboratoryID")
                         .OnDelete(DeleteBehavior.Cascade)

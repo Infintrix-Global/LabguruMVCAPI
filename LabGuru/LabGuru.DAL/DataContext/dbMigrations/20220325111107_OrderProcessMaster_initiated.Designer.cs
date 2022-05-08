@@ -265,7 +265,7 @@ namespace LabGuru.DAL.DataContext.dbMigrations
                     b.ToTable("DoctorDetails");
                 });
 
-            modelBuilder.Entity("LabGuru.BAL.Laboratory", b =>
+            modelBuilder.Entity("LabGuru.BAL.LabAssitant", b =>
                 {
                     b.Property<int>("id")
                         .ValueGeneratedOnAdd()

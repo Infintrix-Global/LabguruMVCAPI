@@ -70,8 +70,7 @@ namespace LabGuru.BAL
 		public TimeSpan OutTime { get; set; }
 		public bool IsExistUser { get; set; } = false;
 		[Required]
-		public bool isTermAccept { get; set; } 
-
+		public bool isTermAccept { get; set; }
 		public ICollection<DoctorDegree> DoctorDegrees { get; set; }
 	}
 }
