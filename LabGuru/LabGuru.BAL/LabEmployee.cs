@@ -11,8 +11,13 @@ namespace LabGuru.BAL
         [Key]
         public int LabEmployeeID { get; set; }
 
-        [ForeignKey("Laboratory")]
-        public int ID { get; set; }
+        
+        // Foreign key   
+        [Display(Name = "LabID")]
+        public virtual int LabID { get; set; }
+
+        [ForeignKey("LabID")]
+        public virtual Laboratory Laboratories { get; set; }
 
         public int RoleID { get; set; }
 
