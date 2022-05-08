@@ -36,7 +36,7 @@ namespace LabGuru.WebAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateOrderProcessMaster(OrderProcessMaster orderProcessMaster)
+        public IActionResult CreateOrderProcessMaster(ProcessMaster orderProcessMaster)
         {
             var result = orderProcess.CreateOrderProcessMasters(orderProcessMaster);
             return result > 0 ? Ok(responceMessages.Success("Successfully Added")) : Ok(responceMessages.Failed("Oops something went wrong"));

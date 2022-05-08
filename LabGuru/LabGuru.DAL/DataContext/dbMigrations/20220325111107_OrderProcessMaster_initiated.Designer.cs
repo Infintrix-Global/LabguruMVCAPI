@@ -435,7 +435,7 @@ namespace LabGuru.DAL.DataContext.dbMigrations
                     b.ToTable("OrderDetails");
                 });
 
-            modelBuilder.Entity("LabGuru.BAL.OrderProcessMaster", b =>
+            modelBuilder.Entity("LabGuru.BAL.ProcessMaster", b =>
                 {
                     b.Property<int>("id")
                         .ValueGeneratedOnAdd()

@@ -6,8 +6,8 @@ namespace LabGuru.BAL.Repo
 {
     public interface IOrderProcessMaster
     {
-        List<OrderProcessMaster> GetOrderProcessMasters();
-        OrderProcessMaster GetOrderProcessMaster(int id);
-        int CreateOrderProcessMasters(OrderProcessMaster orderProcessMaster);
+        List<ProcessMaster> GetOrderProcessMasters();
+        ProcessMaster GetOrderProcessMaster(int id);
+        int CreateOrderProcessMasters(ProcessMaster orderProcessMaster);
     }
 }

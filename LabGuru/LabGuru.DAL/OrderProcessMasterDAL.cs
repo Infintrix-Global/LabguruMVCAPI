@@ -15,17 +15,17 @@ namespace LabGuru.DAL
         {
             this.dbContext = dbContext;
         }
-        public OrderProcessMaster GetOrderProcessMaster(int id)
+        public ProcessMaster GetOrderProcessMaster(int id)
         {
             return dbContext.OrderProcessMasters.Where(w => w.id == id).FirstOrDefault();
         }
 
-        public List<OrderProcessMaster> GetOrderProcessMasters()
+        public List<ProcessMaster> GetOrderProcessMasters()
         {
             return dbContext.OrderProcessMasters.ToList();
         }
 
-        public int CreateOrderProcessMasters(OrderProcessMaster orderProcessMaster)
+        public int CreateOrderProcessMasters(ProcessMaster orderProcessMaster)
         {
             dbContext.OrderProcessMasters.Add(orderProcessMaster);
             return dbContext.SaveChanges();            

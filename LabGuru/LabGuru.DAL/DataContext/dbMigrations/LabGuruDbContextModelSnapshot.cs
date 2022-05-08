@@ -351,7 +351,7 @@ namespace LabGuru.DAL.DataContext.dbMigrations
                     b.ToTable("LabAssignments");
                 });
 
-            modelBuilder.Entity("LabGuru.BAL.LabAssitant", b =>
+            modelBuilder.Entity("LabGuru.BAL.Laboratory", b =>
                 {
                     b.Property<int>("id")
                         .ValueGeneratedOnAdd()
@@ -565,21 +565,6 @@ namespace LabGuru.DAL.DataContext.dbMigrations
                     b.ToTable("OrderProcesses");
                 });
 
-            modelBuilder.Entity("LabGuru.BAL.OrderProcessMaster", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("ProcessName")
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
-
-                    b.HasKey("id");
-
-                    b.ToTable("OrderProcessMasters");
-                });
-
             modelBuilder.Entity("LabGuru.BAL.OrderStatus", b =>
                 {
                     b.Property<int>("id")
@@ -629,6 +614,21 @@ namespace LabGuru.DAL.DataContext.dbMigrations
                     b.HasIndex("LaboratoryID");
 
                     b.ToTable("OrderStatusMasters");
+                });
+
+            modelBuilder.Entity("LabGuru.BAL.ProcessMaster", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("ProcessName")
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.HasKey("id");
+
+                    b.ToTable("OrderProcessMasters");
                 });
 
             modelBuilder.Entity("LabGuru.BAL.Product", b =>
@@ -1006,7 +1006,7 @@ namespace LabGuru.DAL.DataContext.dbMigrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LabGuru.BAL.LabAssitant", "laboratory")
+                    b.HasOne("LabGuru.BAL.Laboratory", "laboratory")
                         .WithMany()
                         .HasForeignKey("LabID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1025,7 +1025,7 @@ namespace LabGuru.DAL.DataContext.dbMigrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LabGuru.BAL.LabAssitant", "laboratory")
+                    b.HasOne("LabGuru.BAL.Laboratory", "laboratory")
                         .WithMany()
                         .HasForeignKey("LaboratoryID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1046,7 +1046,7 @@ namespace LabGuru.DAL.DataContext.dbMigrations
 
             modelBuilder.Entity("LabGuru.BAL.LabAssignment", b =>
                 {
-                    b.HasOne("LabGuru.BAL.LabAssitant", "ChildLab")
+                    b.HasOne("LabGuru.BAL.Laboratory", "ChildLab")
                         .WithMany()
                         .HasForeignKey("ChildLabID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1058,7 +1058,7 @@ namespace LabGuru.DAL.DataContext.dbMigrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LabGuru.BAL.LabAssitant", "ParentLab")
+                    b.HasOne("LabGuru.BAL.Laboratory", "ParentLab")
                         .WithMany()
                         .HasForeignKey("ParentLabID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1083,11 +1083,11 @@ namespace LabGuru.DAL.DataContext.dbMigrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LabGuru.BAL.LabAssitant", "laboratory")
+                    b.HasOne("LabGuru.BAL.Laboratory", "laboratory")
                         .WithMany()
                         .HasForeignKey("LaboratiryID");
 
-                    b.HasOne("LabGuru.BAL.OrderProcessMaster", "orderProcessMaster")
+                    b.HasOne("LabGuru.BAL.ProcessMaster", "orderProcessMaster")
                         .WithMany()
                         .HasForeignKey("ProcessID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1118,7 +1118,7 @@ namespace LabGuru.DAL.DataContext.dbMigrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LabGuru.BAL.OrderProcessMaster", "orderProcess")
+                    b.HasOne("LabGuru.BAL.ProcessMaster", "orderProcess")
                         .WithMany()
                         .HasForeignKey("ProcessMasterID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1150,7 +1150,7 @@ namespace LabGuru.DAL.DataContext.dbMigrations
 
             modelBuilder.Entity("LabGuru.BAL.OrderStatusMaster", b =>
                 {
-                    b.HasOne("LabGuru.BAL.LabAssitant", "laboratory")
+                    b.HasOne("LabGuru.BAL.Laboratory", "laboratory")
                         .WithMany()
                         .HasForeignKey("LaboratoryID")
                         .OnDelete(DeleteBehavior.Cascade)

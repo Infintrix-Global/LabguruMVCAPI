@@ -42,7 +42,7 @@ namespace LabGuru.BAL
 		[ForeignKey("LaboratiryID")]
 		public Laboratory laboratory { get; set; }
 		[ForeignKey("ProcessID")]
-		public OrderProcessMaster orderProcessMaster { get; set; }
+		public ProcessMaster orderProcessMaster { get; set; }
 		[ForeignKey("CurrentOrderStatusID")]
 		public OrderStatusMaster OrderStatusMast { get; set; }
 	}

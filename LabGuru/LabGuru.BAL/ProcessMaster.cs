@@ -5,7 +5,7 @@ using System.Text;
 
 namespace LabGuru.BAL
 {
-    public class OrderProcessMaster
+    public class ProcessMaster
     {
 
         [Key]

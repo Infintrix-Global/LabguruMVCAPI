@@ -17,7 +17,7 @@ namespace LabGuru.BAL
         public OrderDetails orderDetails { get; set; }
 
         [ForeignKey("ProcessMasterID")]
-        public OrderProcessMaster orderProcess { get; set; }
+        public ProcessMaster orderProcess { get; set; }
         
     }
 }
