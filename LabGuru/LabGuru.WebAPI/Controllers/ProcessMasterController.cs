@@ -42,5 +42,20 @@ namespace LabGuru.WebAPI.Controllers
             return result > 0 ? Ok(responceMessages.Success("Successfully Added")) : Ok(responceMessages.Failed("Oops something went wrong"));
 
         }
+
+        [HttpPost]
+        public IActionResult CreateProcessMapper(ProductProcessEmployee productProcessEmployee)
+        {
+            var result = orderProcess.CreateProductProcessEmployeeMapping(productProcessEmployee);
+            return result > 0 ? Ok(responceMessages.Success("Successfully Added")) : Ok(responceMessages.Failed("Oops something went wrong"));
+
+        }
+
+        [HttpGet]
+        public IActionResult GetProcessMapper()
+        {
+            var result = orderProcess.GetProductProcessEmployee();
+            return Ok(result);
+        }
     }
 }

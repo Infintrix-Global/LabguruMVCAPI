@@ -3,14 +3,16 @@ using System;
 using LabGuru.DAL.DataContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LabGuru.DAL.DataContext.dbMigrations
 {
     [DbContext(typeof(LabGuruDbContext))]
-    partial class LabGuruDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220509154525_AddColumn1_initiated")]
+    partial class AddColumn1_initiated
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -835,9 +837,6 @@ namespace LabGuru.DAL.DataContext.dbMigrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<int?>("LabEmployee")
-                        .HasColumnType("int");
-
                     b.Property<int>("LabEmployeeID")
                         .HasColumnType("int");
 
@@ -851,8 +850,6 @@ namespace LabGuru.DAL.DataContext.dbMigrations
                         .HasColumnType("int");
 
                     b.HasKey("ProductProcessEmployeeID");
-
-                    b.HasIndex("LabEmployee");
 
                     b.HasIndex("LabID");
 
@@ -1275,10 +1272,6 @@ namespace LabGuru.DAL.DataContext.dbMigrations
 
             modelBuilder.Entity("LabGuru.BAL.ProductProcessEmployee", b =>
                 {
-                    b.HasOne("LabGuru.BAL.LabEmployee", "LabEmployees")
-                        .WithMany()
-                        .HasForeignKey("LabEmployee");
-
                     b.HasOne("LabGuru.BAL.Laboratory", "Laboratories")
                         .WithMany()
                         .HasForeignKey("LabID")
@@ -1296,8 +1289,6 @@ namespace LabGuru.DAL.DataContext.dbMigrations
                         .HasForeignKey("ProductTypeID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("LabEmployees");
 
                     b.Navigation("Laboratories");
 

@@ -9,5 +9,11 @@ namespace LabGuru.BAL.Repo
         List<ProcessMaster> GetOrderProcessMasters();
         ProcessMaster GetOrderProcessMaster(int id);
         int CreateOrderProcessMasters(ProcessMaster orderProcessMaster);
+
+        int CreateProductProcessEmployeeMapping(ProductProcessEmployee productProcessEmployee);
+
+        List<ProductProcessEmployee> GetProductProcessEmployee();
+
+
     }
 }

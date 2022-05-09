@@ -11,15 +11,33 @@ namespace LabGuru.BAL
         [Key]
         public int ProductProcessEmployeeID { get; set; }
 
-        [ForeignKey("ProductTypeID")]
-        public int ProductID { get; set; }
+        // Foreign key   
+        [Display(Name = "ProductTypeID")]
+        public virtual int ProductTypeID { get; set; }
 
-        [ForeignKey("Laboratory")]
-        public int ID { get; set; }
+        [ForeignKey("ProductTypeID")]
+        public virtual ProductType ProductTypes { get; set; }
+
+        // Foreign key   
+        [Display(Name = "ProcessID")]
+        public virtual int ProcessID { get; set; }
+
+        [ForeignKey("ProcessID")]
+        public virtual ProcessMaster ProcessMasters { get; set; }
+
+        // Foreign key   
+        [Display(Name = "LabID")]
+        public virtual int LabID { get; set; }
+
+        [ForeignKey("LabID")]
+        public virtual Laboratory Laboratories { get; set; }
+
+        [Display(Name = "LabEmployeeID")]
+        public virtual int LabEmployeeID { get; set; }
 
         [ForeignKey("LabEmployee")]
-        public int LabEmployeeID { get; set; }
-
+        public virtual LabEmployee LabEmployees { get; set; }
+                
         [Required]
         public bool IsActive { get; set; }
     }
