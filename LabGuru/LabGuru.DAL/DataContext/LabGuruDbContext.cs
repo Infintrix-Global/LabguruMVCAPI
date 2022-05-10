@@ -45,6 +45,12 @@ namespace LabGuru.DAL.DataContext
         public DbSet<UserType> UserTypes { get; set; }
         public DbSet<LabEmployee> LabEmployees { get; set; }
         public DbSet<ProductProcessEmployee> ProductProcessEmployees { get; set; }
+
+        public DbSet<SubProcessMaster> SubProcessMasters { get; set; }
+
+        public DbSet<SubProcessEmployee> SubProcessEmployees { get; set; }
+
+        
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
