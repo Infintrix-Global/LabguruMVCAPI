@@ -75,5 +75,13 @@ namespace LabGuru.WebAPI.Controllers
             return result > 0 ? Ok(responceMessages.Success("Successfully Added")) : Ok(responceMessages.Failed("Oops something went wrong"));
 
         }
+
+        [HttpGet]
+        public IActionResult GetLabEmployee(int Laboratory)
+        {
+            var result = laboratory.GetLabEmployees(Laboratory);
+            return Ok(result);
+
+        }
     }
 }

@@ -31,7 +31,7 @@ namespace LabGuru.DAL
             var Loginuser = dbContext.Logins.Where(w => w.UserName == username).FirstOrDefault();
             if (Loginuser == null)
                 throw new ArgumentException("Invalid User");
-            dbContext.Dispose();
+            //dbContext.Dispose();
             return Loginuser;
         }
     }

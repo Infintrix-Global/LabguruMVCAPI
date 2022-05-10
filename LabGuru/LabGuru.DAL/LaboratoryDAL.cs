@@ -97,10 +97,16 @@ namespace LabGuru.DAL
             }
         }
 
+
         public string EncryptPassword(string password)
         {
             string encryptPassword = BCrypt.Net.BCrypt.HashPassword(password);
             return encryptPassword;
+        }
+
+        public List<LabEmployee> GetLabEmployees(int LabID)
+        {
+            return dbContext.LabEmployees.Where(w => w.LabID == LabID).ToList();
         }
     }
 }
