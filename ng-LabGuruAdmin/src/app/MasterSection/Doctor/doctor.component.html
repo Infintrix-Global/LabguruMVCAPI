@@ -1,0 +1,135 @@
+<div class="row">
+        <div class="col-md-12 grid-margin">
+                <div class="row">
+                        <div class="col-12 col-xl-8 mb-4 mb-xl-0">
+                                <h3 class="font-weight-bold">Add Doctor</h3>
+                        </div>
+                </div>
+        </div>
+</div>
+<div class="row">
+        <div class="col-md-12">
+                <div class="card">
+                        <div class="card-body">
+                                <div class="alert alert-danger" *ngIf="ErrorMessage && !response.isSuccess"
+                                        role="alert">
+                                        {{ErrorMessage}}
+                                </div>
+                                <div class="alert alert-success" *ngIf="ErrorMessage && response.isSuccess"
+                                        role="alert">
+                                        {{ErrorMessage}}
+                                </div>
+
+                                <form autocomplete="off" class="row needs-validation" [formGroup]="AppForms" novalidate
+                                        (ngSubmit)="SubmitForm()">
+                                        <div class="form-group col-md-4">
+                                                <label>FirstName <em class="text-danger ml-2"
+                                                                *ngIf="(!(this.FirstName.valid || this.FirstName.untouched) || mouseover_form) && FirstName?.errors?.['required']">Required</em></label>
+                                                <input type="text" formControlName="FirstName" required
+                                                        class="form-control" placeholder="">
+                                        </div>
+
+                                        <div class="form-group col-md-4"><label>MiddleName</label>
+                                                <input type="text" formControlName="MiddleName" class="form-control"
+                                                        placeholder="">
+                                        </div>
+
+                                        <div class="form-group col-md-4"><label>LastName<em class="text-danger ml-2"
+                                                                *ngIf="(!(this.LastName.valid || this.LastName.untouched) || mouseover_form) && LastName?.errors?.['required']">Required</em></label><input
+                                                        type="text" formControlName="LastName" required
+                                                        class="form-control" placeholder=""></div>
+
+                                        <div class="form-group col-md-4"><label>Gender<em class="text-danger ml-2"
+                                                                *ngIf="(!(this.Gender.valid || this.Gender.untouched) || mouseover_form) && Gender?.errors?.['required']">Required</em></label><input
+                                                        type="text" formControlName="Gender" required
+                                                        class="form-control" placeholder=""></div>
+                                        <div class="form-group col-md-4"><label>Email</label><input type="text"
+                                                        formControlName="Email" class="form-control" placeholder="">
+                                        </div>
+                                        <div class="form-group col-md-4"><label>BloodGroup</label><input type="text"
+                                                        formControlName="BloodGroup" class="form-control"
+                                                        placeholder=""></div>
+                                        <div class="form-group col-md-4"><label>Mobile1<em class="text-danger ml-2"
+                                                                *ngIf="(!(this.Mobile1.valid || this.Mobile1.untouched) || mouseover_form) && Mobile1?.errors?.['required']">Required</em></label><input
+                                                        type="text" formControlName="Mobile1" required
+                                                        class="form-control" placeholder=""></div>
+                                        <div class="form-group col-md-4"><label>Mobile2</label><input type="text"
+                                                        formControlName="Mobile2" class="form-control" placeholder="">
+                                        </div>
+                                        <div class="form-group col-md-4"><label>Residential_Address<em
+                                                                class="text-danger ml-2"
+                                                                *ngIf="(!(this.Residential_Address.valid || this.Residential_Address.untouched) || mouseover_form) && Residential_Address?.errors?.['required']">Required</em></label><input
+                                                        type="text" formControlName="Residential_Address" required
+                                                        class="form-control" placeholder=""></div>
+                                        <div class="form-group col-md-4"><label>Line1</label><input type="text"
+                                                        formControlName="Line1" class="form-control" placeholder="">
+                                        </div>
+                                        <div class="form-group col-md-4"><label>Line2</label><input type="text"
+                                                        formControlName="Line2" class="form-control" placeholder="">
+                                        </div>
+
+
+
+                                        <div class="form-group col-md-4"><label>AreaPin</label> <input type="text"
+                                                        formControlName="AreaPin" class="form-control" placeholder="">
+                                        </div>
+                                        <div class="form-group col-md-4"><label>UserName<em class="text-danger ml-2"
+                                                                *ngIf="(!(this.UserName.valid || this.UserName.untouched) || mouseover_form) && UserName?.errors?.['required']">Required</em></label><input
+                                                        type="text" formControlName="UserName" required
+                                                        class="form-control" placeholder=""></div>
+                                        <div class="form-group col-md-4"><label>Password<em class="text-danger ml-2"
+                                                                *ngIf="(!(this.Password.valid || this.Password.untouched) || mouseover_form) && Password?.errors?.['required']">Required</em></label><input
+                                                        type="text" formControlName="Password" required
+                                                        class="form-control" placeholder=""></div>
+
+                                        <div class="form-group col-md-4"><label>RegistrationNo</label><input type="text"
+                                                        formControlName="RegistrationNo" class="form-control"
+                                                        placeholder="">
+                                        </div>
+                                        <div class="form-group col-md-4"><label>PanCardNo</label><input type="text"
+                                                        formControlName="PanCardNo" class="form-control" placeholder="">
+                                        </div>
+                                        <div class="form-group col-md-4"><label>PanCardImageUrl</label><input
+                                                        type="text" formControlName="PanCardImageUrl"
+                                                        class="form-control" placeholder="">
+                                        </div>
+                                        <div class="form-group col-md-4"><label>AdharCardNo</label><input type="text"
+                                                        formControlName="AdharCardNo" class="form-control"
+                                                        placeholder="">
+                                        </div>
+                                        <div class="form-group col-md-4"><label>AdharCardImageUrl</label><input
+                                                        type="text" formControlName="AdharCardImageUrl"
+                                                        class="form-control" placeholder=""></div>
+                                        <div class="form-group col-md-4"><label>ProfileImageUrl</label><input
+                                                        type="text" formControlName="ProfileImageUrl"
+                                                        class="form-control" placeholder="">
+                                        </div>
+                                        <div class="form-group col-md-4"><label>RegistrationImageUrl</label><input
+                                                        type="text" formControlName="RegistrationImageUrl"
+                                                        class="form-control" placeholder=""></div>
+                                        <div class="form-group col-md-4"><label>IdentityPolicyNo</label><input
+                                                        type="text" formControlName="IdentityPolicyNo"
+                                                        class="form-control" placeholder="">
+                                        </div>
+                                        <div class="form-group col-md-4"><label>IdentityPolicyImageUrl</label><input
+                                                        type="text" formControlName="IdentityPolicyImageUrl"
+                                                        class="form-control" placeholder=""></div>
+
+                                        <!-- Start -->
+
+                                        <!-- ENd -->
+
+                                        <div class="form-group text-right">
+                                                <span (mouseenter)="mouseover_form=true"
+                                                        (mouseleave)="mouseover_form=false">
+                                                        <button type="submit" class="btn btn-success"
+                                                                [disabled]="AppForms.invalid">Create
+                                                                Laboratory</button>
+                                                </span>
+                                        </div>
+                                </form>
+                        </div>
+
+                </div>
+        </div>
+</div>

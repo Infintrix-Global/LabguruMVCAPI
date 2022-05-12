@@ -1,0 +1,119 @@
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <form autocomplete="off" class=" needs-validation" [formGroup]="AppForms" novalidate
+                    (ngSubmit)="SubmitForm()">
+                    <div class="form-group">
+                        <label>Laboratory
+                            <em class="text-danger ml-2"
+                                *ngIf="(!(this.LabID.valid || this.LabID.untouched) || mouseover_form) && LabID?.errors?.['required']">Required</em>
+                        </label>
+                        <select class="form-control" #myLab formControlName="LabID" (change)="GetEmployee(myLab.value)">
+                            <option value="">Select Laboratory</option>
+                            <option *ngFor="let lab of labList" value="{{lab.id}}">{{lab.labName}}</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Employee
+                            <em class="text-danger ml-2"
+                                *ngIf="(!(this.LabEmployeeID.valid || this.LabEmployeeID.untouched) || mouseover_form) && LabEmployeeID?.errors?.['required']">Required</em>
+                        </label>
+                        <select class="form-control" formControlName="LabEmployeeID">
+                            <option value="">Select Employee</option>
+                            <option *ngFor="let labemp of labempList" value="{{labemp.labEmployeeID}}">
+                                {{labemp.employeeName}}</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Product Type
+                            <em class="text-danger ml-2"
+                                *ngIf="(!(this.ProductTypeID.valid || this.ProductTypeID.untouched) || mouseover_form) && ProductTypeID?.errors?.['required']">Required</em>
+                        </label>
+                        <select class="form-control" formControlName="ProductTypeID">
+                            <option value="">Select Product Type</option>
+                            <option *ngFor="let prod of prodList" value="{{prod.productTypeID}}">
+                                {{prod.productTypeName}}
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Process Master
+                            <em class="text-danger ml-2"
+                                *ngIf="(!(this.ProcessID.valid || this.ProcessID.untouched) || mouseover_form) && ProcessID?.errors?.['required']">Required</em>
+                        </label>
+                        <select class="form-control" formControlName="ProcessID">
+                            <option value="">Select Process Master</option>
+                            <option *ngFor="let pros of processList" value="{{pros.id}}">
+                                {{pros.processName}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <span (mouseenter)="mouseover_form=true" (mouseleave)="mouseover_form=false">
+                            <button type="submit" class="btn btn-success" [disabled]="AppForms.invalid">Add
+                                Product Type</button>
+                        </span>
+                    </div>
+
+
+                </form>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-md-8">
+        <div class="row">
+
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+
+                                        <th>Product</th>
+                                        <th>Laboratory</th>
+                                        <th>Employee</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let pmmar of ProcessMapList">
+                                        <td class="py-1 ps-0">
+                                            <div class="d-flex align-items-center">
+                                                <img [src]="pmmar.productTypes.productTypeImagePath" class="mr-2"
+                                                    alt="profile">
+                                                <div class="ms-3">
+                                                    <p class="mb-0">{{pmmar.productTypes.productTypeName}}</p>
+                                                    <p class="mb-0 text-muted text-small">
+                                                        {{pmmar.processMasters.processName}}</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <p class="mb-0">{{pmmar.laboratories.labName}}</p>
+                                            <p class="mb-0 text-muted text-small">
+                                                {{pmmar.laboratories.labAddress}}</p>
+                                        </td>
+                                        <td>
+                                            <p class="mb-0">{{pmmar.labEmployees.employeeName}}</p>
+                                            <p class="mb-0 text-muted text-small">
+                                                {{pmmar.labEmployees.userName}}</p>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

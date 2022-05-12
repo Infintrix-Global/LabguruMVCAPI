@@ -1,0 +1,58 @@
+<div class="row">
+    <div class="col-md-12 grid-margin">
+        <div class="row">
+            <div class="col-12 col-xl-8 mb-4 mb-xl-0">
+                <h3 class="font-weight-bold">Process Master</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-4" *ngFor="let Process of ProcessList">
+        <div class="card mb-3">
+            <div class="card-body text-center">
+                <div class="media">
+                    <div class="media-body ml-3">
+                        <h2 class="mb-1">{{Process.processName}}</h2>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-4">
+        <div class="card mb-3">
+            <div class="card-body text-center">
+
+                <form autocomplete="off" class="needs-validation text-left" [formGroup]="AppForms" novalidate
+                    (ngSubmit)="SubmitForm()">
+                    <label>Process Master Master Name <em class="text-danger"
+                            *ngIf="(!(this.ProcessMasterName.valid || this.ProcessMasterName.untouched) || mouseover_form) && ProcessMasterName?.errors?.['required']">Required</em></label>
+
+                    <div class="input-group mb-3">
+
+                        <input type="text" class="form-control" placeholder="Process Name" aria-label="process Name"
+                            aria-describedby="basic-addon2" formControlName="ProcessMasterName" required>
+                        <div class="input-group-append" (mouseenter)="mouseover_form=true"
+                            (mouseleave)="mouseover_form=false">
+
+                            <button class="btn btn-outline-secondary" [disabled]="AppForms.invalid"
+                                type="submit">Add</button>
+
+                        </div>
+                    </div>
+
+
+
+
+                </form>
+
+
+
+
+            </div>
+        </div>
+    </div>
+</div>

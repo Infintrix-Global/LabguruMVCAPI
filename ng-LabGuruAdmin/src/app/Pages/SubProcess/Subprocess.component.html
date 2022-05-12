@@ -1,0 +1,65 @@
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="alert alert-danger" *ngIf="response && !response.isSuccess" role="alert">
+                    {{response.message}}
+                </div>
+                <div class="alert alert-success" *ngIf="response && response.isSuccess" role="alert">
+                    {{response.message}}
+                </div>
+
+                <form autocomplete="off" class=" needs-validation" [formGroup]="AppForms" novalidate
+                    (ngSubmit)="SubmitForm()">
+                    <div class="form-group">
+                        <label>Laboratory
+                            <em class="text-danger ml-2"
+                                *ngIf="(!(this.LabID.valid || this.LabID.untouched) || mouseover_form) && LabID?.errors?.['required']">Required</em>
+                        </label>
+                        <select class="form-control" required="" formControlName="LabID">
+                            <option value="">Select Laboratory</option>
+                            <option *ngFor="let lab of labList" value="{{lab.id}}">{{lab.labName}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Process Master
+                            <em class="text-danger ml-2"
+                                *ngIf="(!(this.ProcessID.valid || this.ProcessID.untouched) || mouseover_form) && ProcessID?.errors?.['required']">Required</em>
+                        </label>
+                        <select class="form-control" required="" formControlName="ProcessID">
+                            <option value="">Select Process Master</option>
+                            <option *ngFor="let pros of processList" value="{{pros.id}}">
+                                {{pros.processName}}
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Sub-Process Name
+                            <em class="text-danger ml-2"
+                                *ngIf="(!(this.SubProcessName.valid || this.SubProcessName.untouched) || mouseover_form) && SubProcessName?.errors?.['required']">Required</em>
+                        </label>
+                        <input type="text" class="form-control" formControlName="SubProcessName">
+                    </div>
+
+
+                    <div class="form-group">
+                        <span (mouseenter)="mouseover_form=true" (mouseleave)="mouseover_form=false">
+                            <button type="submit" class="btn btn-success" *ngIf="!isFormSubmiting"
+                                [disabled]="AppForms.invalid">Add
+                                Product Type</button>
+
+                            <button type="button" class="btn btn-inverse-success btn-fw" *ngIf="isFormSubmiting">Please
+                                Wait...</button>
+                        </span>
+                    </div>
+
+
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+
+    </div>
+</div>

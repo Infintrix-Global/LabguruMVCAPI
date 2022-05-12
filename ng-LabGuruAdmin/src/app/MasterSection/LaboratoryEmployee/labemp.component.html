@@ -1,0 +1,63 @@
+<div class="row">
+    <div class="col-md-12 grid-margin">
+        <div class="row">
+            <div class="col-12 col-xl-8 mb-4 mb-xl-0">
+                <h3 class="font-weight-bold">Laboratory Employee</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="alert alert-danger" *ngIf="response && !response.isSuccess" role="alert">
+                    {{response.message}}
+                </div>
+                <div class="alert alert-success" *ngIf="response && response.isSuccess" role="alert">
+                    {{response.message}}
+                </div>
+                <form autocomplete="off" class="needs-validation" [formGroup]="AppForms" novalidate
+                    (ngSubmit)="SubmitForm()">
+                    <div class="form-group">
+                        <label>Laboratory<em class="text-danger mr-2"
+                                *ngIf="(!(this.LabID.valid || this.LabID.untouched) || mouseover_form) && LabID?.errors?.['required']">Required</em>
+                        </label>
+                        <select formControlName="LabID" class="form-control">
+                            <option value="">Select Laboratory</option>
+                            <option *ngFor="let lab of LabList" value="{{lab.id}}">
+                                {{lab.labName}}
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Employee Name <em class="text-danger"
+                                *ngIf="(!(this.employeeName.valid || this.employeeName.untouched)  || mouseover_form) && employeeName?.errors?.['required']">Required</em></label>
+                        <input type="text" formControlName="employeeName" required class="form-control"
+                            placeholder="Employee Name">
+
+                    </div>
+                    <div class="form-group">
+                        <label>Username <em class="text-danger"
+                                *ngIf="(!(this.Username.valid || this.Username.untouched)  || mouseover_form) && Username?.errors?.['required']">Required</em></label>
+                        <input type="text" formControlName="Username" required class="form-control"
+                            placeholder="Employee Name">
+
+                    </div>
+
+                    <div class="form-group text-right">
+                        <span (mouseenter)="mouseover_form=true" (mouseleave)="mouseover_form=false">
+                            <button type="submit" class="btn btn-success" [disabled]="AppForms.invalid">Create
+                                Add Employee</button>
+                        </span>
+                    </div>
+                </form>
+
+
+            </div>
+        </div>
+
+    </div>
+</div>
