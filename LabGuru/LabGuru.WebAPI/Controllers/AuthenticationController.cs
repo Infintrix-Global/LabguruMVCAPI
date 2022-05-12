@@ -18,11 +18,13 @@ namespace LabGuru.WebAPI.Controllers
     {
         private readonly IAuthentication authentication;
         private readonly JwtAuthenticationManager jwtAuthentication;
+        private readonly ResponceMessages responceMessages;
 
-        public AuthenticationController(IAuthentication authentication, JwtAuthenticationManager jwtAuthentication)
+        public AuthenticationController(IAuthentication authentication, JwtAuthenticationManager jwtAuthentication, ResponceMessages responceMessages)
         {
             this.authentication = authentication;
             this.jwtAuthentication = jwtAuthentication;
+            this.responceMessages = responceMessages;
         }
         [HttpPost]
         public IActionResult Login(vm_UserLogin userLogin)
@@ -53,7 +55,12 @@ namespace LabGuru.WebAPI.Controllers
             }
 
         }
-
+        [HttpGet]
+        [Authorize]
+        public IActionResult authguard()
+        {
+            return Ok(responceMessages.Success("Valid Login"));
+        }
 
         [HttpGet]
         public IActionResult GetPassword(string password)

@@ -1,13 +1,15 @@
 ﻿using LabGuru.BAL;
 using LabGuru.BAL.Repo;
 using LabGuru.WebAPI.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LabGuru.WebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
+    [Authorize]
     public class SubProcessController : ControllerBase
     {
         private readonly ISubProcess subProcess;
@@ -44,11 +46,11 @@ namespace LabGuru.WebAPI.Controllers
 
         }
 
-        //[HttpGet]
-        //public IActionResult GetProcessMapper()
-        //{
-        //    var result = orderProcess.GetProductProcessEmployee();
-        //    return Ok(result);
-        //}
+        [HttpGet]
+        public IActionResult GetSubProcess()
+        {
+            var result = subProcess.GetAllSubProcess(1);
+            return Ok(result);
+        }
     }
 }

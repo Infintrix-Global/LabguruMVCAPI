@@ -79,6 +79,10 @@ namespace LabGuru.WebAPI.Controllers
             }
 
             var folderName = Path.Combine("Document", "ProductType");
+            if (!Directory.Exists(folderName))
+            {
+                Directory.CreateDirectory(folderName);
+            }
             foreach (var formFile in files)
             {
                 if (formFile.Length > 0)

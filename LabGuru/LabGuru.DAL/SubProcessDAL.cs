@@ -1,12 +1,15 @@
 ﻿using LabGuru.BAL;
+using LabGuru.BAL.Repo;
 using LabGuru.DAL.DataContext;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace LabGuru.DAL
 {
-    public class SubProcessDAL
+    public class SubProcessDAL : ISubProcess
     {
         private readonly LabGuruDbContext dbContext;
 
@@ -28,7 +31,9 @@ namespace LabGuru.DAL
 
         public List<SubProcessMaster> GetAllSubProcess(int LabID)
         {
-            List<SubProcessMaster> sbm = new List<SubProcessMaster>();
+            //List<SubProcessMaster> sbm = new List<SubProcessMaster>();
+            var sbm  = dbContext.SubProcessMasters.ToList();
+
             return sbm;
 
             //var Result = from sbm in dbContext.SubProcessMasters

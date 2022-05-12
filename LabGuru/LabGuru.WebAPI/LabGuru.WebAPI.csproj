@@ -26,10 +26,7 @@
   <ItemGroup>
     <Folder Include="wwwroot\Document\Impration\" />
     <Folder Include="Resources\ProductType\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="wwwroot\Document\ProductType\dbMySQL-3600.png" />
+    <Folder Include="wwwroot\Document\ProductType\" />
   </ItemGroup>
 
 </Project>

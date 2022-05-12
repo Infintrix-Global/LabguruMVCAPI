@@ -73,6 +73,7 @@ namespace LabGuru.WebAPI
             services.AddSingleton<ResponceMessages, ResponceMessages>();
             services.AddScoped<IDoctorStatusSetting, DoctorStatusSettingDAL>();
             services.AddScoped<ILabAssignment, LabAssignmentDAL>();
+            services.AddScoped<ISubProcess, SubProcessDAL>();
             services.Configure<FormOptions>(o =>
             {
                 o.ValueLengthLimit = int.MaxValue;
