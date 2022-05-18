@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace LabGuru.BAL
@@ -14,5 +15,9 @@ namespace LabGuru.BAL
         [MaxLength(50)]
         public string ProcessName { get; set; }
 
+        public int? ProductID { get; set; }
+
+        [ForeignKey("ProductID")]
+        public ProductType productType { get; set; }
     }
 }

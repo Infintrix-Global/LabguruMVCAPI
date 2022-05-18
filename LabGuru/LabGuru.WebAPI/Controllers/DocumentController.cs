@@ -27,6 +27,10 @@ namespace LabGuru.WebAPI.Controllers
         private string GetAbsolutePath(string RelativePath)
         {
             Uri baseUri = new Uri($"{Request.Scheme}://{Request.Host.Value}");
+            if("www.infintrixindia.com" == Request.Host.Value)
+            {
+                baseUri = new Uri($"{Request.Scheme}://{Request.Host.Value}/LabguruAPI");
+            }
             Uri UploadPath = new Uri(baseUri, RelativePath) ;
             return UploadPath.AbsoluteUri;
         }

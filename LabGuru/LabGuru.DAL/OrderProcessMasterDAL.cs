@@ -22,7 +22,16 @@ namespace LabGuru.DAL
 
         public List<ProcessMaster> GetOrderProcessMasters()
         {
-            return dbContext.ProcessMasters.ToList();
+            var res = from PM in dbContext.ProcessMasters
+                      join PT in dbContext.ProductTypes on PM.ProductID equals PT.ProductTypeID
+                      select new ProcessMaster
+                      {
+                          id = PM.id,
+                          ProcessName = PM.ProcessName,
+                          ProductID = PM.ProductID,
+                          productType = PT
+                      };
+            return res.ToList();
         }
 
         public int CreateOrderProcessMasters(ProcessMaster orderProcessMaster)
