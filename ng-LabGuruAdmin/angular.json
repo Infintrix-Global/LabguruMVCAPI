@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "ng-ThemeManage": {
+    "ng-LabGuruAdmin": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:application": {
@@ -58,7 +58,7 @@
                 {
                   "type": "initial",
                   "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumError": "2mb"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -89,10 +89,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "ng-ThemeManage:build:production"
+              "browserTarget": "ng-LabGuruAdmin:build:production"
             },
             "development": {
-              "browserTarget": "ng-ThemeManage:build:development"
+              "browserTarget": "ng-LabGuruAdmin:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -100,7 +100,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "ng-ThemeManage:build"
+            "browserTarget": "ng-LabGuruAdmin:build"
           }
         },
         "test": {
@@ -123,5 +123,5 @@
       }
     }
   },
-  "defaultProject": "ng-ThemeManage"
+  "defaultProject": "ng-LabGuruAdmin"
 }
