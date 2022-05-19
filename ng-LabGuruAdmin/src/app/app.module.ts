@@ -14,8 +14,8 @@ import { LoginComponent } from './Authentication/Login/login.component';
 import { AuthenticationService } from './Authentication/Shared/authentication.service';
 import { LabboratoryComponent } from './MasterSection/Laboratory/laboraroty.component';
 import { LaboratoryService } from './MasterSection/Laboratory/Shared/laboratory.service';
-import { DoctorComponent } from './MasterSection/Doctor/doctor.component';
-import { DoctorService } from './MasterSection/Doctor/Shared/doctor.service';
+
+
 import { LabEmployeeComponent } from './MasterSection/LaboratoryEmployee/labemp.component';
 import { LabEmployeeService } from './MasterSection/LaboratoryEmployee/Shared/LabEmployee.service';
 import { ProcessMasterComponent } from './MasterSection/ProcessMaster/processmaster.component';
@@ -28,6 +28,9 @@ import { SubProcessService } from './Pages/SubProcess/Shared/Subprocess.service'
 import { SubProcessEmployeeComponent } from './Pages/SubProcessEmployee/SubProcEmp.component';
 import { SubProcessEmpService } from './Pages/SubProcessEmployee/Shared/subprocessemp.service';
 import { AuthGuard } from './Shared/auth.guard';
+import { DoctorComponent } from './Pages/Doctor/CreateDoctor/doctor.component';
+import { DoctorService } from './Pages/Doctor/Shared/doctor.service';
+import { LabMappingComponent } from './Pages/Doctor/DoctorLabMap/LabMap.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +46,8 @@ import { AuthGuard } from './Shared/auth.guard';
     DashboardComponent,
     ProcessMapperComponent,
     SubProcessCompaonent,
-    SubProcessEmployeeComponent
+    SubProcessEmployeeComponent,
+    LabMappingComponent
   ],
   imports: [
     BrowserModule,
@@ -52,7 +56,7 @@ import { AuthGuard } from './Shared/auth.guard';
     RouterModule.forRoot(appRoutes),
     HttpClientModule
   ],
-  providers: [ProductTypeService, SubProcessEmpService, SubProcessService, ProcessMapperService, LabEmployeeService, ProcessMasterService, AuthenticationService, LaboratoryService, DoctorService, AuthGuard],
+  providers: [ProductTypeService, SubProcessEmpService, DoctorService, SubProcessService, ProcessMapperService, LabEmployeeService, ProcessMasterService, AuthenticationService, LaboratoryService, AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

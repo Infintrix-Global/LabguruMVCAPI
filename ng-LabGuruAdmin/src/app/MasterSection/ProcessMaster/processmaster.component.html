@@ -1,58 +1,71 @@
-<div class="row">
-    <div class="col-md-12 grid-margin">
-        <div class="row">
-            <div class="col-12 col-xl-8 mb-4 mb-xl-0">
-                <h3 class="font-weight-bold">Process Master</h3>
-            </div>
-        </div>
+<div class="row  mb-4">
+    <div class="col-12 col-xl-8 mb-4 mb-xl-0">
+        <h3 class="font-weight-bold">Process Master</h3>
     </div>
 </div>
 
+
 <div class="row">
-    <div class="col-4" *ngFor="let Process of ProcessList">
-        <div class="card mb-3">
-            <div class="card-body text-center">
-                <div class="media">
-                    <div class="media-body ml-3">
-                        <h2 class="mb-1">{{Process.processName}}</h2>
-
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
     <div class="col-4">
         <div class="card mb-3">
             <div class="card-body text-center">
 
                 <form autocomplete="off" class="needs-validation text-left" [formGroup]="AppForms" novalidate
                     (ngSubmit)="SubmitForm()">
-                    <label>Process Master Master Name <em class="text-danger"
-                            *ngIf="(!(this.ProcessMasterName.valid || this.ProcessMasterName.untouched) || mouseover_form) && ProcessMasterName?.errors?.['required']">Required</em></label>
-
-                    <div class="input-group mb-3">
+                    <div class="form-group">
+                        <label>Product Type<em class="text-danger"
+                                *ngIf="(!(this.ProductID.valid || this.ProductID.untouched) || mouseover_form) && ProductID?.errors?.['required']">Required</em></label>
+                        <select class="form-control" formControlName="ProductID">
+                            <option value="">Select Product</option>
+                            <option *ngFor="let dl of prodList" value="{{dl.productTypeID}}">{{dl.productTypeName}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Process Master <em class="text-danger"
+                                *ngIf="(!(this.ProcessMasterName.valid || this.ProcessMasterName.untouched) || mouseover_form) && ProcessMasterName?.errors?.['required']">Required</em></label>
 
                         <input type="text" class="form-control" placeholder="Process Name" aria-label="process Name"
                             aria-describedby="basic-addon2" formControlName="ProcessMasterName" required>
-                        <div class="input-group-append" (mouseenter)="mouseover_form=true"
-                            (mouseleave)="mouseover_form=false">
-
-                            <button class="btn btn-outline-secondary" [disabled]="AppForms.invalid"
-                                type="submit">Add</button>
-
-                        </div>
                     </div>
 
+                    <div class="form-group">
+                        <span (mouseenter)="mouseover_form=true" (mouseleave)="mouseover_form=false">
+                            <button type="submit" class="btn btn-success" *ngIf="!isFormSubmiting"
+                                [disabled]="AppForms.invalid">Submit Data</button>
 
-
-
+                            <button type="button" class="btn btn-inverse-success btn-fw" *ngIf="isFormSubmiting">Please
+                                Wait...</button>
+                        </span>
+                    </div>
                 </form>
+            </div>
+        </div>
+    </div>
 
-
+    <div class="col-8">
+        <div class="card mb-3">
+            <div class="card-body text-center">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>SN</th>
+                            <tH>Product Type</tH>
+                            <th>Process Master</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let Process of ProcessList| slice:1; let i = index">
+                            <td>{{i+1}}</td>
+                            <td>{{Process.productType.productTypeName}}</td>
+                            <td>{{Process.processName}}</td>
+                        </tr>
+                    </tbody>
+                </table>
 
 
             </div>
         </div>
     </div>
+
 </div>

@@ -28,6 +28,24 @@
                 </ul>
             </div>
         </li>
+
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#ui-Doctor" aria-expanded="false"
+                aria-controls="ui-Doctor">
+                <i class="icon-layout menu-icon"></i>
+                <span class="menu-title">Doctor</span>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="ui-Doctor">
+                <ul class="nav flex-column sub-menu">
+
+                    <li class="nav-item"> <a class="nav-link" [routerLink]="['/doctor']">Doctor</a>
+                    </li>
+
+                    <li class="nav-item"> <a class="nav-link" [routerLink]="['/LabMap']">Lab Map</a></li>
+                </ul>
+            </div>
+        </li>
         <li class="nav-item">
             <a class="nav-link" [routerLink]="['/ProcessMapper']">
                 <i class="icon-grid menu-icon"></i>
