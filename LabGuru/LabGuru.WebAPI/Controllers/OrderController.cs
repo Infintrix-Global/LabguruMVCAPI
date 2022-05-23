@@ -61,7 +61,7 @@ namespace LabGuru.WebAPI.Controllers
                 ProcessID = orderCreate.ProcessID,
                 LaboratiryID = orderCreate.LaboratiryID
             };
-            if(LoginUser.ReferanceType == BAL.Enums.LoginReference.Doctor)
+            if(LoginUser.RoleID == 1)
             {
                 if (orderManage.CreateOrder(orderDetails) > 0)
                 {
@@ -129,7 +129,7 @@ namespace LabGuru.WebAPI.Controllers
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var LoginUser = authentication.GetLogin(claimsIdentity.Name);
-            if (LoginUser.ReferanceType == BAL.Enums.LoginReference.Doctor)
+            if (LoginUser.RoleID == 1)
             {
                 var result = orderManage.GetOrdersForDoctor(LoginUser.UserID);
                 return Ok(result);
@@ -242,7 +242,7 @@ namespace LabGuru.WebAPI.Controllers
             
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var LoginUser = authentication.GetLogin(claimsIdentity.Name);
-            if(LoginUser.ReferanceType == BAL.Enums.LoginReference.LabAssitant)
+            if(LoginUser.RoleID == 2)
             {
                 assignment.ParentLabID = LoginUser.UserID;
                 var resp = labAssignment.AssignmentToLab(assignment);
@@ -273,7 +273,7 @@ namespace LabGuru.WebAPI.Controllers
 
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var LoginUser = authentication.GetLogin(claimsIdentity.Name);
-            if (LoginUser.ReferanceType == BAL.Enums.LoginReference.LabAssitant)
+            if (LoginUser.RoleID == 2)
             {
                var resp =  orderManage.AcceptOrder(order.orderID);
                 if (resp > 0)

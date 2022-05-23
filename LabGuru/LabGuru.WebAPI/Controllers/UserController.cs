@@ -36,13 +36,13 @@ namespace LabGuru.WebAPI.Controllers
             {
                 var UserIdentity = (ClaimsIdentity)User.Identity;
                 var Loginuser = authentication.GetLogin(UserIdentity.Name);
-                switch (Loginuser.ReferanceType)
+                switch (Loginuser.RoleID)
                 {
-                    case LoginReference.Doctor:
-                        var Doctor = doctor.GetDoctorDetails(Loginuser.ReferanceID);
+                    case 1:
+                        var Doctor = doctor.GetDoctorDetails(Loginuser.RoleID);
                         return Ok(Doctor);
-                    case LoginReference.LabAssitant:
-                        var Lab = laboratory.GetLaboratory(Loginuser.ReferanceID);
+                    case 2:
+                        var Lab = laboratory.GetLaboratory(Loginuser.RoleID);
                         return Ok(Lab);
                     default:
                         responceMessages = new ResponceMessages()

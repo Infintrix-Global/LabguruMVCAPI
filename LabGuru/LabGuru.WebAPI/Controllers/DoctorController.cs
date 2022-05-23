@@ -125,7 +125,7 @@ namespace LabGuru.WebAPI.Controllers
             {
                 var claimsIdentity = (ClaimsIdentity)User.Identity;
                 var LoginUser = authentication.GetLogin(claimsIdentity.Name);
-                if (LoginUser.ReferanceType != BAL.Enums.LoginReference.LabAssitant)
+                if (LoginUser.RoleID != 2)
                     return Ok(responceMessages.Success("Invalid User Access"));
                 int newRecord = 0;
                 int updatedRecord = 0;

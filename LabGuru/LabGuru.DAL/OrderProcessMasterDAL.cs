@@ -34,16 +34,33 @@ namespace LabGuru.DAL
             return res.ToList();
         }
 
+        public List<ProcessMaster> GetOrderProcessByLabId(int labId)
+        {
+            var result = from ppe in dbContext.ProductProcessEmployees
+                         join pm in dbContext.ProcessMasters on ppe.ProcessID equals pm.id
+                         join pt in dbContext.ProductTypes on pm.ProductID equals pt.ProductTypeID
+                         where ppe.LabID == labId
+                         select new ProcessMaster
+                         {
+                             id = pm.id,
+                             ProcessName = pm.ProcessName,
+                             ProductID = pm.ProductID,
+                             productType = pt
+                         };
+            return result.ToList();
+
+        }
+
         public int CreateOrderProcessMasters(ProcessMaster orderProcessMaster)
         {
             dbContext.ProcessMasters.Add(orderProcessMaster);
-            return dbContext.SaveChanges();            
+            return dbContext.SaveChanges();
         }
 
         public int CreateProductProcessEmployeeMapping(ProductProcessEmployee productProcessEmployee)
         {
             dbContext.ProductProcessEmployees.Add(productProcessEmployee);
-            return dbContext.SaveChanges();            
+            return dbContext.SaveChanges();
         }
         public List<ProductProcessEmployee> GetProductProcessEmployee()
         {
@@ -68,5 +85,9 @@ namespace LabGuru.DAL
             return Result.OrderBy(s => s.ProcessMasters.ProcessName).ToList();
         }
 
+        public List<ProcessMaster> GetOrderProcessMasters(int labId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

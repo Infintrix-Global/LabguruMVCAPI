@@ -37,11 +37,43 @@ namespace LabGuru.WebAPI.Controllers
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var LoginUser = authentication.GetLogin(claimsIdentity.Name);
-            if (LoginUser.ReferanceType == BAL.Enums.LoginReference.Doctor)
+            if (LoginUser.RoleID == 1)
             {
                 var result = labMapping.Laboratorys(LoginUser.UserID);
                 List<VM_Labratory> VM_Labratorys = new List<VM_Labratory>();
                 foreach (var res in result)
+                {
+                    VM_Labratorys.Add(new VM_Labratory()
+                    {
+                        id = res.laboratory.id,
+                        LabName = res.laboratory.LabName,
+                        LabAddress = res.laboratory.LabAddress,
+                        isDefault = res.isDefault
+                    });
+                }
+
+
+                return Ok(VM_Labratorys);
+            }
+            else
+            {
+                var result = laboratory.GetLaboratories();
+                return Ok(result);
+            }
+        }
+
+
+        [HttpGet]
+        public IActionResult GetLaboratoryByProductID(int productTypeID)
+        {
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var LoginUser = authentication.GetLogin(claimsIdentity.Name);
+            if (LoginUser.RoleID == 1)
+            {
+                var reslabResult = laboratory.GetLaboratoryByProductID(productTypeID, LoginUser.UserID);
+
+                List<VM_Labratory> VM_Labratorys = new List<VM_Labratory>();
+                foreach (var res in reslabResult)
                 {
                     VM_Labratorys.Add(new VM_Labratory()
                     {

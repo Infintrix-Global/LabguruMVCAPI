@@ -28,12 +28,12 @@ namespace LabGuru.DAL
             {
                 login.ReferanceID = lab.id;
                 login.UserName = lab.LabName;
-                string encryptedPassword = EncryptPassword((lab.LabName).Replace(" ","") + "@2022");
+                string encryptedPassword = EncryptPassword((lab.LabName).Replace(" ", "") + "@2022");
 
                 login.Password = encryptedPassword;
                 login.isActive = true;
                 login.RoleID = 2;
-                login.ReferanceType = BAL.Enums.LoginReference.LabAssitant;
+                //login.ReferanceType = BAL.Enums.LoginReference.LabAssitant;
                 login.IMEI = "Test";
 
                 dbContext.Logins.Add(login);
@@ -56,6 +56,25 @@ namespace LabGuru.DAL
             return dbContext.Laboratories.Where(w => w.id == id).FirstOrDefault();
         }
 
+        public List<DoctorLabMapping> GetLaboratoryByProductID(int productTypeId, int doctorId)
+        {
+            //return dbContext.Laboratories.Where(w => w.id == id).FirstOrDefault();
+
+            var Result = from ppm in dbContext.ProductProcessEmployees
+                         join pt in dbContext.ProductTypes on ppm.ProductTypeID equals pt.ProductTypeID
+                         join lab in dbContext.Laboratories on ppm.LabID equals lab.id
+                         join d in dbContext.DoctorLabMappings on lab.id equals d.LabID
+                         where ppm.ProductTypeID == productTypeId && d.DoctorID == doctorId
+                         select new DoctorLabMapping
+                         {
+                             LabID = lab.id,
+                             laboratory = lab,
+                             isDefault = d.isDefault
+                         };
+
+            return Result.ToList();
+        }
+
         public int CreateLabEmployees(LabEmployee labEmployee)
         {
             dbContext.LabEmployees.Add(labEmployee);
@@ -71,18 +90,18 @@ namespace LabGuru.DAL
                 login.UserName = labEmployee.UserName;
                 string encryptedPassword = EncryptPassword((labEmployee.UserName).Replace(" ", "") + "@2022");
 
-                var referenceType = BAL.Enums.LoginReference.Admin;
-                if (labEmployee.RoleID == 2)
-                    referenceType = BAL.Enums.LoginReference.LabAssitant;
-                if (labEmployee.RoleID == 3)
-                    referenceType = BAL.Enums.LoginReference.Admin;
-                if (labEmployee.RoleID == 4)
-                    referenceType = BAL.Enums.LoginReference.Orthodontist;
+                //var referenceType = BAL.Enums.LoginReference.Admin;
+                //if (labEmployee.RoleID == 2)
+                //    referenceType = BAL.Enums.LoginReference.LabAssitant;
+                //if (labEmployee.RoleID == 3)
+                //    referenceType = BAL.Enums.LoginReference.Admin;
+                //if (labEmployee.RoleID == 4)
+                //    referenceType = BAL.Enums.LoginReference.Orthodontist;
 
                 login.Password = encryptedPassword;
                 login.isActive = true;
                 login.RoleID = labEmployee.RoleID;
-                login.ReferanceType = referenceType;
+                //login.ReferanceType = referenceType;
                 login.IMEI = "Test";
 
                 dbContext.Logins.Add(login);
