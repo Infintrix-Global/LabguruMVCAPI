@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace LabGuru.BAL
@@ -15,7 +16,14 @@ namespace LabGuru.BAL
         [Required]
         public string Password { get; set; }
         [Required, MaxLength(50)]
-        public string RoleID { get; set; }
+
+        // Foreign key
+        [Display(Name = "RoleID")]
+        public virtual int RoleID { get; set; }
+
+        [ForeignKey("RoleID")]
+        public virtual Role Roles { get; set; }
+        
         [Required]
         public bool isActive { get; set; }
         [Required]

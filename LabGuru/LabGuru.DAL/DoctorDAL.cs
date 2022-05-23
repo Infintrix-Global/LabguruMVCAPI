@@ -31,7 +31,7 @@ namespace LabGuru.DAL
 
                 login.Password = encryptedPassword;
                 login.isActive = true;
-                login.RoleID = "Doctor";
+                login.RoleID = 1;
                 login.ReferanceType = BAL.Enums.LoginReference.Doctor;
                 login.IMEI = "Test";
 

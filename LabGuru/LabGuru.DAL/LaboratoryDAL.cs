@@ -32,7 +32,7 @@ namespace LabGuru.DAL
 
                 login.Password = encryptedPassword;
                 login.isActive = true;
-                login.RoleID = "LAB";
+                login.RoleID = 2;
                 login.ReferanceType = BAL.Enums.LoginReference.LabAssitant;
                 login.IMEI = "Test";
 
@@ -63,9 +63,9 @@ namespace LabGuru.DAL
             //dbContext.Dispose();
 
             Login login = new Login();
-            if (result > 0 && (labEmployee.RoleID == (int)BAL.Enums.LoginReference.LabAssitant ||
-                labEmployee.RoleID == (int)BAL.Enums.LoginReference.Admin ||
-                labEmployee.RoleID == (int)BAL.Enums.LoginReference.Orthodontist))
+            if (result > 0 && (labEmployee.RoleID == 2 ||
+                labEmployee.RoleID == 3 ||
+                labEmployee.RoleID == 4))
             {
                 login.ReferanceID = labEmployee.LabEmployeeID;
                 login.UserName = labEmployee.UserName;
@@ -81,7 +81,7 @@ namespace LabGuru.DAL
 
                 login.Password = encryptedPassword;
                 login.isActive = true;
-                login.RoleID = Enum.GetName(typeof(LoginReference), labEmployee.RoleID);
+                login.RoleID = labEmployee.RoleID;
                 login.ReferanceType = referenceType;
                 login.IMEI = "Test";
 

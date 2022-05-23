@@ -30,7 +30,7 @@ namespace LabGuru.WebAPI.Models
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                     new Claim(ClaimTypes.Name, Username),
-                    new Claim(ClaimTypes.Role,login.RoleID)
+                    new Claim(ClaimTypes.Role,login.RoleID.ToString())
                 }),
                 Expires = DateTime.UtcNow.AddDays(2),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(TokenKey),
