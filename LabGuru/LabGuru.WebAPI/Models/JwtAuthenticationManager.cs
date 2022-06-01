@@ -40,7 +40,7 @@ namespace LabGuru.WebAPI.Models
             return new vm_LoginedUser()
             {
                 Token = TokenHandler.WriteToken(Token),
-                Role = login.RoleID,
+                Role = login.RoleID == 1? "Doctor" : login.RoleID == 2 ? "LabAssitant" : "" ,
                 Username = login.UserName
 
             };

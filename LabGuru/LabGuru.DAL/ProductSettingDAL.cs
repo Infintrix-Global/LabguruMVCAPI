@@ -24,7 +24,7 @@ namespace LabGuru.DAL
 
         public ProductSetting GetProductDeliveryDays(int ProductID)
         {
-          return  dbContext.ProductSettings.Where(w => w.ID == ProductID).FirstOrDefault();
+          return  dbContext.ProductSettings.Where(w => w.ProductID == ProductID).FirstOrDefault();
         }
 
         public int UpdateDeliveryDays(ProductSetting productSetting)

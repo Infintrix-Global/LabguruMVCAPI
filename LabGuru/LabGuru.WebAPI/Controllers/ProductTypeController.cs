@@ -42,9 +42,40 @@ namespace LabGuru.WebAPI.Controllers
         {
             productType.CreatorIP = "Test";
             productType.UpdatorIP = "Test";
-            
-            var res  = productTypeManage.CreateProductType(productType);
+
+            var res = productTypeManage.CreateProductType(productType);
             return res > 0 ? Ok(responceMessages.Success("Successfully Added")) : Ok(responceMessages.Failed("Oops something went wrong"));
+        }
+        [HttpPost]
+        [Consumes("multipart/form-data")]
+        public IActionResult CreateProductType_new([FromForm] vm_ProductType_Create productTypeCreate)
+        {
+            try
+            {
+                string ProductTypeImagePath = string.Empty;
+                if (productTypeCreate.formFiles != null && productTypeCreate.formFiles.Count > 0)
+                {
+                    UploadDocument uploadDocument = new UploadDocument(Request);
+                    var ddd = uploadDocument.UploadImages(productTypeCreate.formFiles, Models.Enums.DocumentTypes.ProductTypeImage);
+                    ProductTypeImagePath = ddd[0];
+                }
+
+                ProductType productType = new ProductType()
+                {
+                    CreatorIP = Request.HttpContext.Connection.RemoteIpAddress.ToString(),
+                    isImpressionMindatory = productTypeCreate.isImpressionMindatory,
+                    ProductTypeImagePath = ProductTypeImagePath,
+                    ProductTypeName = productTypeCreate.ProductTypeName,
+                    UpdatorIP = Request.HttpContext.Connection.RemoteIpAddress.ToString(),
+
+                };
+                var res = productTypeManage.CreateProductType(productType);
+                return res > 0 ? Ok(responceMessages.Success("Successfully Added")) : Ok(responceMessages.Failed("Oops something went wrong"));
+            }
+            catch (Exception exp)
+            {
+           return BadRequest(  responceMessages.Failed(exp.Message));
+            }
         }
     }
 }

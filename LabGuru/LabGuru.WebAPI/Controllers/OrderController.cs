@@ -42,7 +42,8 @@ namespace LabGuru.WebAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateOrder(vm_OrderCreate orderCreate)
+        [Consumes("multipart/form-data")]
+        public IActionResult CreateOrder([FromForm] vm_OrderCreate orderCreate)
         {
             Random random = new Random();
             int OrderNo = random.Next(1000, 9999);
@@ -65,6 +66,7 @@ namespace LabGuru.WebAPI.Controllers
             {
                 if (orderManage.CreateOrder(orderDetails) > 0)
                 {
+                    
                     var prodSett = productSetting.GetProductDeliveryDays(orderCreate.ProductTypeID);
                     int DeliveryDate = 0;
                     if (prodSett != null)
@@ -94,6 +96,25 @@ namespace LabGuru.WebAPI.Controllers
                     };
                     if (orderManage.CreateOrderProduct(productOrder) > 0)
                     {
+                        if (orderCreate.formFiles.Count > 0)
+                        {
+                            UploadDocument uploadDocument = new UploadDocument(Request);
+                            var ImpressionImageList = uploadDocument.UploadImages(orderCreate.formFiles, Models.Enums.DocumentTypes.ImpressionImage);
+                            List<OrderImpression> orderImpressions = new List<OrderImpression>();
+                            foreach (var IML in ImpressionImageList)
+                            {
+                                orderImpressions.Add(new OrderImpression()
+                                {
+                                    FilePath = IML,
+                                    OrderID = orderDetails.OrderID,
+                                });
+                            }
+                            if (orderImpressions.Count > 0)
+                            {
+                                orderManage.CreateOrderImpresions(orderImpressions);
+                            }
+                        }
+
                         ResponceMessages responceMessages = new ResponceMessages()
                         {
                             Data = new { orderDetails.OrderNumber, orderDetails.OrderID },
@@ -121,6 +142,10 @@ namespace LabGuru.WebAPI.Controllers
             {
                 return BadRequest("User not allowed to create order.");
             }
+
+        }
+        void UploadImpressions()
+        {
 
         }
 
@@ -161,9 +186,9 @@ namespace LabGuru.WebAPI.Controllers
                     field3 = pd.Field3,
                     field4 = pd.Field4,
                     pricePerUnit = pd.PricePerUnit,
-                    productMatrialName = pd.productMaterial.ProductMatrialName,
+                    productMatrialName = pd.productMaterial?.ProductMatrialName,
                     productOrderID = pd.ProductOrderID,
-                    productShadeName = pd.productShade.ProductShadeName,
+                    productShadeName = pd.productShade?.ProductShadeName,
                     productTypeImagePath = pd.productType.ProductTypeImagePath,
                     productTypeName = pd.productType.ProductTypeName,
                     quantity = pd.Quantity,
@@ -178,7 +203,7 @@ namespace LabGuru.WebAPI.Controllers
                 creatorIP = orderDetails.CreatorIP,
                 orderID = orderDetails.OrderID,
                 orderNumber = orderDetails.OrderNumber,
-                patientAge = (int)orderDetails.PatientAge,
+                patientAge = orderDetails.PatientAge,
                 patientGender = orderDetails.PatientGender,
                 patientName = orderDetails.PatientName,
                 totalPrice = orderDetails.TotalPrice

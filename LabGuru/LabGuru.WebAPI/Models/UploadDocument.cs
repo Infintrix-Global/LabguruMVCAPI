@@ -1,0 +1,77 @@
+﻿using LabGuru.WebAPI.Models.Enums;
+using Microsoft.AspNetCore.Http;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
+
+namespace LabGuru.WebAPI.Models
+{
+    public class UploadDocument
+    {
+        readonly string[] permittedExtensions = { ".png", ".jpg", "jpeg", "gif" };
+        private readonly HttpRequest httpRequest;
+
+        public UploadDocument(HttpRequest httpRequest)
+        {
+            this.httpRequest = httpRequest;
+        }
+
+        private string GetAbsolutePath(string RelativePath)
+        {
+            Uri baseUri = new Uri($"{httpRequest.Scheme}://{httpRequest.Host.Value}");
+            if ("www.infintrixindia.com" == httpRequest.Host.Value)
+            {
+                baseUri = new Uri($"{httpRequest.Scheme}://{httpRequest.Host.Value}/LabguruAPI");
+            }
+            Uri UploadPath = new Uri(baseUri, RelativePath);
+            return UploadPath.AbsoluteUri;
+        }
+        public List<string> UploadImages(List<IFormFile> files, DocumentTypes documents)
+        {
+            string DFolder = string.Empty;
+            if (DocumentTypes.ImpressionImage == documents)
+                DFolder = "Impression";
+            else if (DocumentTypes.ProductTypeImage == documents)
+                DFolder = "ProductType";
+            else
+                DFolder = "TempFolder";
+
+            List<string> UploadedFilesPath = new List<string>();
+            long size = files.Sum(f => f.Length);
+
+            foreach (var formFile in files)
+            {
+                var ext = Path.GetExtension(formFile.FileName).ToLowerInvariant();
+                if (!permittedExtensions.Contains(ext))
+                    throw new Exception("Invalid File Extension : " + ext);
+            }
+
+            var folderName = Path.Combine("Document", DFolder);
+            if (!Directory.Exists(folderName))
+            {
+                Directory.CreateDirectory(folderName);
+            }
+            foreach (var formFile in files)
+            {
+                if (formFile.Length > 0)
+                {
+                    var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", folderName);
+                    var fileName = string.Format("{0:yyMMddHHmmss}", DateTime.Now) +"_"+  ContentDispositionHeaderValue.Parse(formFile.ContentDisposition).FileName.Trim('"');
+                    var dbPath = Path.Combine(folderName, fileName);
+                    var filePath = Path.Combine(pathToSave, fileName);
+                    using (var stream = System.IO.File.Create(filePath))
+                    {
+                        UploadedFilesPath.Add(GetAbsolutePath(dbPath));
+                        formFile.CopyTo(stream);
+                    }
+                }
+
+            }
+
+            return UploadedFilesPath;
+        }
+    }
+}

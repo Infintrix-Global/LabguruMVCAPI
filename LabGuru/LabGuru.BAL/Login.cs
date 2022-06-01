@@ -26,8 +26,8 @@ namespace LabGuru.BAL
         
         [Required]
         public bool isActive { get; set; }
-        [Required]
-        public LoginReference ReferanceType { get; set; }
+        //[Required]
+        //public LoginReference ReferanceType { get; set; }
         [Required]
         public int ReferanceID { get; set; }
         [Required, MaxLength(50)]

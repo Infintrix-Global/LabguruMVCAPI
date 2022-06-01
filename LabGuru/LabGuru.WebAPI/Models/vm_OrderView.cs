@@ -15,7 +15,7 @@ namespace LabGuru.WebAPI.Models
         public string orderNumber { get; set; }
         public string patientName { get; set; }
         public string patientGender { get; set; }
-        public int patientAge { get; set; }
+        public int? patientAge { get; set; }
         public decimal totalPrice { get; set; }
         public DateTime createdDate { get; set; }
         public string creatorIP { get; set; }

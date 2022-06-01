@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -26,5 +27,6 @@ namespace LabGuru.WebAPI.Models
         public int? ClinicID { get; set; }
         public int ProcessID { get; set; }
         public int? LaboratiryID { get; set; }
+        public List<IFormFile> formFiles { get; set; }
     }
 }

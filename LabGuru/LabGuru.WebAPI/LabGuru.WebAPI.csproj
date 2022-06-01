@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\Document\Impration\" />
+    <Folder Include="wwwroot\Document\Impression\" />
     <Folder Include="Resources\ProductType\" />
     <Folder Include="wwwroot\Document\ProductType\" />
   </ItemGroup>

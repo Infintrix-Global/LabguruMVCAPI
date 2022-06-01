@@ -24,25 +24,9 @@ export class ProductTypeService {
         };
         return this.http.get<IProductType[]>(url, options);
     }
-    CreateProduct(productType: IProductType): Observable<IResponce> {
-        var url = `${environment.API}/ProductType/CreateProductType`;
+    CreateProduct(formData: FormData): Observable<IResponce> {
+        var url = `${environment.API}/ProductType/CreateProductType_new`;
         let UserToken = this.Token;
-        let options = {
-            headers: new HttpHeaders({
-                'Content-Type': 'application/json',
-                'Authorization': UserToken
-            })
-        };
-
-        return this.http.post<IResponce>(url, productType, options);
-    }
-
-
-    UploadImage(formData: FormData): Observable<any> {
-        let UserToken = this.Token;
-        formData.forEach(data1 => {
-            console.log('Foreach', data1)
-        })
         let options = {
             reportProgress: false,
             headers: new HttpHeaders({
@@ -50,8 +34,22 @@ export class ProductTypeService {
             })
         };
 
-        var url = `${environment.API}/Document/ProductType`;
-        console.log(url, formData, options);
-        return this.http.post(url, formData, options);
+        return this.http.post<IResponce>(url, formData, options);
     }
+
+
+    // UploadImage(formData: FormData): Observable<any> {
+    //     let UserToken = this.Token;
+
+    //     let options = {
+    //         reportProgress: false,
+    //         headers: new HttpHeaders({
+    //             'Authorization': UserToken
+    //         })
+    //     };
+
+    //     var url = `${environment.API}/Document/ProductType`;
+    //     // console.log(url, formData, options);
+    //     return this.http.post(url, formData, options);
+    // }
 }

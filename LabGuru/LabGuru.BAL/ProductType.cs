@@ -21,6 +21,7 @@ namespace LabGuru.BAL
         public string UpdatorIP { get; set; }
 
         public bool isImpressionMindatory { get; set; } = false;
+      
 
     }
 }

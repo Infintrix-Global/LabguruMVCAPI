@@ -39,8 +39,10 @@ namespace LabGuru.DAL
         {
             var Result = from OP in dbContext.ProductOrders
                          join PT in dbContext.ProductTypes on OP.ProductTypeID equals PT.ProductTypeID
-                         join PS in dbContext.ProductShades on OP.ProductShadeID equals PS.ProductShadeID
-                         join PM in dbContext.ProductMaterials on OP.ProductMaterialID equals PM.ProductMaterialID
+                         join PS in dbContext.ProductShades on OP.ProductShadeID equals PS.ProductShadeID into PSlist
+                            from PS in PSlist.DefaultIfEmpty()
+                         join PM in dbContext.ProductMaterials on OP.ProductMaterialID equals PM.ProductMaterialID into PMlist 
+                            from PM in PMlist.DefaultIfEmpty()
                          where OP.OrderID == OrderID
                          select new ProductOrder
                          {
@@ -59,8 +61,8 @@ namespace LabGuru.DAL
                              productMaterial = PM,
                              productShade = PS
                          };
-
-            return Result.ToList();
+            var res = Result.ToList();
+            return res;
         }
 
         public List<OrderDetails> GetOrderDetails(int UserID)
@@ -164,6 +166,12 @@ namespace LabGuru.DAL
                 return dbContext.SaveChanges();
             }
             return 0;
+        }
+
+        public int CreateOrderImpresions(List<OrderImpression> orderImpressions)
+        {
+            dbContext.OrderImpressions.AddRange(orderImpressions);
+            return dbContext.SaveChanges();
         }
     }
 }

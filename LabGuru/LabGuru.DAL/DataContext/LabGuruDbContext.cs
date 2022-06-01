@@ -10,8 +10,8 @@ namespace LabGuru.DAL.DataContext
     {
         public LabGuruDbContext()
         {
-            //Add - Migration Menu_initiated - context LabGuruDbContext - o "DataContext\dbMigrations"
-            //update - database - context LabGuruDbContext
+            //Add-Migration Menu_initiated -context LabGuruDbContext -o "DataContext\dbMigrations"
+            //update-database -context LabGuruDbContext
         }
         public LabGuruDbContext(DbContextOptions<LabGuruDbContext> options) : base(options)
         {
@@ -49,8 +49,8 @@ namespace LabGuru.DAL.DataContext
         public DbSet<SubProcessMaster> SubProcessMasters { get; set; }
 
         public DbSet<SubProcessEmployee> SubProcessEmployees { get; set; }
+        public DbSet<OrderImpression> OrderImpressions { get; set; }
 
-        
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)

@@ -16,6 +16,7 @@ export class ProductTypeComponent implements OnInit {
     ProductTypeName!: FormControl;
     mouseover_form: boolean = false;
     isImpressionmindatory: boolean = false;
+    formSubmitData = new FormData();
     constructor(private PTS: ProductTypeService) { }
 
     ngOnInit() {
@@ -47,33 +48,30 @@ export class ProductTypeComponent implements OnInit {
     fileToUpload!: File;
     imageChanged(data: any) {
         if (data.target.files.length > 0) {
+            this.formSubmitData = new FormData();;
             var files = data.target.files;
             this.fileToUpload = files.item(0);
-            const formData = new FormData();
-            formData.append('files', this.fileToUpload, this.fileToUpload.name);
-
-            console.log(formData, this.fileToUpload.name, this.fileToUpload)
-            this.PTS.UploadImage(formData).subscribe((d) => {
-                if (d) {
-                    console.log(d.data[0])
-                    this.SavedImagePath = d.data[0];
-                }
-            })
+            this.formSubmitData.append('formFiles', this.fileToUpload, this.fileToUpload.name);
         }
     }
     CreateProduct() {
         if (this.ProductTypeForm.valid) {
-            const productType: IProductType = {
-                CreatorIP: 'test',
-                UpdatorIP: 'test',
-                isImpressionMindatory: this.isImpressionmindatory,
-                productTypeImagePath: this.SavedImagePath,
-                productTypeName: this.ProductTypeName.value
-            }
-            this.PTS.CreateProduct(productType).subscribe(data => {
+
+            // const productType: any = {
+            //     CreatorIP: 'test',
+            //     UpdatorIP: 'test',
+            //     isImpressionMindatory: this.isImpressionmindatory,
+            //     productTypeImagePath: this.SavedImagePath,
+            //     productTypeName: this.ProductTypeName.value,
+            //     formData: formData
+            // }
+            this.formSubmitData.append("ProductTypeName", this.ProductTypeName.value);
+            this.formSubmitData.append("isImpressionMindatory", this.isImpressionmindatory.toString());
+            this.PTS.CreateProduct(this.formSubmitData).subscribe(data => {
                 console.log(data);
                 if (data.isSuccess) {
                     this.getProductType();
+                    this.ProductTypeForm.reset();
                 }
             });
         }
