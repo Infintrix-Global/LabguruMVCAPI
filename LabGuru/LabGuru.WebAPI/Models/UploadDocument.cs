@@ -11,7 +11,7 @@ namespace LabGuru.WebAPI.Models
 {
     public class UploadDocument
     {
-        readonly string[] permittedExtensions = { ".png", ".jpg", "jpeg", "gif" };
+        readonly string[] permittedExtensions = { ".png", ".webp", ".svg", ".jpg", "jpeg", "gif" };
         private readonly HttpRequest httpRequest;
 
         public UploadDocument(HttpRequest httpRequest)
@@ -22,11 +22,11 @@ namespace LabGuru.WebAPI.Models
         private string GetAbsolutePath(string RelativePath)
         {
             Uri baseUri = new Uri($"{httpRequest.Scheme}://{httpRequest.Host.Value}");
-            if ("www.infintrixindia.com" == httpRequest.Host.Value)
-            {
-                baseUri = new Uri($"{httpRequest.Scheme}://{httpRequest.Host.Value}/LabguruAPI");
-            }
-            Uri UploadPath = new Uri(baseUri, RelativePath);
+            //if (httpRequest.Host.Value.ToLower().Equals("www.infintrixindia.com"))
+            //{
+            //    RelativePath = $"LabguruAPI/{RelativePath}";
+            //}
+            Uri UploadPath = new Uri(baseUri,   RelativePath);
             return UploadPath.AbsoluteUri;
         }
         public List<string> UploadImages(List<IFormFile> files, DocumentTypes documents)
@@ -59,8 +59,8 @@ namespace LabGuru.WebAPI.Models
                 if (formFile.Length > 0)
                 {
                     var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", folderName);
-                    var fileName = string.Format("{0:yyMMddHHmmss}", DateTime.Now) +"_"+  ContentDispositionHeaderValue.Parse(formFile.ContentDisposition).FileName.Trim('"');
-                    var dbPath = Path.Combine(folderName, fileName);
+                    var fileName = string.Format("{0:yyMMddHHmmss}", DateTime.Now) + "_" + ContentDispositionHeaderValue.Parse(formFile.ContentDisposition).FileName.Trim('"');
+                    var dbPath = httpRequest.Host.Value.ToLower().Equals("www.infintrixindia.com") ? Path.Combine("LabguruAPI", folderName, fileName) : Path.Combine(folderName, fileName);
                     var filePath = Path.Combine(pathToSave, fileName);
                     using (var stream = System.IO.File.Create(filePath))
                     {

@@ -57,14 +57,6 @@ export class ProductTypeComponent implements OnInit {
     CreateProduct() {
         if (this.ProductTypeForm.valid) {
 
-            // const productType: any = {
-            //     CreatorIP: 'test',
-            //     UpdatorIP: 'test',
-            //     isImpressionMindatory: this.isImpressionmindatory,
-            //     productTypeImagePath: this.SavedImagePath,
-            //     productTypeName: this.ProductTypeName.value,
-            //     formData: formData
-            // }
             this.formSubmitData.append("ProductTypeName", this.ProductTypeName.value);
             this.formSubmitData.append("isImpressionMindatory", this.isImpressionmindatory.toString());
             this.PTS.CreateProduct(this.formSubmitData).subscribe(data => {

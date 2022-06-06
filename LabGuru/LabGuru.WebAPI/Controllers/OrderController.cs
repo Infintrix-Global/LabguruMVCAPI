@@ -45,108 +45,113 @@ namespace LabGuru.WebAPI.Controllers
         [Consumes("multipart/form-data")]
         public IActionResult CreateOrder([FromForm] vm_OrderCreate orderCreate)
         {
-            Random random = new Random();
-            int OrderNo = random.Next(1000, 9999);
-            var claimsIdentity = (ClaimsIdentity)User.Identity;
-            var LoginUser = authentication.GetLogin(claimsIdentity.Name);
-            OrderDetails orderDetails = new OrderDetails()
+            try
             {
-                CreatorIP = orderCreate.CreatorIP,
-                OrderNumber = "ORD-" + OrderNo,
-                PatientAge = orderCreate.PatientAge,
-                PatientGender = orderCreate.PatientGender,
-                PatientName = orderCreate.PatientName,
-                TotalPrice = 0,
-                UserID = LoginUser.UserID,
-                ClinicID = orderCreate.ClinicID,
-                ProcessID = orderCreate.ProcessID,
-                LaboratiryID = orderCreate.LaboratiryID
-            };
-            if(LoginUser.RoleID == 1)
-            {
-                if (orderManage.CreateOrder(orderDetails) > 0)
+                Random random = new Random();
+                int OrderNo = random.Next(1000, 9999);
+                var claimsIdentity = (ClaimsIdentity)User.Identity;
+                var LoginUser = authentication.GetLogin(claimsIdentity.Name);
+                OrderDetails orderDetails = new OrderDetails()
                 {
-                    
-                    var prodSett = productSetting.GetProductDeliveryDays(orderCreate.ProductTypeID);
-                    int DeliveryDate = 0;
-                    if (prodSett != null)
-                    {
-                        DeliveryDate = prodSett.DeliveryDays;
-                    }
-                    ProductOrder productOrder = new ProductOrder()
-                    {
-                        CGST = 0,
-                        CreatorIP = orderCreate.CreatorIP,
-                        Field1 = orderCreate.Field1,
-                        Field2 = orderCreate.Field2,
-                        Field3 = orderCreate.Field3,
-                        Field4 = orderCreate.Field4,
-                        PricePerUnit = 0,
-                        ProductMaterialID = orderCreate.ProductMaterialID,
-                        OrderID = orderDetails.OrderID,
-                        ProductShadeID = orderCreate.ProductShadID,
-                        ProductTypeID = orderCreate.ProductTypeID,
-                        Quantity = 1,
-                        SGST = 0,
-                        ToothSelection = orderCreate.ToothNo,
-                        TotalPrice = 0,
-                        UserID = LoginUser.UserID,
-                        DeliveryDate = DateTime.Now.AddDays(DeliveryDate)
+                    CreatorIP = orderCreate.CreatorIP,
+                    OrderNumber = "ORD-" + OrderNo,
+                    PatientAge = orderCreate.PatientAge,
+                    PatientGender = orderCreate.PatientGender,
+                    PatientName = orderCreate.PatientName,
+                    TotalPrice = 0,
+                    UserID = LoginUser.UserID,
+                    ClinicID = orderCreate.ClinicID,
+                    ProcessID = orderCreate.ProcessID,
+                    LaboratiryID = orderCreate.LaboratiryID
+                };
+                UploadDocument uploadDocument = new UploadDocument(Request);
+                var ImpressionImageList = uploadDocument.UploadImages(orderCreate.formFiles, Models.Enums.DocumentTypes.ImpressionImage);
 
-                    };
-                    if (orderManage.CreateOrderProduct(productOrder) > 0)
+                if (LoginUser.RoleID == 1)
+                {
+                    if (orderManage.CreateOrder(orderDetails) > 0)
                     {
-                        if (orderCreate.formFiles.Count > 0)
+
+                        var prodSett = productSetting.GetProductDeliveryDays(orderCreate.ProductTypeID);
+                        int DeliveryDate = 0;
+                        if (prodSett != null)
                         {
-                            UploadDocument uploadDocument = new UploadDocument(Request);
-                            var ImpressionImageList = uploadDocument.UploadImages(orderCreate.formFiles, Models.Enums.DocumentTypes.ImpressionImage);
-                            List<OrderImpression> orderImpressions = new List<OrderImpression>();
-                            foreach (var IML in ImpressionImageList)
-                            {
-                                orderImpressions.Add(new OrderImpression()
-                                {
-                                    FilePath = IML,
-                                    OrderID = orderDetails.OrderID,
-                                });
-                            }
-                            if (orderImpressions.Count > 0)
-                            {
-                                orderManage.CreateOrderImpresions(orderImpressions);
-                            }
+                            DeliveryDate = prodSett.DeliveryDays;
                         }
-
-                        ResponceMessages responceMessages = new ResponceMessages()
+                        ProductOrder productOrder = new ProductOrder()
                         {
-                            Data = new { orderDetails.OrderNumber, orderDetails.OrderID },
-                            isSuccess = true,
-                            Message = "Order Placed Successfully"
+                            CGST = 0,
+                            CreatorIP = orderCreate.CreatorIP,
+                            Field1 = orderCreate.Field1,
+                            Field2 = orderCreate.Field2,
+                            Field3 = orderCreate.Field3,
+                            Field4 = orderCreate.Field4,
+                            PricePerUnit = 0,
+                            ProductMaterialID = orderCreate.ProductMaterialID,
+                            OrderID = orderDetails.OrderID,
+                            ProductShadeID = orderCreate.ProductShadID,
+                            ProductTypeID = orderCreate.ProductTypeID,
+                            Quantity = 1,
+                            SGST = 0,
+                            ToothSelection = orderCreate.ToothNo,
+                            TotalPrice = 0,
+                            UserID = LoginUser.UserID,
+                            DeliveryDate = DateTime.Now.AddDays(DeliveryDate)
+
                         };
-                        if (orderCreate.LaboratiryID != null)
+                        if (orderManage.CreateOrderProduct(productOrder) > 0)
                         {
-                            int LaboratiryID = (int)orderCreate.LaboratiryID;
-                            labMapping.SetDefaultLab(LoginUser.UserID, LaboratiryID);
-                        }
-                        if(orderCreate.ClinicID != null)
-                        {
-                            int ClinicID = (int)orderCreate.ClinicID;
-                            doctorClinic.SetDefaultClinic(LoginUser.UserID, ClinicID);
-                        }
+                            if (orderCreate.formFiles != null && orderCreate.formFiles.Count > 0)
+                            {
+                                
+                                List<OrderImpression> orderImpressions = new List<OrderImpression>();
+                                foreach (var IML in ImpressionImageList)
+                                {
+                                    orderImpressions.Add(new OrderImpression()
+                                    {
+                                        FilePath = IML,
+                                        OrderID = orderDetails.OrderID,
+                                    });
+                                }
+                                if (orderImpressions.Count > 0)
+                                {
+                                    orderManage.CreateOrderImpresions(orderImpressions);
+                                }
+                            }
 
-                        return Ok(responceMessages);
+                            ResponceMessages responceMessages = new ResponceMessages()
+                            {
+                                Data = new { orderDetails.OrderNumber, orderDetails.OrderID },
+                                isSuccess = true,
+                                Message = "Order Placed Successfully"
+                            };
+                            if (orderCreate.LaboratiryID != null)
+                            {
+                                int LaboratiryID = (int)orderCreate.LaboratiryID;
+                                labMapping.SetDefaultLab(LoginUser.UserID, LaboratiryID);
+                            }
+                            if (orderCreate.ClinicID != null)
+                            {
+                                int ClinicID = (int)orderCreate.ClinicID;
+                                doctorClinic.SetDefaultClinic(LoginUser.UserID, ClinicID);
+                            }
+
+                            return Ok(responceMessages);
+                        }
                     }
+                    return BadRequest("Something want wrong");
                 }
-                return BadRequest("Something want wrong");
-            }
 
-            else
+                else
+                {
+                    return BadRequest("User not allowed to create order.");
+                }
+
+            }
+            catch (Exception exp)
             {
-                return BadRequest("User not allowed to create order.");
+                return BadRequest(responceMessages.Failed(exp.Message));
             }
-
-        }
-        void UploadImpressions()
-        {
-
         }
 
         [HttpGet]

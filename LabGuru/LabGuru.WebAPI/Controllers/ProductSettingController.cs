@@ -27,7 +27,7 @@ namespace LabGuru.WebAPI.Controllers
             var result = productSetting.GetProductDeliveryDays(productID);
             if (result == null)
             {
-                return NotFound(responceMessages.Failed("Invalid Product ID"));
+                return NotFound(responceMessages.Failed("Product Delivery Days is not Added."));
             }
 
             return Ok(result);
