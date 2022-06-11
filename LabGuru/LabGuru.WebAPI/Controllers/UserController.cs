@@ -39,10 +39,10 @@ namespace LabGuru.WebAPI.Controllers
                 switch (Loginuser.RoleID)
                 {
                     case 1:
-                        var Doctor = doctor.GetDoctorDetails(Loginuser.RoleID);
+                        var Doctor = doctor.GetDoctorDetails(Loginuser.ReferanceID);
                         return Ok(Doctor);
                     case 2:
-                        var Lab = laboratory.GetLaboratory(Loginuser.RoleID);
+                        var Lab = laboratory.GetLaboratory(Loginuser.ReferanceID);
                         return Ok(Lab);
                     default:
                         responceMessages = new ResponceMessages()

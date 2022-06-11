@@ -117,7 +117,7 @@ namespace LabGuru.DAL
                              TotalPrice = ord.TotalPrice,
                              DeliveryDate = ordProd.DeliveryDate,
                              isAccepted = ord.isAccepted,
-                             
+                             CurrentOrderStatusID = ord.CurrentOrderStatusID,
                              StatusList = (from DSS in dbContext.DoctorStatusSettings
                                            join Status in dbContext.OrderStatusMasters on DSS.StatusMasterID equals Status.id
                                            where Status.LaboratoryID == LabID &&
@@ -129,7 +129,18 @@ namespace LabGuru.DAL
                                                LaboratoryID = DSS.LaboratoryID,
                                                ShowToDoctor = DSS.ShowToDoctor,
                                                StatusMaster = Status
-                                           }).OrderBy(o => o.StatusMaster.DispalyOrder).ToList()
+                                           }).OrderBy(o => o.StatusMaster.DispalyOrder).ToList(),
+                             //StatusMasters = (from OMS in dbContext.OrderStatusMasters 
+                             //                 where OMS.LaboratoryID == ord.LaboratiryID
+                             //                 select new OrderStatusMaster
+                             //                 {
+                             //                     id = OMS.id,
+                             //                     StatusText = OMS.StatusText,
+                             //                     CreateDate = OMS.CreateDate,
+                             //                     DispalyOrder = OMS.DispalyOrder,
+                             //                     LaboratoryID = OMS.LaboratoryID
+                                                  
+                             //                 }).OrderBy(o => o.DispalyOrder).ToList()
                          };
             return result.ToList();
         }

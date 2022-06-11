@@ -18,11 +18,13 @@ namespace LabGuru.BAL.Component
 		public string ProductName { get; set; }
 		public int ProductTypeID { get; set; }
         public string ProductImage { get; set; }
-        public string CurrentOrderStatus { get; set; }
-        public DateTime DeliveryDate { get; set; }
+		public string CurrentOrderStatus { get; set; }
+		public int CurrentOrderStatusID { get; set; }
+		public DateTime DeliveryDate { get; set; }
         public bool? isAccepted { get; set; }
 
         public List<DoctorStatusSetting> StatusList { get; set; }
+		public List<OrderStatusMaster> StatusMasters { get; set; }
 
     }
 }

@@ -161,12 +161,12 @@ namespace LabGuru.WebAPI.Controllers
             var LoginUser = authentication.GetLogin(claimsIdentity.Name);
             if (LoginUser.RoleID == 1)
             {
-                var result = orderManage.GetOrdersForDoctor(LoginUser.UserID);
+                var result = orderManage.GetOrdersForDoctor(LoginUser.ReferanceID);
                 return Ok(result);
             }
             else
             {
-                var result = orderManage.GetOrdersForLab(LoginUser.UserID);
+                var result = orderManage.GetOrdersForLab(LoginUser.ReferanceID);
                 return Ok(result);
             }
         }
