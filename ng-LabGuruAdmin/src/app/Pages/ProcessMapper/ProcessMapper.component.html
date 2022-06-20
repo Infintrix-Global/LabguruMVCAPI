@@ -32,7 +32,8 @@
                             <em class="text-danger ml-2"
                                 *ngIf="(!(this.ProductTypeID.valid || this.ProductTypeID.untouched) || mouseover_form) && ProductTypeID?.errors?.['required']">Required</em>
                         </label>
-                        <select class="form-control" formControlName="ProductTypeID">
+                        <select class="form-control" #myProductID formControlName="ProductTypeID"
+                            (change)="GetProcessMaster(myProductID.value)">
                             <option value="">Select Product Type</option>
                             <option *ngFor="let prod of prodList" value="{{prod.productTypeID}}">
                                 {{prod.productTypeName}}
@@ -55,7 +56,7 @@
                     <div class="form-group">
                         <span (mouseenter)="mouseover_form=true" (mouseleave)="mouseover_form=false">
                             <button type="submit" class="btn btn-success" [disabled]="AppForms.invalid">Add
-                                Product Type</button>
+                                Process Setting</button>
                         </span>
                     </div>
 

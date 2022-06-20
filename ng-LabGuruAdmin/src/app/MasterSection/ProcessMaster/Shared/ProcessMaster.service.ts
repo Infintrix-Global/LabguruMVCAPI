@@ -25,6 +25,17 @@ export class ProcessMasterService {
         return this.http.get<IProcessMaster[]>(`${environment.API}/ProcessMaster/GetOrderProcess`, options)
             .pipe(catchError(this.handleError()))
     }
+    GetProcessMasterByProductID(ProductID: number): Observable<IProcessMaster[]> {
+        let options = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'Authorization': this.Token
+            })
+        };
+        console.log(this.Token)
+        return this.http.get<IProcessMaster[]>(`${environment.API}/ProcessMaster/GetOrderProcessByProduct?ProductID=${ProductID}`, options)
+            .pipe(catchError(this.handleError()))
+    }
     CreateProcessMaster(processMaster: any): Observable<IResponce> {
         let options = {
             headers: new HttpHeaders({

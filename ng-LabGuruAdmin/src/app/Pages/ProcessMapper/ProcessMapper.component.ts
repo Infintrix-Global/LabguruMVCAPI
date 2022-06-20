@@ -33,7 +33,7 @@ export class ProcessMapperComponent implements OnInit {
         this.AppFormInit();
         this.GetLabList();
         this.GetProductType();
-        this.GetProcessMaster();
+        //this.GetProcessMaster();
     }
     AppFormInit() {
         this.LabID = new FormControl('', Validators.required)
@@ -81,8 +81,8 @@ export class ProcessMapperComponent implements OnInit {
             this.ProcessMapList = data;
         })
     }
-    GetProcessMaster() {
-        this.processMaster.GetProcessMaster().subscribe(data => {
+    GetProcessMaster(productID: any) {
+        this.processMaster.GetProcessMasterByProductID(productID).subscribe(data => {
             this.processList = data;
         })
     }

@@ -20,7 +20,7 @@ export class LabEmployeeService {
                 'Authorization': this.Token
             })
         };
-        return this.http.post<IResponce>(`${environment.API}/Doctor/CreateDoctor`, labEmployee, options)
+        return this.http.post<IResponce>(`${environment.API}/Laboratory/CreateLabEmployee`, labEmployee, options)
             .pipe(catchError(this.handleError()))
 
     }

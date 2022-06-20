@@ -36,6 +36,13 @@ namespace LabGuru.WebAPI.Controllers
         }
 
         [HttpGet]
+        public IActionResult GetOrderProcessByProduct(int ProductID)
+        {
+            var result = orderProcess.GetOrderProcessMasters(ProductID);
+            return Ok(result);
+        }
+
+        [HttpGet]
         public IActionResult GetOrderProcessByLabId(int labId)
         {
             var result = orderProcess.GetOrderProcessByLabId(labId);

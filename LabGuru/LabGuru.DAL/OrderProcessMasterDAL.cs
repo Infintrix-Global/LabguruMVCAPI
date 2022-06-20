@@ -85,9 +85,19 @@ namespace LabGuru.DAL
             return Result.OrderBy(s => s.ProcessMasters.ProcessName).ToList();
         }
 
-        public List<ProcessMaster> GetOrderProcessMasters(int labId)
+        public List<ProcessMaster> GetOrderProcessMasters(int ProductID)
         {
-            throw new NotImplementedException();
+            var res = from PM in dbContext.ProcessMasters
+                      join PT in dbContext.ProductTypes on PM.ProductID equals PT.ProductTypeID
+                      where PT.ProductTypeID == ProductID
+                      select new ProcessMaster
+                      {
+                          id = PM.id,
+                          ProcessName = PM.ProcessName,
+                          ProductID = PM.ProductID,
+                          productType = PT
+                      };
+            return res.ToList();
         }
     }
 }

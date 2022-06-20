@@ -40,7 +40,7 @@ namespace LabGuru.WebAPI.Models
                 DFolder = "TempFolder";
 
             List<string> UploadedFilesPath = new List<string>();
-            long size = files.Sum(f => f.Length);
+            //long size = files.Sum(f => f.Length);
 
             foreach (var formFile in files)
             {
@@ -60,7 +60,8 @@ namespace LabGuru.WebAPI.Models
                 {
                     var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", folderName);
                     var fileName = string.Format("{0:yyMMddHHmmss}", DateTime.Now) + "_" + ContentDispositionHeaderValue.Parse(formFile.ContentDisposition).FileName.Trim('"');
-                    var dbPath = httpRequest.Host.Value.ToLower().Equals("www.infintrixindia.com") ? Path.Combine("LabguruAPI", folderName, fileName) : Path.Combine(folderName, fileName);
+                    //var dbPath = httpRequest.Host.Value.ToLower().Equals("www.infintrixindia.com") ? Path.Combine("LabguruAPI", folderName, fileName) : Path.Combine(folderName, fileName);
+                    var dbPath = Path.Combine("LabguruAPI", folderName, fileName);
                     var filePath = Path.Combine(pathToSave, fileName);
                     using (var stream = System.IO.File.Create(filePath))
                     {

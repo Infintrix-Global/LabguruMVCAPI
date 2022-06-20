@@ -64,8 +64,13 @@ namespace LabGuru.WebAPI.Controllers
                     ProcessID = orderCreate.ProcessID,
                     LaboratiryID = orderCreate.LaboratiryID
                 };
-                UploadDocument uploadDocument = new UploadDocument(Request);
-                var ImpressionImageList = uploadDocument.UploadImages(orderCreate.formFiles, Models.Enums.DocumentTypes.ImpressionImage);
+                List<string> ImpressionImageList = new List<string>();
+                if (orderCreate.formFiles != null)
+                {
+                    UploadDocument uploadDocument = new UploadDocument(Request);
+                    ImpressionImageList = uploadDocument.UploadImages(orderCreate.formFiles, Models.Enums.DocumentTypes.ImpressionImage);
+                }
+                
 
                 if (LoginUser.RoleID == 1)
                 {
@@ -150,7 +155,7 @@ namespace LabGuru.WebAPI.Controllers
             }
             catch (Exception exp)
             {
-                return BadRequest(responceMessages.Failed(exp.Message));
+                return BadRequest(responceMessages.Failed(exp.Message, exp));
             }
         }
 
@@ -275,6 +280,10 @@ namespace LabGuru.WebAPI.Controllers
             if(LoginUser.RoleID == 2)
             {
                 assignment.ParentLabID = LoginUser.UserID;
+                if(assignment.ChildLabID == 0)
+                {
+                    assignment.ChildLabID = assignment.ParentLabID;
+                }
                 var resp = labAssignment.AssignmentToLab(assignment);
                 if (resp > 0)
                 {

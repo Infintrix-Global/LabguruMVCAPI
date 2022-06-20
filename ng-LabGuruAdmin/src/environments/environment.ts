@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  API: 'http://finplan.infintrixindia.com/LabguruAPI/api'
+  API: 'https://www.infintrixindia.com/LabguruAPI/api'
 };
 
 /*
