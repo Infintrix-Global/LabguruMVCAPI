@@ -52,25 +52,32 @@ namespace LabGuru.WebAPI.Controllers
         {
             try
             {
-                string ProductTypeImagePath = string.Empty;
-                if (productTypeCreate.formFiles != null && productTypeCreate.formFiles.Count > 0)
+                if(productTypeManage.GetProductType(productTypeCreate.ProductTypeName) == null)
                 {
-                    UploadDocument uploadDocument = new UploadDocument(Request);
-                    var ddd = uploadDocument.UploadImages(productTypeCreate.formFiles, Models.Enums.DocumentTypes.ProductTypeImage);
-                    ProductTypeImagePath = ddd[0];
+                    string ProductTypeImagePath = string.Empty;
+                    if (productTypeCreate.formFiles != null && productTypeCreate.formFiles.Count > 0)
+                    {
+                        UploadDocument uploadDocument = new UploadDocument(Request);
+                        var ddd = uploadDocument.UploadImages(productTypeCreate.formFiles, Models.Enums.DocumentTypes.ProductTypeImage);
+                        ProductTypeImagePath = ddd[0];
+                    }
+
+                    ProductType productType = new ProductType()
+                    {
+                        CreatorIP = Request.HttpContext.Connection.RemoteIpAddress.ToString(),
+                        isImpressionMindatory = productTypeCreate.isImpressionMindatory,
+                        ProductTypeImagePath = ProductTypeImagePath,
+                        ProductTypeName = productTypeCreate.ProductTypeName,
+                        UpdatorIP = Request.HttpContext.Connection.RemoteIpAddress.ToString(),
+
+                    };
+                    var res = productTypeManage.CreateProductType(productType);
+                    return res > 0 ? Ok(responceMessages.Success("Successfully Added")) : Ok(responceMessages.Failed("Oops something went wrong"));
                 }
-
-                ProductType productType = new ProductType()
+                else
                 {
-                    CreatorIP = Request.HttpContext.Connection.RemoteIpAddress.ToString(),
-                    isImpressionMindatory = productTypeCreate.isImpressionMindatory,
-                    ProductTypeImagePath = ProductTypeImagePath,
-                    ProductTypeName = productTypeCreate.ProductTypeName,
-                    UpdatorIP = Request.HttpContext.Connection.RemoteIpAddress.ToString(),
-
-                };
-                var res = productTypeManage.CreateProductType(productType);
-                return res > 0 ? Ok(responceMessages.Success("Successfully Added")) : Ok(responceMessages.Failed("Oops something went wrong"));
+                    return BadRequest(responceMessages.Failed("Product Already Exists"));
+                }
             }
             catch (Exception exp)
             {

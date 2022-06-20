@@ -11,7 +11,7 @@ namespace LabGuru.WebAPI.Models
 {
     public class UploadDocument
     {
-        readonly string[] permittedExtensions = { ".png", ".webp", ".svg", ".jpg", "jpeg", "gif" };
+        readonly string[] permittedExtensions = { ".png", ".webp", ".svg", ".jpg", ".jpeg", ".gif" };
         private readonly HttpRequest httpRequest;
 
         public UploadDocument(HttpRequest httpRequest)

@@ -21,7 +21,6 @@ export class ProcessMasterService {
                 'Authorization': this.Token
             })
         };
-        console.log(this.Token)
         return this.http.get<IProcessMaster[]>(`${environment.API}/ProcessMaster/GetOrderProcess`, options)
             .pipe(catchError(this.handleError()))
     }

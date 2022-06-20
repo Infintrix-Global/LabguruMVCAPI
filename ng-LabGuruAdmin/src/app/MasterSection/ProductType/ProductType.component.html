@@ -8,64 +8,83 @@
     </div>
 </div>
 <div class="row">
+    <div class="col-md-3">
+        <div class="row">
+            <div class="col-md-12 grid-margin stretch-card">
 
-    <div class="col-3 grid-margin stretch-card" *ngFor="let item of productlist">
-        <div class="card">
-            <div class="card-body">
-                <div class="text-center mb-3">
-                    <img class="mb-3 " style="width: 300px;" [src]="item.productTypeImagePath">
-                    <h3>{{item.productTypeName}}</h3>
-
-                    <div class="row  border-top pt-3">
-                        <div class="col-md-6">
-                            <h4>Implession</h4>
-                            <p>{{isImpression(item.isImpressionMindatory)}}</p>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="alert alert-danger" *ngIf="response && !response.isSuccess" role="alert">
+                            {{response.message}}
                         </div>
-                        <div class="col-md-6">
-                            <h4>LDM</h4>
-                            <p>12-Apr-2022 12:30 PM</p>
-                        </div>
+                        <form autocomplete="off" class="forms-sample needs-validation" [formGroup]="ProductTypeForm"
+                            novalidate (ngSubmit)="CreateProduct()">
+                            <div class="form-group">
+                                <input type="file" multiple="multiple" class="dropify" data-height="300"
+                                    (change)="imageChanged($event)" />
+                            </div>
 
+                            <div class="form-group">
+                                <input type="text" formControlName="ProductTypeName" id="ProductTypeName"
+                                    name="ProductTypeName" required class="form-control" placeholder="Product Type">
+                                <em class="text-danger"
+                                    *ngIf="(!ValidateProductname() || mouseover_form) && ProductTypeName?.errors?.['required']">Required</em>
+                            </div>
+                            <div class="form-check form-check-flat form-check-primary">
+                                <label class="form-check-label">
+                                    <input type="checkbox" (change)="isImpressionUpload($event.target)"
+                                        class="form-check-input">
+                                    is Impression Upload Mandatory
+                                    <i class="input-helper"></i></label>
+                            </div>
+
+                            <div class="form-group">
+                                <span (mouseenter)="mouseover_form=true" (mouseleave)="mouseover_form=false">
+                                    <button type="submit" class="btn btn-success"
+                                        [disabled]="ProductTypeForm.invalid">Add
+                                        Product Type</button>
+                                </span>
+                            </div>
+
+
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <div class="col-md-9">
+        <div class="row">
+            <div class="col-4 grid-margin stretch-card" *ngFor="let item of productlist">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="text-center mb-3">
+                            <img class="mb-3 " style="width: 300px;" [src]="item.productTypeImagePath">
+                            <h3>{{item.productTypeName}}</h3>
 
-    <div class="col-3 grid-margin stretch-card">
-        <div class="card">
-            <div class="card-body">
-                <form autocomplete="off" class="forms-sample needs-validation" [formGroup]="ProductTypeForm" novalidate
-                    (ngSubmit)="CreateProduct()">
-                    <div class="form-group">
-                        <input type="file" multiple="multiple" class="dropify" data-height="300"
-                            (change)="imageChanged($event)" />
+                            <div class="row  border-top pt-3">
+                                <div class="col-md-6">
+                                    <h4>Implession</h4>
+                                    <p>{{isImpression(item.isImpressionMindatory)}}</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <h4>LDM</h4>
+                                    <p>12-Apr-2022 12:30 PM</p>
+                                </div>
+
+                            </div>
+                        </div>
                     </div>
-
-                    <div class="form-group">
-                        <input type="text" formControlName="ProductTypeName" id="ProductTypeName" name="ProductTypeName"
-                            required class="form-control" placeholder="Product Type">
-                        <em class="text-danger"
-                            *ngIf="(!ValidateProductname() || mouseover_form) && ProductTypeName?.errors?.['required']">Required</em>
-                    </div>
-                    <div class="form-check form-check-flat form-check-primary">
-                        <label class="form-check-label">
-                            <input type="checkbox" (change)="isImpressionUpload($event.target)"
-                                class="form-check-input">
-                            is Impression Upload Mandatory
-                            <i class="input-helper"></i></label>
-                    </div>
-
-                    <div class="form-group">
-                        <span (mouseenter)="mouseover_form=true" (mouseleave)="mouseover_form=false">
-                            <button type="submit" class="btn btn-success" [disabled]="ProductTypeForm.invalid">Add
-                                Product Type</button>
-                        </span>
-                    </div>
-
-
-                </form>
+                </div>
             </div>
         </div>
     </div>
+</div>
+
+
+<div class="row">
+
+
+
+
 </div>

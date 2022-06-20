@@ -1,6 +1,6 @@
 import { HttpClient, HttpEvent, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
+import { catchError, Observable, of } from "rxjs";
 import { AuthenticationService } from "src/app/Authentication/Shared/authentication.service";
 import { IResponce } from "src/app/Shared/responce.model";
 import { environment } from "src/environments/environment";
@@ -34,9 +34,14 @@ export class ProductTypeService {
             })
         };
 
-        return this.http.post<IResponce>(url, formData, options);
+        return this.http.post<IResponce>(url, formData, options)
+            .pipe(catchError(this.handleError()));
     }
-
+    private handleError() {
+        return (error: any): Observable<any> => {
+            return of(error.error)
+        }
+    }
 
     // UploadImage(formData: FormData): Observable<any> {
     //     let UserToken = this.Token;

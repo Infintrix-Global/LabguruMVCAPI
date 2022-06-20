@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { IResponce } from "src/app/Shared/responce.model";
 import { IProductType } from "./Shared/productType.model";
 import { ProductTypeService } from "./Shared/ProductType.service";
 declare var $: any;
@@ -18,7 +19,7 @@ export class ProductTypeComponent implements OnInit {
     isImpressionmindatory: boolean = false;
     formSubmitData = new FormData();
     constructor(private PTS: ProductTypeService) { }
-
+    response !: IResponce;
     ngOnInit() {
         $('.dropify').dropify();
         this.getProductType();
@@ -60,11 +61,12 @@ export class ProductTypeComponent implements OnInit {
             this.formSubmitData.append("ProductTypeName", this.ProductTypeName.value);
             this.formSubmitData.append("isImpressionMindatory", this.isImpressionmindatory.toString());
             this.PTS.CreateProduct(this.formSubmitData).subscribe(data => {
-                console.log(data);
+                this.response = data;
                 if (data.isSuccess) {
                     this.getProductType();
                     this.ProductTypeForm.reset();
                 }
+                console.log(this.response)
             });
         }
     }

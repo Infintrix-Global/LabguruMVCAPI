@@ -33,5 +33,11 @@ namespace LabGuru.DAL
             dbContext.ProductTypes.Add(productType);
             return dbContext.SaveChanges();
         }
+
+        public ProductType GetProductType(string ProductTypeName)
+        {
+            var result = dbContext.ProductTypes.Where(w => w.ProductTypeName == ProductTypeName).FirstOrDefault();
+            return result;
+        }
     }
 }

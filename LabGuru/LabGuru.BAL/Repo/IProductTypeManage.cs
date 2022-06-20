@@ -9,5 +9,6 @@ namespace LabGuru.BAL.Repo
         List<ProductType> GetProductTypes();
         int CreateProductType(ProductType productType);
         ProductType GetProductType(int ProductTypeID);
+        ProductType GetProductType(string ProductTypeName);
     }
 }
