@@ -62,7 +62,8 @@ namespace LabGuru.WebAPI.Controllers
                     UserID = LoginUser.UserID,
                     ClinicID = orderCreate.ClinicID,
                     ProcessID = orderCreate.ProcessID,
-                    LaboratiryID = orderCreate.LaboratiryID
+                    LaboratiryID = orderCreate.LaboratiryID,
+                    Remarks = orderCreate.Remakrs
                 };
                 List<string> ImpressionImageList = new List<string>();
                 if (orderCreate.formFiles != null)

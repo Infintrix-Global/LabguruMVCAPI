@@ -16,6 +16,12 @@ namespace LabGuru.DAL
         {
             this.dbContext = dbContext;
         }
+
+        public int AddClilin(DoctorClinic doctorClinic)
+        {
+            throw new NotImplementedException();
+        }
+
         public DoctorClinic GetDoctorClinic(int id)
         {
             try

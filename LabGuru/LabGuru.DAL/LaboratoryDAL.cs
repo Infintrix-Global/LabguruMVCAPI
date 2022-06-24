@@ -72,7 +72,7 @@ namespace LabGuru.DAL
                              isDefault = d.isDefault
                          };
 
-            return Result.ToList();
+            return Result.Distinct().ToList();
         }
 
         public int CreateLabEmployees(LabEmployee labEmployee)

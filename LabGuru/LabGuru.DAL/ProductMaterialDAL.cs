@@ -23,7 +23,14 @@ namespace LabGuru.DAL
 
         public List<ProductMaterial> GetProductMaterials()
         {
-            return dbContext.ProductMaterials.ToList();
+            try
+            {
+                return dbContext.ProductMaterials.ToList();
+            }
+            catch (Exception exp)
+            {
+                throw new Exception(exp.Message);
+            }
         }
     }
 }

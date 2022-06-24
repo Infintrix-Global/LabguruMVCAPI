@@ -52,7 +52,7 @@ namespace LabGuru.WebAPI.Controllers
         public IActionResult GetClinics()
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
-            int LoginUserID = authentication.GetLogin(claimsIdentity.Name).UserID;
+            int LoginUserID = authentication.GetLogin(claimsIdentity.Name).ReferanceID;
             var result = doctorClinic.GetDoctorClinics(LoginUserID);
             List<VM_DoctorClinic> listDC = new List<VM_DoctorClinic>();
             foreach (var res in result)

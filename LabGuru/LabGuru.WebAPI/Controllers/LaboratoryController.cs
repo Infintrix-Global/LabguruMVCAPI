@@ -70,7 +70,7 @@ namespace LabGuru.WebAPI.Controllers
             var LoginUser = authentication.GetLogin(claimsIdentity.Name);
             if (LoginUser.RoleID == 1)
             {
-                var reslabResult = laboratory.GetLaboratoryByProductID(productTypeID, LoginUser.UserID);
+                var reslabResult = laboratory.GetLaboratoryByProductID(productTypeID, LoginUser.ReferanceID);
 
                 List<VM_Labratory> VM_Labratorys = new List<VM_Labratory>();
                 foreach (var res in reslabResult)

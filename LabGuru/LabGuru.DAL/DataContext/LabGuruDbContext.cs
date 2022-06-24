@@ -55,7 +55,7 @@ namespace LabGuru.DAL.DataContext
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseMySQL("server=rds-mysql-labguru.ce5dgrhf7wv3.ap-south-1.rds.amazonaws.com;user=admin;database=admin_labguru;password=Madhav1986;port=3306;AllowUserVariables=True;");
+                optionsBuilder.UseMySQL("server=3.7.190.98; user=labguru; database=labguru; password=9LahzjFYfsFfC869; port=3306");
             }
         }
       

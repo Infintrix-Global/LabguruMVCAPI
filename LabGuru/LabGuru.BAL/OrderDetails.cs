@@ -45,5 +45,6 @@ namespace LabGuru.BAL
 		public ProcessMaster orderProcessMaster { get; set; }
 		[ForeignKey("CurrentOrderStatusID")]
 		public OrderStatusMaster OrderStatusMast { get; set; }
-	}
+        public string Remarks { get; set; }
+    }
 }
