@@ -31,5 +31,21 @@ namespace LabGuru.DAL
             return db.OrderStatusMasters.Any(w => w.LaboratoryID == LabID && w.StatusText == StatusText);
         }
 
+        public List<DoctorStatusSetting> GetDoctorStatus(int labID, int DoctorID)
+        {
+          return  (from DSS in db.DoctorStatusSettings
+             join Status in db.OrderStatusMasters on DSS.StatusMasterID equals Status.id
+             where Status.LaboratoryID == labID &&
+                       DSS.DoctorID == DoctorID && DSS.Include && DSS.ShowToDoctor
+             select new DoctorStatusSetting
+             {
+                 id = DSS.id,
+                 Include = DSS.Include,
+                 LaboratoryID = DSS.LaboratoryID,
+                 ShowToDoctor = DSS.ShowToDoctor,
+                 StatusMaster = Status
+             }).OrderBy(o => o.StatusMaster.DispalyOrder).ToList();
+        }
+
     }
 }

@@ -13,11 +13,13 @@ namespace LabGuru.DAL
     {
         private readonly LabGuruDbContext dbContext;
         private readonly IDoctorStatusSetting doctorStatus;
+        private readonly IDoctor doctor;
 
-        public OrderManageDAL(LabGuruDbContext dbContext, IDoctorStatusSetting doctorStatus)
+        public OrderManageDAL(LabGuruDbContext dbContext, IDoctorStatusSetting doctorStatus, IDoctor doctor)
         {
             this.dbContext = dbContext;
             this.doctorStatus = doctorStatus;
+            this.doctor = doctor;
         }
         public int CreateOrder(OrderDetails orderDetails)
         {
@@ -59,7 +61,8 @@ namespace LabGuru.DAL
                              ToothSelection = OP.ToothSelection,
                              productType = PT,
                              productMaterial = PM,
-                             productShade = PS
+                             productShade = PS,
+                             
                          };
             var res = Result.ToList();
             return res;
@@ -130,17 +133,7 @@ namespace LabGuru.DAL
                                                ShowToDoctor = DSS.ShowToDoctor,
                                                StatusMaster = Status
                                            }).OrderBy(o => o.StatusMaster.DispalyOrder).ToList(),
-                             //StatusMasters = (from OMS in dbContext.OrderStatusMasters 
-                             //                 where OMS.LaboratoryID == ord.LaboratiryID
-                             //                 select new OrderStatusMaster
-                             //                 {
-                             //                     id = OMS.id,
-                             //                     StatusText = OMS.StatusText,
-                             //                     CreateDate = OMS.CreateDate,
-                             //                     DispalyOrder = OMS.DispalyOrder,
-                             //                     LaboratoryID = OMS.LaboratoryID
-                                                  
-                             //                 }).OrderBy(o => o.DispalyOrder).ToList()
+                             doctorClinic = ord.doctorClinic,
                          };
             return result.ToList();
         }

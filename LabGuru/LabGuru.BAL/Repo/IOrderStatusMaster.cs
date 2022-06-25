@@ -9,5 +9,6 @@ namespace LabGuru.BAL.Repo
         int CreateOrderStatus(OrderStatusMaster orderStatusMaster);
         bool isStatusExists(int LabID, string StatusText);
         List<OrderStatusMaster> GetOrderStatusMasters(int LabID);
+        List<DoctorStatusSetting> GetDoctorStatus(int labID, int DoctorID);
     }
 }

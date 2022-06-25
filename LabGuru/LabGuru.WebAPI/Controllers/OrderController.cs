@@ -25,10 +25,12 @@ namespace LabGuru.WebAPI.Controllers
         private readonly IDoctorClinic doctorClinic;
         private readonly IProductSetting productSetting;
         private readonly ILabAssignment labAssignment;
+        private readonly IOrderStatusMaster _orderStatusMaster;
+        private readonly IDoctor doctorRepo;
 
         public OrderController(IOrderManage orderManage, IAuthentication authentication, IOrderStatus _orderStatus,
             ResponceMessages responceMessages, IDoctorLabMapping labMapping, IDoctorClinic doctorClinic,
-            IProductSetting productSetting, ILabAssignment labAssignment, IDoctorStatusSetting doctorStatusSetting)
+            IProductSetting productSetting, ILabAssignment labAssignment, IDoctorStatusSetting doctorStatusSetting, IOrderStatusMaster _orderStatusMaster, IDoctor doctorRepo)
 
         {
             this.orderManage = orderManage;
@@ -39,6 +41,8 @@ namespace LabGuru.WebAPI.Controllers
             this.doctorClinic = doctorClinic;
             this.productSetting = productSetting;
             this.labAssignment = labAssignment;
+            this._orderStatusMaster = _orderStatusMaster;
+            this.doctorRepo = doctorRepo;
         }
 
         [HttpPost]
@@ -58,12 +62,13 @@ namespace LabGuru.WebAPI.Controllers
                     PatientAge = orderCreate.PatientAge,
                     PatientGender = orderCreate.PatientGender,
                     PatientName = orderCreate.PatientName,
-                    TotalPrice = 0,
-                    UserID = LoginUser.UserID,
+                    TotalPrice = random.Next(1000, 9999),
+                    UserID = LoginUser.ReferanceID,
                     ClinicID = orderCreate.ClinicID,
                     ProcessID = orderCreate.ProcessID,
                     LaboratiryID = orderCreate.LaboratiryID,
-                    Remarks = orderCreate.Remakrs
+                    Remarks = orderCreate.Remakrs,
+                    CurrentOrderStatusID = _orderStatusMaster.GetOrderStatusMasters((int)orderCreate.LaboratiryID).OrderBy(o=>o.DispalyOrder).Select(s=>s.id).FirstOrDefault()
                 };
                 List<string> ImpressionImageList = new List<string>();
                 if (orderCreate.formFiles != null)
@@ -217,7 +222,11 @@ namespace LabGuru.WebAPI.Controllers
                 patientAge = orderDetails.PatientAge,
                 patientGender = orderDetails.PatientGender,
                 patientName = orderDetails.PatientName,
-                totalPrice = orderDetails.TotalPrice
+                totalPrice = orderDetails.TotalPrice,
+                CurrentStatus = orderDetails.CurrentOrderStatusID,
+                StatusList = _orderStatusMaster.GetDoctorStatus((int)orderDetails.LaboratiryID, orderDetails.UserID),
+                DoctorDetails = doctorRepo.GetDoctorDetails(orderDetails.UserID),
+                doctorClinic = doctorClinic.GetDoctorClinic((int)orderDetails.ClinicID)
             };
             return Ok(_OrderView);
         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LabGuru.BAL;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,6 +21,11 @@ namespace LabGuru.WebAPI.Models
         public DateTime createdDate { get; set; }
         public string creatorIP { get; set; }
         public List<vm_OrderProductView> OrderProducts { get; set; }
+        public int CurrentStatus { get; set; }
+        public List<DoctorStatusSetting> StatusList { get; set; }
+
+        public DoctorDetails DoctorDetails { get; set; }
+        public DoctorClinic doctorClinic { get; set; }
     }
 
 }

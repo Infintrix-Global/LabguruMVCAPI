@@ -25,6 +25,8 @@ namespace LabGuru.BAL.Component
 
         public List<DoctorStatusSetting> StatusList { get; set; }
 		public List<OrderStatusMaster> StatusMasters { get; set; }
+        public DoctorClinic doctorClinic { get; set; }
+        public DoctorDetails doctorDetails { get; set; }
 
     }
 }
