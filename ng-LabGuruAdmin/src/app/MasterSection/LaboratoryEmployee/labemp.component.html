@@ -24,7 +24,7 @@
                         <label>Laboratory<em class="text-danger mr-2"
                                 *ngIf="(!(this.LabID.valid || this.LabID.untouched) || mouseover_form) && LabID?.errors?.['required']">Required</em>
                         </label>
-                        <select formControlName="LabID" class="form-control">
+                        <select formControlName="LabID" class="form-control" (change)="ChangeLab(LabID.value)">
                             <option value="">Select Laboratory</option>
                             <option *ngFor="let lab of LabList" value="{{lab.id}}">
                                 {{lab.labName}}
@@ -46,6 +46,17 @@
                             placeholder="Employee Name">
 
                     </div>
+                    <div class="form-group">
+                        <label>Role<em class="text-danger mr-2"
+                                *ngIf="(!(this.RoleID.valid || this.RoleID.untouched) || mouseover_form) && RoleID?.errors?.['required']">Required</em>
+                        </label>
+                        <select formControlName="RoleID" class="form-control">
+                            <option value="">Select Role</option>
+                            <option *ngFor="let rle of RoleList" [value]="rle.roleID">
+                                {{rle.roleName}}
+                            </option>
+                        </select>
+                    </div>
 
                     <div class="form-group text-right">
                         <span (mouseenter)="mouseover_form=true" (mouseleave)="mouseover_form=false">
@@ -56,6 +67,37 @@
                 </form>
 
 
+            </div>
+        </div>
+
+    </div>
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+
+                                <th>S.N</th>
+                                <th>Lab Name</th>
+                                <th>Employee Name</th>
+                                <th>Role</th>
+                                <th>Username</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let emp of employeeList; ; let i = index">
+                                <td>{{i+1}}</td>
+                                <td>{{emp.labName}}</td>
+                                <td>{{emp.employeeName}}</td>
+                                <td>{{emp.roleName}}</td>
+                                <td>{{emp.userName}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 

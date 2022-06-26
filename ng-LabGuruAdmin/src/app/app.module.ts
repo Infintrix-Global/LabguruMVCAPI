@@ -17,7 +17,6 @@ import { LaboratoryService } from './MasterSection/Laboratory/Shared/laboratory.
 
 
 import { LabEmployeeComponent } from './MasterSection/LaboratoryEmployee/labemp.component';
-import { LabEmployeeService } from './MasterSection/LaboratoryEmployee/Shared/LabEmployee.service';
 import { ProcessMasterComponent } from './MasterSection/ProcessMaster/processmaster.component';
 import { ProcessMasterService } from './MasterSection/ProcessMaster/Shared/ProcessMaster.service';
 import { DashboardComponent } from './Dashboard/dashboard.component';
@@ -31,6 +30,8 @@ import { AuthGuard } from './Shared/auth.guard';
 import { DoctorComponent } from './Pages/Doctor/CreateDoctor/doctor.component';
 import { DoctorService } from './Pages/Doctor/Shared/doctor.service';
 import { LabMappingComponent } from './Pages/Doctor/DoctorLabMap/LabMap.component';
+import { RoleService } from './Shared/Role/role.service';
+import { LabEmployeeService } from './Shared/LaboratoryEmployee/LabEmployee.service';
 
 @NgModule({
   declarations: [
@@ -56,7 +57,8 @@ import { LabMappingComponent } from './Pages/Doctor/DoctorLabMap/LabMap.componen
     RouterModule.forRoot(appRoutes),
     HttpClientModule
   ],
-  providers: [ProductTypeService, SubProcessEmpService, DoctorService, SubProcessService, ProcessMapperService, LabEmployeeService, ProcessMasterService, AuthenticationService, LaboratoryService, AuthGuard],
+  providers: [ProductTypeService, SubProcessEmpService, DoctorService, SubProcessService, ProcessMapperService, LabEmployeeService, ProcessMasterService, AuthenticationService, LaboratoryService, AuthGuard,
+    RoleService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

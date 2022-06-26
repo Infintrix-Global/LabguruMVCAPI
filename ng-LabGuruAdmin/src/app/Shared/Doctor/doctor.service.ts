@@ -4,7 +4,7 @@ import { catchError, Observable, of } from "rxjs";
 import { AuthenticationService } from "src/app/Authentication/Shared/authentication.service";
 import { IResponce } from "src/app/Shared/responce.model";
 import { environment } from "src/environments/environment";
-import { IDoctor } from "./Doctor.model";
+import { IDoctor } from "./doctor.model";
 
 @Injectable()
 export class DoctorService {
@@ -19,38 +19,17 @@ export class DoctorService {
                 'Authorization': this.Token
             })
         };
-        return this.http.get<IDoctor[]>(`${environment.API}/Doctor/GetDoctorList`, options)
+        return this.http.get<IDoctor[]>(`${environment.API}/Doctor/CreateDoctor`, options)
             .pipe(catchError(this.handleError()));
     }
-    CreateDoctor(Param: any): Observable<IResponce> {
+    CreateDoctor(laboraroty: IDoctor): Observable<IResponce> {
         let options = {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json',
                 'Authorization': this.Token
             })
         };
-        return this.http.post<IResponce>(`${environment.API}/Doctor/CreateDoctor`, Param, options)
-            .pipe(catchError(this.handleError()));
-    }
-
-    GetlabMapped(): Observable<any[]> {
-        let options = {
-            headers: new HttpHeaders({
-                'Content-Type': 'application/json',
-                'Authorization': this.Token
-            })
-        };
-        return this.http.get<any[]>(`${environment.API}/Doctor/GetDoctorLapMapping`, options)
-            .pipe(catchError(this.handleError()));
-    }
-    LabMap(Param: any): Observable<IResponce> {
-        let options = {
-            headers: new HttpHeaders({
-                'Content-Type': 'application/json',
-                'Authorization': this.Token
-            })
-        };
-        return this.http.post<IResponce>(`${environment.API}/Doctor/MapLab`, Param, options)
+        return this.http.post<IResponce>(`${environment.API}/Doctor/CreateDoctor`, laboraroty, options)
             .pipe(catchError(this.handleError()));
     }
 

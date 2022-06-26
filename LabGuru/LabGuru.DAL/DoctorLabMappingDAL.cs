@@ -56,7 +56,7 @@ namespace LabGuru.DAL
                                   DoctorLapMappingID = dm.id,
                                   LabID = l.id,
                                   DoctorID = dd.DoctorDetailsID,
-                                  DoctorName = dd.FirstName + ' ' + dd.LastName,
+                                  DoctorName = dd.FirstName + " " + dd.LastName,
                                   LabName = l.LabName
                               };
 
