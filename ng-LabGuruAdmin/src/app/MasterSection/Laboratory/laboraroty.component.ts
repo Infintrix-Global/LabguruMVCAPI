@@ -1,8 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { IResponce } from "src/app/Shared/responce.model";
-import { ILaboratory } from "./Shared/laboratory.model";
-import { LaboratoryService } from "./Shared/laboratory.service";
+import { ILaboratory } from "../../Shared/Laboratory/laboratory.model";
+import { LaboratoryService } from "../../Shared/Laboratory/laboratory.service";
 
 @Component({
     templateUrl: './laboraroty.component.html'

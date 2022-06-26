@@ -13,7 +13,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './Authentication/Login/login.component';
 import { AuthenticationService } from './Authentication/Shared/authentication.service';
 import { LabboratoryComponent } from './MasterSection/Laboratory/laboraroty.component';
-import { LaboratoryService } from './MasterSection/Laboratory/Shared/laboratory.service';
+import { LaboratoryService } from './Shared/Laboratory/laboratory.service';
 
 
 import { LabEmployeeComponent } from './MasterSection/LaboratoryEmployee/labemp.component';
@@ -31,6 +31,7 @@ import { AuthGuard } from './Shared/auth.guard';
 import { DoctorComponent } from './Pages/Doctor/CreateDoctor/doctor.component';
 import { DoctorService } from './Pages/Doctor/Shared/doctor.service';
 import { LabMappingComponent } from './Pages/Doctor/DoctorLabMap/LabMap.component';
+import { RoleService } from './Shared/Role/role.service';
 
 @NgModule({
   declarations: [
@@ -56,7 +57,8 @@ import { LabMappingComponent } from './Pages/Doctor/DoctorLabMap/LabMap.componen
     RouterModule.forRoot(appRoutes),
     HttpClientModule
   ],
-  providers: [ProductTypeService, SubProcessEmpService, DoctorService, SubProcessService, ProcessMapperService, LabEmployeeService, ProcessMasterService, AuthenticationService, LaboratoryService, AuthGuard],
+  providers: [ProductTypeService, SubProcessEmpService, DoctorService, SubProcessService, ProcessMapperService, LabEmployeeService, ProcessMasterService, AuthenticationService, LaboratoryService, AuthGuard,
+    RoleService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

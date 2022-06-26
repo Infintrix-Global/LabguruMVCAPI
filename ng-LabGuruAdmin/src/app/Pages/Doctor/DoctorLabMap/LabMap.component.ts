@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { LaboratoryService } from "src/app/MasterSection/Laboratory/Shared/laboratory.service";
+import { LaboratoryService } from "src/app/Shared/Laboratory/laboratory.service";
 import { IResponce } from "src/app/Shared/responce.model";
 import { DoctorService } from "../Shared/doctor.service";
 
@@ -16,6 +16,7 @@ export class LabMappingComponent implements OnInit {
     LabID !: FormControl;
     DoctorList !: any[];
     LabList !: any[];
+    LabMappedList !: any[];
     constructor(private doctorService: DoctorService, private LabService: LaboratoryService) {
 
     }
@@ -23,6 +24,7 @@ export class LabMappingComponent implements OnInit {
         this.GetDoctor();
         this.GetLab();
         this.AppFormInit();
+        this.GetDOctorLabMap();
 
     }
     AppFormInit() {
@@ -42,6 +44,7 @@ export class LabMappingComponent implements OnInit {
             this.response = data;
             if (this.response.isSuccess) {
                 this.AppForms.reset();
+                this.GetDOctorLabMap();
             }
         })
     }
@@ -56,6 +59,11 @@ export class LabMappingComponent implements OnInit {
         this.LabService.Getlaboratory().subscribe((data) => {
             console.log(data)
             this.LabList = data;
+        })
+    }
+    GetDOctorLabMap() {
+        this.doctorService.GetlabMapped().subscribe((data) => {
+            this.LabMappedList = data;
         })
     }
 }

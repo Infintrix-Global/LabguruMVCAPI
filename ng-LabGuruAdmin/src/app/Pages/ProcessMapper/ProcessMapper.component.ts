@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { ILaboratory } from "src/app/MasterSection/Laboratory/Shared/laboratory.model";
-import { LaboratoryService } from "src/app/MasterSection/Laboratory/Shared/laboratory.service";
+import { ILaboratory } from "src/app/Shared/Laboratory/laboratory.model";
+import { LaboratoryService } from "src/app/Shared/Laboratory/laboratory.service";
 import { LabEmployeeService } from "src/app/MasterSection/LaboratoryEmployee/Shared/LabEmployee.service";
 import { IProcessMaster } from "src/app/MasterSection/ProcessMaster/Shared/ProcessMaster.model";
 import { ProcessMasterService } from "src/app/MasterSection/ProcessMaster/Shared/ProcessMaster.service";
