@@ -85,7 +85,8 @@ namespace LabGuru.DAL
             Login login = new Login();
             if (result > 0 && (labEmployee.RoleID == 2 ||
                 labEmployee.RoleID == 3 ||
-                labEmployee.RoleID == 4))
+                labEmployee.RoleID == 4 ||
+                labEmployee.RoleID == 5))
             {
                 login.ReferanceID = labEmployee.LabEmployeeID;
                 login.UserName = labEmployee.UserName;
