@@ -76,7 +76,7 @@ namespace LabGuru.WebAPI.Controllers
             {
                 var result = authentication.GetRoles();
                 
-                return Ok(result);
+                return Ok(result.Where(w=>w.RoleID != 1 && w.RoleID != 2 && w.RoleID != 3));
             }
             catch (Exception exp)
             {
