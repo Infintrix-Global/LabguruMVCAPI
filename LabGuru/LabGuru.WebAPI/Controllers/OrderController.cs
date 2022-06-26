@@ -317,14 +317,14 @@ namespace LabGuru.WebAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult AcceptOrder(vm_OrderView order)
+        public IActionResult AcceptOrder(int orderID)
         {
 
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var LoginUser = authentication.GetLogin(claimsIdentity.Name);
             if (LoginUser.RoleID == 2)
             {
-               var resp =  orderManage.AcceptOrder(order.orderID);
+               var resp =  orderManage.AcceptOrder(orderID);
                 if (resp > 0)
                 {
                     responceMessages.Success("Successfully Accepted Order");
@@ -332,17 +332,67 @@ namespace LabGuru.WebAPI.Controllers
                 }
                 else
                 {
-                    responceMessages.Failed("Oops something went wrong");
-                    return BadRequest(responceMessages);
+                    if (resp == -1)
+                    {
+                        responceMessages.Failed("No process manager exist for this lab.");
+                        return BadRequest(responceMessages);
+                    }
+                    if (resp == -2)
+                    {
+                        responceMessages.Failed("Order already accepted and assigned to process manager.");
+                        return BadRequest(responceMessages);
+                    }
+                    else
+                    {
+                        responceMessages.Failed("Oops something went wrong");
+                        return BadRequest(responceMessages);
+                    }
                 }
             }
             else
-            {
+            {                
                 responceMessages.Failed("Invalid User Login");
                 return BadRequest(responceMessages);
             }
 
 
         }
+
+        //Get orders for employee based on username and user role
+        [HttpGet]
+        public IActionResult GetOrdersForEmployee(string userName, string userRole)
+        {
+            try
+            {
+                var result = orderManage.GetOrdersForEmployee(userName,userRole);
+                //List<vm_OrderStatus> _OS = result.Select(s => new vm_OrderStatus
+                //{
+                //    id = s.id,
+
+                //}).ToList();
+                return Ok(result);
+            }
+            catch (Exception exp)
+            {
+                responceMessages.Failed(exp.Message);
+                return BadRequest(responceMessages);
+            }
+        }
+
+        //Not in use Can come handing in future
+        //[HttpGet]
+        //public IActionResult GetProccessEmployeeDetails(int LabID)
+        //{
+        //    try
+        //    {
+        //        var result = labAssignment.GetProccessEmployeeDetails(LabID);                
+        //        return Ok(result);
+        //    }
+        //    catch (Exception exp)
+        //    {
+        //        responceMessages.Failed(exp.Message);
+        //        return BadRequest(responceMessages);
+        //    }
+        //}
     }
 }

@@ -8,5 +8,6 @@ namespace LabGuru.BAL.Repo
     {
         bool Authenticate(string Username, string Password);
         Login GetLogin(string username);
+        List<Role> GetRoles();
     }
 }

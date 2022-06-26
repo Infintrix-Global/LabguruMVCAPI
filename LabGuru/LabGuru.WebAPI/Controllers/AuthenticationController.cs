@@ -18,7 +18,7 @@ namespace LabGuru.WebAPI.Controllers
     {
         private readonly IAuthentication authentication;
         private readonly JwtAuthenticationManager jwtAuthentication;
-        private readonly ResponceMessages responceMessages;
+        private readonly ResponceMessages responceMessages;        
 
         public AuthenticationController(IAuthentication authentication, JwtAuthenticationManager jwtAuthentication, ResponceMessages responceMessages)
         {
@@ -67,6 +67,22 @@ namespace LabGuru.WebAPI.Controllers
         {
             password = BCrypt.Net.BCrypt.HashPassword(password);
             return Ok(password);
+        }
+
+        [HttpGet]
+        public IActionResult GetRoles()
+        {
+            try
+            {
+                var result = authentication.GetRoles();
+                
+                return Ok(result);
+            }
+            catch (Exception exp)
+            {
+                responceMessages.Failed(exp.Message);
+                return BadRequest(responceMessages);
+            }
         }
 
     }

@@ -34,5 +34,10 @@ namespace LabGuru.DAL
             //dbContext.Dispose();
             return Loginuser;
         }
+
+        public List<Role> GetRoles()
+        {            
+            return dbContext.Roles.ToList();            
+        }
     }
 }

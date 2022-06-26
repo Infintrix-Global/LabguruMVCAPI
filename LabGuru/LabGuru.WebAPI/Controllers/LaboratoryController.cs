@@ -109,9 +109,9 @@ namespace LabGuru.WebAPI.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetLabEmployee(int Laboratory)
+        public IActionResult GetLabEmployee(int LabID)
         {
-            var result = laboratory.GetLabEmployees(Laboratory);
+            var result = laboratory.GetLabEmployees(LabID);
             return Ok(result);
 
         }

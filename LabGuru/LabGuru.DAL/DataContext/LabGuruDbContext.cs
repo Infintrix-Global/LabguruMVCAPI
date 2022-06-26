@@ -1,4 +1,5 @@
 ﻿using LabGuru.BAL;
+using LabGuru.BAL.Component;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -51,6 +52,13 @@ namespace LabGuru.DAL.DataContext
         public DbSet<SubProcessEmployee> SubProcessEmployees { get; set; }
         public DbSet<OrderImpression> OrderImpressions { get; set; }
 
+        public DbSet<ProcessStatus> ProcessStatuses { get; set; }
+
+        public DbSet<OrderDetailsByEmployeeProcess> OrderDetailsByEmployeeProcess { get; set; }
+
+        //Might use in future
+        //public DbSet<ProcessEmployeeDetail> ProcessEmployeeDetails { get; set; }
+        //Might use in future        
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)

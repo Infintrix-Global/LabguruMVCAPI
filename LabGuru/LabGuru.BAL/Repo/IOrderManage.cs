@@ -19,5 +19,7 @@ namespace LabGuru.BAL.Repo
         int CreateOrderImpresions(List<OrderImpression> orderImpressions);
         int AcceptOrder(int OrderID);
         int NotAcceptOrder(int OrderID);
+
+        List<OrderListWithProduct> GetOrdersForEmployee(string userName, string userRole);
     }
 }

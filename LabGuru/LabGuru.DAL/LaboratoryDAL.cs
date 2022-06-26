@@ -123,9 +123,17 @@ namespace LabGuru.DAL
             return encryptPassword;
         }
 
+        //For Lab wise send LabID else send zero for admin to see all employees for all lab
         public List<LabEmployee> GetLabEmployees(int LabID)
         {
-            return dbContext.LabEmployees.Where(w => w.LabID == LabID).ToList();
+            if (LabID == 0)
+                return dbContext.LabEmployees.ToList();
+            else
+                return dbContext.LabEmployees.Where(w => w.LabID == LabID).ToList();
         }
+
+
+
+
     }
 }
