@@ -108,6 +108,7 @@ namespace LabGuru.WebAPI.Controllers
 
         }
 
+        //Admin send LabID=0
         [HttpGet]
         public IActionResult GetLabEmployee(int LabID)
         {

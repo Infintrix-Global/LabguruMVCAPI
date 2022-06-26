@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using LabGuru.BAL.Enums;
+using LabGuru.BAL.Component;
 
 namespace LabGuru.DAL
 {
@@ -124,12 +125,25 @@ namespace LabGuru.DAL
         }
 
         //For Lab wise send LabID else send zero for admin to see all employees for all lab
-        public List<LabEmployee> GetLabEmployees(int LabID)
+        public List<LaboratoryEmployee> GetLabEmployees(int LabID)
         {
-            if (LabID == 0)
-                return dbContext.LabEmployees.ToList();
-            else
-                return dbContext.LabEmployees.Where(w => w.LabID == LabID).ToList();
+            
+                var LabEmployee = from le in dbContext.LabEmployees
+                                  join ls in dbContext.Laboratories on le.LabID equals ls.id
+                                  join r in dbContext.Roles on le.RoleID equals r.RoleID
+                                  where le.LabID == LabID || LabID == 0 
+                                  select new LabGuru.BAL.Component.LaboratoryEmployee
+                                  {
+                                      LabEmployeeID = le.LabEmployeeID,
+                                      EmployeeName = le.EmployeeName,
+                                      LabName = ls.LabName,
+                                      RoleName = r.RoleName,
+                                      RoleID = r.RoleID,
+                                      LabID = ls.id
+                                  };
+
+                return LabEmployee.ToList();
+            
         }
 
 

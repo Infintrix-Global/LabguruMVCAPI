@@ -174,5 +174,20 @@ namespace LabGuru.WebAPI.Controllers
 
         }
 
+
+        [HttpGet]
+        public IActionResult GetDoctorLapMapping()
+        {
+            try
+            {
+                var result = labMapping.GetDoctorLapMapping();
+                return Ok(result);
+            }
+            catch (Exception exp)
+            {
+                return Ok(responceMessages.Failed(exp.Message));
+            }
+        }
+
     }
 }

@@ -1,4 +1,5 @@
 ﻿using LabGuru.BAL;
+using LabGuru.BAL.Component;
 using LabGuru.BAL.Repo;
 using LabGuru.DAL.DataContext;
 using System;
@@ -43,6 +44,23 @@ namespace LabGuru.DAL
             lblist.ForEach(e => e.isDefault =false);
             lblist.Where(w => w.LabID == LabID).ToList().ForEach(e => e.isDefault = true);
             return db.SaveChanges();
+        }
+
+        public List<DoctorLapMappings> GetDoctorLapMapping()
+        {
+            var LabEmployee = from dm in db.DoctorLabMappings
+                              join dd in db.DoctorDetails on dm.DoctorID equals dd.DoctorDetailsID
+                              join l in db.Laboratories on dm.LabID equals l.id
+                              select new DoctorLapMappings
+                              {
+                                  DoctorLapMappingID = dm.id,
+                                  LabID = l.id,
+                                  DoctorID = dd.DoctorDetailsID,
+                                  DoctorName = dd.FirstName + ' ' + dd.LastName,
+                                  LabName = l.LabName
+                              };
+
+            return LabEmployee.ToList();
         }
     }
 }

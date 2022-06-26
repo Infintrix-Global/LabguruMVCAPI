@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LabGuru.BAL.Component;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -13,7 +14,7 @@ namespace LabGuru.BAL.Repo
 
         int CreateLabEmployees(LabEmployee labEmployee);
 
-        List<LabEmployee> GetLabEmployees(int LabID);
+        List<LaboratoryEmployee> GetLabEmployees(int LabID);
 
         List<DoctorLabMapping> GetLaboratoryByProductID(int productTypeId, int doctorId);
         
