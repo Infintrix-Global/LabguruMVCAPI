@@ -2,11 +2,11 @@ import { Component, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { ILaboratory } from "src/app/MasterSection/Laboratory/Shared/laboratory.model";
 import { LaboratoryService } from "src/app/MasterSection/Laboratory/Shared/laboratory.service";
+import { LabEmployeeService } from "src/app/MasterSection/LaboratoryEmployee/Shared/LabEmployee.service";
 import { IProcessMaster } from "src/app/MasterSection/ProcessMaster/Shared/ProcessMaster.model";
 import { ProcessMasterService } from "src/app/MasterSection/ProcessMaster/Shared/ProcessMaster.service";
 import { IProductType } from "src/app/MasterSection/ProductType/Shared/productType.model";
 import { ProductTypeService } from "src/app/MasterSection/ProductType/Shared/ProductType.service";
-import { LabEmployeeService } from "src/app/Shared/LaboratoryEmployee/LabEmployee.service";
 import { IResponce } from "src/app/Shared/responce.model";
 import { ProcessMapperService } from "./Shared/ProcessMapper.service";
 

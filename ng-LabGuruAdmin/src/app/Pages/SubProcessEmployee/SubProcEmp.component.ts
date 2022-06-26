@@ -1,8 +1,8 @@
 import { Component } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { LaboratoryService } from "src/app/MasterSection/Laboratory/Shared/laboratory.service";
+import { LabEmployeeService } from "src/app/MasterSection/LaboratoryEmployee/Shared/LabEmployee.service";
 import { ProcessMasterService } from "src/app/MasterSection/ProcessMaster/Shared/ProcessMaster.service";
-import { LabEmployeeService } from "src/app/Shared/LaboratoryEmployee/LabEmployee.service";
 import { IResponce } from "src/app/Shared/responce.model";
 import { SubProcessService } from "../SubProcess/Shared/Subprocess.service";
 import { SubProcessEmpService } from "./Shared/subprocessemp.service";

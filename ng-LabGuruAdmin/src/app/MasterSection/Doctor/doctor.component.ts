@@ -1,8 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { IResponce } from "src/app/Shared/responce.model";
-import { IDoctor } from "../../Shared/Doctor/doctor.model";
-import { DoctorService } from "../../Shared/Doctor/doctor.service";
+import { IDoctor } from "./Shared/Doctor.model";
+import { DoctorService } from "./Shared/doctor.service";
 
 @Component({
     templateUrl: './doctor.component.html'

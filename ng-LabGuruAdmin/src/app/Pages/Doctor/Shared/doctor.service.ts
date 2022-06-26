@@ -33,16 +33,7 @@ export class DoctorService {
             .pipe(catchError(this.handleError()));
     }
 
-    GetlabMapped(): Observable<any[]> {
-        let options = {
-            headers: new HttpHeaders({
-                'Content-Type': 'application/json',
-                'Authorization': this.Token
-            })
-        };
-        return this.http.get<any[]>(`${environment.API}/Doctor/GetDoctorLapMapping`, options)
-            .pipe(catchError(this.handleError()));
-    }
+
     LabMap(Param: any): Observable<IResponce> {
         let options = {
             headers: new HttpHeaders({

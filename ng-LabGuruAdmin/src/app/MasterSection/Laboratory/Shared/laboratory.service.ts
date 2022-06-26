@@ -22,7 +22,6 @@ export class LaboratoryService {
         return this.http.get<ILaboratory[]>(`${environment.API}/Laboratory/GetLaboratory`, options)
             .pipe(catchError(this.handleError()));
     }
-
     CreateLaboratory(laboraroty: ILaboratory): Observable<IResponce> {
         let options = {
             headers: new HttpHeaders({

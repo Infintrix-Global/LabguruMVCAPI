@@ -16,7 +16,6 @@ export class LabMappingComponent implements OnInit {
     LabID !: FormControl;
     DoctorList !: any[];
     LabList !: any[];
-    LabMappedList !: any[];
     constructor(private doctorService: DoctorService, private LabService: LaboratoryService) {
 
     }
@@ -24,7 +23,6 @@ export class LabMappingComponent implements OnInit {
         this.GetDoctor();
         this.GetLab();
         this.AppFormInit();
-        this.GetDOctorLabMap();
 
     }
     AppFormInit() {
@@ -58,12 +56,6 @@ export class LabMappingComponent implements OnInit {
         this.LabService.Getlaboratory().subscribe((data) => {
             console.log(data)
             this.LabList = data;
-        })
-    }
-
-    GetDOctorLabMap() {
-        this.doctorService.GetlabMapped().subscribe((data) => {
-            this.LabMappedList = data;
         })
     }
 }
