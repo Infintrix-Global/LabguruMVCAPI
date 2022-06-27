@@ -80,6 +80,7 @@ namespace LabGuru.DAL
                          join ordProd in dbContext.ProductOrders on ord.OrderID equals ordProd.OrderID
                          join Prod in dbContext.ProductTypes on ordProd.ProductTypeID equals Prod.ProductTypeID
                          where ord.UserID == DoctorID
+                         orderby ord.CreatedDate descending
                          select new OrderListWithProduct
                          {
                              OrderID = ord.OrderID,
