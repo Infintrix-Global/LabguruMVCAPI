@@ -205,7 +205,10 @@ namespace LabGuru.DAL
 
                 //since order is accepeted changing status to "Order Confirmed"
                 var result = dbContext.OrderDetails.Where(w => w.OrderID == OrderID).FirstOrDefault();
-                result.CurrentOrderStatusID = 6;
+
+                var labOrderStatus = dbContext.OrderStatusMasters.Where(osm => osm.LaboratoryID == result.LaboratiryID && osm.StatusText == "Order Confirmed").FirstOrDefault();
+
+                result.CurrentOrderStatusID = labOrderStatus.id;
                 //Assigning the order to an employee based on the process selected
 
                 //Thereafter assigning order to Process Manager
