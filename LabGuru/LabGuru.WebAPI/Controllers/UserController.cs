@@ -44,6 +44,9 @@ namespace LabGuru.WebAPI.Controllers
                     case 2:
                         var Lab = laboratory.GetLaboratory(Loginuser.ReferanceID);
                         return Ok(Lab);
+                    case 4:
+                        var LabEmployee = laboratory.GetLabEmployee(Loginuser.ReferanceID, Loginuser.RoleID);
+                        return Ok(LabEmployee);
                     default:
                         responceMessages = new ResponceMessages()
                         {

@@ -61,6 +61,7 @@ namespace LabGuru.WebAPI.Controllers
                 return Ok(result);
             }
         }
+                
 
 
         [HttpGet]

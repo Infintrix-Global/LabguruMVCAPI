@@ -57,6 +57,11 @@ namespace LabGuru.DAL
             return dbContext.Laboratories.Where(w => w.id == id).FirstOrDefault();
         }
 
+        public LabEmployee GetLabEmployee(int UserId,int roleID)
+        {
+            return dbContext.LabEmployees.Where(w => w.LabEmployeeID == UserId && w.RoleID==roleID).FirstOrDefault();
+        }
+
         public List<DoctorLabMapping> GetLaboratoryByProductID(int productTypeId, int doctorId)
         {
             //return dbContext.Laboratories.Where(w => w.id == id).FirstOrDefault();
