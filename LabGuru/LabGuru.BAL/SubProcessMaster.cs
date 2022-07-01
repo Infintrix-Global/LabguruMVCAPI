@@ -24,5 +24,8 @@ namespace LabGuru.BAL
 
         public bool IsActive { get; set; }
 
+        //[Required]
+        public int SortOrder { get; set; }
+
     }
 }

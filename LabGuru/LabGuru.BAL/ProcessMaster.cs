@@ -19,5 +19,11 @@ namespace LabGuru.BAL
 
         [ForeignKey("ProductID")]
         public ProductType productType { get; set; }
+
+        //[Required]
+        public int SortOrder { get; set; }
+
+        //[Required]
+        public bool IsActive { get; set; }
     }
 }

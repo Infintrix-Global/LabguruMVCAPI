@@ -56,6 +56,8 @@ namespace LabGuru.DAL.DataContext
 
         public DbSet<OrderDetailsByEmployeeProcess> OrderDetailsByEmployeeProcess { get; set; }
 
+        public DbSet<DoctorOrderPreferredProcess> DoctorOrderPreferredProcesses { get; set; }
+
         //Might use in future
         //public DbSet<ProcessEmployeeDetail> ProcessEmployeeDetails { get; set; }
         //Might use in future        
