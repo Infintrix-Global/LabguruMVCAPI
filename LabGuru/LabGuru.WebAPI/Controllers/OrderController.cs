@@ -55,6 +55,7 @@ namespace LabGuru.WebAPI.Controllers
                 int OrderNo = random.Next(1000, 9999);
                 var claimsIdentity = (ClaimsIdentity)User.Identity;
                 var LoginUser = authentication.GetLogin(claimsIdentity.Name);
+
                 OrderDetails orderDetails = new OrderDetails()
                 {
                     CreatorIP = orderCreate.CreatorIP,
@@ -65,11 +66,12 @@ namespace LabGuru.WebAPI.Controllers
                     TotalPrice = random.Next(1000, 9999),
                     UserID = LoginUser.ReferanceID,
                     ClinicID = orderCreate.ClinicID,
-                    ProcessID = orderCreate.ProcessID,
+                    ProcessID = 1,
                     LaboratiryID = orderCreate.LaboratiryID,
                     Remarks = orderCreate.Remakrs,
                     CurrentOrderStatusID = _orderStatusMaster.GetOrderStatusMasters((int)orderCreate.LaboratiryID).OrderBy(o=>o.DispalyOrder).Select(s=>s.id).FirstOrDefault()
                 };
+                
                 List<string> ImpressionImageList = new List<string>();
                 if (orderCreate.formFiles != null)
                 {
@@ -88,6 +90,21 @@ namespace LabGuru.WebAPI.Controllers
                         if (prodSett != null)
                         {
                             DeliveryDate = prodSett.DeliveryDays;
+                        }
+                        if (!string.IsNullOrEmpty(orderCreate.ProcessID))
+                        {
+                            List<DoctorOrderPreferredProcess> _doctorOrderPreferredProcesses = new List<DoctorOrderPreferredProcess>();
+                            foreach (var processID in orderCreate.ProcessID.Split(","))
+                            {
+                                _doctorOrderPreferredProcesses.Add(new DoctorOrderPreferredProcess()
+                                {
+                                    IsCompleted = false,
+                                    OrderID = orderDetails.OrderID,
+                                    ProcessID = Convert.ToInt32(processID),
+                                });
+                            }
+
+                            orderManage.SavedoctorOrderPreferredProcesses(_doctorOrderPreferredProcesses);
                         }
                         ProductOrder productOrder = new ProductOrder()
                         {

@@ -18,8 +18,10 @@ namespace LabGuru.BAL.Repo
         List<OrderListWithProduct> GetOrdersForLab(int LabID);
         int CreateOrderImpresions(List<OrderImpression> orderImpressions);
         int AcceptOrder(int OrderID);
+        int OrderProcessCompleted(string Username, int OrderID, string Remarks);
         int NotAcceptOrder(int OrderID);
 
         List<OrderListWithProduct> GetOrdersForEmployee(string userName, string userRole);
+        int SavedoctorOrderPreferredProcesses(List<DoctorOrderPreferredProcess> doctorOrderPreferreds);
     }
 }

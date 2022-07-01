@@ -213,15 +213,26 @@ namespace LabGuru.DAL
                 //Assigning the order to an employee based on the process selected
 
                 //Thereafter assigning order to Process Manager
+
+                var ProcessID = (from ddo in dbContext.DoctorOrderPreferredProcesses
+                            join pros in dbContext.ProcessMasters on ddo.ProcessID equals pros.id
+                            where ddo.OrderID == OrderID && ddo.IsCompleted == false
+                            orderby pros.SortOrder
+                            select new
+                            {
+                                ddo.ProcessID
+                            }).FirstOrDefault();
+
                 var employeeProcess = from ppe in dbContext.ProductProcessEmployees
                                       join od in dbContext.OrderDetails on ppe.LabID equals od.LaboratiryID
-                                      join p in dbContext.ProcessMasters on od.ProcessID equals p.id
+                                      //join p in dbContext.ProcessMasters on od.ProcessID equals p.id
+                                      join dopp in dbContext.DoctorOrderPreferredProcesses on od.OrderID equals dopp.OrderID
                                       where od.OrderID == OrderID
                                       select new OrderProcessEmployeeList
                                       {
                                           OrderID = od.OrderID,
                                           LabID = od.LaboratiryID,
-                                          ProcessID = od.ProcessID,
+                                          ProcessID = ProcessID.ProcessID,
                                           LabEmployeeID = ppe.LabEmployeeID
                                       };
 
@@ -259,6 +270,31 @@ namespace LabGuru.DAL
         {
             dbContext.OrderImpressions.AddRange(orderImpressions);
             return dbContext.SaveChanges();
+        }
+
+        public int SavedoctorOrderPreferredProcesses(List<DoctorOrderPreferredProcess> doctorOrderPreferreds)
+        {
+            dbContext.DoctorOrderPreferredProcesses.AddRange(doctorOrderPreferreds);
+            return dbContext.SaveChanges();
+        }
+
+        public int OrderProcessCompleted(string Username, int OrderID, string Remarks)
+        {
+
+            var ProcessID = (from ddo in dbContext.DoctorOrderPreferredProcesses
+                             join pros in dbContext.ProcessMasters on ddo.ProcessID equals pros.id
+                             where ddo.OrderID == OrderID && ddo.IsCompleted == false
+                             orderby pros.SortOrder
+                             select new
+                             {
+                                 ddo.ProcessID
+                             }).FirstOrDefault();
+            var ProcessComple = dbContext.DoctorOrderPreferredProcesses.Where(w => w.OrderID == OrderID && w.ProcessID == ProcessID.ProcessID).FirstOrDefault();
+            ProcessComple.IsCompleted = true;
+
+
+
+            throw new NotImplementedException();
         }
     }
 }

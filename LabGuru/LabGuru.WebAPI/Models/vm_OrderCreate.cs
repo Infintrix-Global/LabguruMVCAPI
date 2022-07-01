@@ -26,7 +26,7 @@ namespace LabGuru.WebAPI.Models
         public string Remakrs { get; set; }
 
         public int? ClinicID { get; set; }
-        public int ProcessID { get; set; }
+        public string ProcessID { get; set; }
         public int? LaboratiryID { get; set; }
         public List<IFormFile> formFiles { get; set; }
     }
