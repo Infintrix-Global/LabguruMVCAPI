@@ -22,7 +22,7 @@ namespace LabGuru.BAL
         [MaxLength(100)]
         public string SubProcessName { get; set; }
 
-        public bool IsActive { get; set; }
+        //public bool IsActive { get; set; }
 
         //[Required]
         public int SortOrder { get; set; }

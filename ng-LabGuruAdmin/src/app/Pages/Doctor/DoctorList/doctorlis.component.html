@@ -1,0 +1,55 @@
+<div class="row">
+    <div class="col-md-12 grid-margin">
+        <div class="row">
+            <div class="col-12 col-xl-8 mb-4 mb-xl-0">
+                <h3 class="font-weight-bold">Doctor List</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+
+                                <th>Full Name</th>
+                                <th>Gender</th>
+                                <th>Email</th>
+                                <th>Blood Group</th>
+                                <th>Mobile 1</th>
+                                <th>Mobile 2</th>
+                                <th>Residential Address</th>
+                                <th>line1</th>
+                                <th>line2</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let doctor of DoctorList">
+
+                                <td>
+                                    {{doctor.firstName}} {{doctor.middleName}} {{doctor.lastName}}
+                                </td>
+                                <td>{{doctor.gender}}</td>
+                                <td>{{doctor.email}}</td>
+                                <td>{{doctor.bloodGroup}}</td>
+                                <td>{{doctor.mobile1}}</td>
+                                <td>{{doctor.mobile2}}</td>
+                                <td>{{doctor.residential_Address}}</td>
+                                <td>{{doctor.line1}}</td>
+                                <td>{{doctor.line2}}</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -16,6 +16,8 @@ namespace LabGuru.BAL.Repo
 
         List<LaboratoryEmployee> GetLabEmployees(int LabID);
 
+        List<LaboratoryEmployee> GetLabEmployeesbySubprocess();
+
         List<DoctorLabMapping> GetLaboratoryByProductID(int productTypeId, int doctorId);
 
         LabEmployee GetLabEmployee(int UserId, int roleID);

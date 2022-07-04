@@ -34,7 +34,7 @@ export class LabEmployeeService {
                 'Authorization': this.Token
             })
         };
-        return this.http.get<any[]>(`${environment.API}/Laboratory/GetLabEmployee?Laboratory=${LabID}`, options)
+        return this.http.get<any[]>(`${environment.API}/Laboratory/GetLabEmployee?LabID=${LabID}`, options)
             .pipe(catchError(this.handleError()))
 
     }

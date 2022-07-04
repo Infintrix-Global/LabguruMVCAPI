@@ -60,6 +60,35 @@
         </div>
     </div>
     <div class="col-md-8">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
 
+                                <th>S.N</th>
+                                <th>process Name</th>
+                                <th>subProcess Name</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let Subprocess of subProcessList; let i = index">
+                                <td>{{i+1}}</td>
+                                <td>
+                                    {{Subprocess.processMasters.processName}}
+                                </td>
+                                <td>
+                                    {{Subprocess.subProcessName}}
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
     </div>
 </div>

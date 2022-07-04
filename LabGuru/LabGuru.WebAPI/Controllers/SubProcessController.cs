@@ -49,7 +49,7 @@ namespace LabGuru.WebAPI.Controllers
         [HttpGet]
         public IActionResult GetSubProcess()
         {
-            var result = subProcess.GetAllSubProcess(1);
+            var result = subProcess.GetAllSubProcess();
             return Ok(result);
         }
     }

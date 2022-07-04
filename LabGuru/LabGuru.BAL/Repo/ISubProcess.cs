@@ -12,6 +12,8 @@ namespace LabGuru.BAL.Repo
 
         List<SubProcessMaster> GetAllSubProcess(int LabID);
 
+        List<SubProcessMaster> GetAllSubProcess();
+
         List<SubProcessEmployee> GetSubProcessEmployee(int LabID);
 
     }

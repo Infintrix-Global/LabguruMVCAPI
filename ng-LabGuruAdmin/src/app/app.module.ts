@@ -32,6 +32,7 @@ import { DoctorComponent } from './Pages/Doctor/CreateDoctor/doctor.component';
 import { DoctorService } from './Pages/Doctor/Shared/doctor.service';
 import { LabMappingComponent } from './Pages/Doctor/DoctorLabMap/LabMap.component';
 import { RoleService } from './Shared/Role/role.service';
+import { DoctorListComponent } from './Pages/Doctor/DoctorList/doctorlis.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { RoleService } from './Shared/Role/role.service';
     ProcessMapperComponent,
     SubProcessCompaonent,
     SubProcessEmployeeComponent,
-    LabMappingComponent
+    LabMappingComponent,
+    DoctorListComponent
   ],
   imports: [
     BrowserModule,

@@ -7,6 +7,7 @@ import { ProcessMasterComponent } from "./MasterSection/ProcessMaster/processmas
 import { ProductTypeComponent } from "./MasterSection/ProductType/ProductType.component";
 import { DoctorComponent } from "./Pages/Doctor/CreateDoctor/doctor.component";
 import { LabMappingComponent } from "./Pages/Doctor/DoctorLabMap/LabMap.component";
+import { DoctorListComponent } from "./Pages/Doctor/DoctorList/doctorlis.component";
 import { ProcessMapperComponent } from "./Pages/ProcessMapper/ProcessMapper.component";
 import { SubProcessCompaonent } from "./Pages/SubProcess/Subprocess.component";
 import { SubProcessEmployeeComponent } from "./Pages/SubProcessEmployee/SubProcEmp.component";
@@ -23,6 +24,7 @@ export const appRoutes: Routes = [
     { path: '\SubProcess', component: SubProcessCompaonent, canActivate: [AuthGuard] },
     { path: '\SubProcessEmployee', component: SubProcessEmployeeComponent, canActivate: [AuthGuard] },
     { path: '\LabMap', component: LabMappingComponent, canActivate: [AuthGuard] },
+    { path: '\DoctorList', component: DoctorListComponent, canActivate: [AuthGuard] },
     { path: '', redirectTo: '', pathMatch: 'full', component: DashboardComponent, canActivate: [AuthGuard] },
 
     // {

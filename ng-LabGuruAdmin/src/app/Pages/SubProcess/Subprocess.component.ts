@@ -18,11 +18,13 @@ export class SubProcessCompaonent implements OnInit {
     isFormSubmiting: boolean = false;
     labList !: any[];
     processList !: any[];
+    subProcessList !: any[]
     constructor(private labSer: LaboratoryService, private processMaster: ProcessMasterService, private SubProcessMaster: SubProcessService) { }
     ngOnInit() {
         this.GetLabs();
         this.AppFormInit();
         this.GetProcessMaster();
+        this.GetSubproceeList();
     }
     AppFormInit() {
         this.LabID = new FormControl('', Validators.required)
@@ -48,6 +50,7 @@ export class SubProcessCompaonent implements OnInit {
             if (data) {
                 this.isFormSubmiting = false;
                 this.AppForms.reset();
+                this.GetSubproceeList();
             }
         })
     }
@@ -59,6 +62,11 @@ export class SubProcessCompaonent implements OnInit {
     GetProcessMaster() {
         this.processMaster.GetProcessMaster().subscribe(data => {
             this.processList = data;
+        })
+    }
+    GetSubproceeList() {
+        this.SubProcessMaster.GetSubProcess().subscribe(data => {
+            this.subProcessList = data;
         })
     }
 }

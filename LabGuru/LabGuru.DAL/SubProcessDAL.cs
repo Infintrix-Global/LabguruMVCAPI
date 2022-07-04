@@ -59,6 +59,22 @@ namespace LabGuru.DAL
 
         }
 
+        public List<SubProcessMaster> GetAllSubProcess()
+        {
+            var Result = from spm in dbContext.SubProcessMasters
+                         join pm in dbContext.ProcessMasters on spm.ProcessID equals pm.id
+                        
+                         select new SubProcessMaster
+                         {
+                             ProcessID = spm.ProcessID,
+                             ProcessMasters = pm,
+                             SortOrder = spm.SortOrder,
+                             SubProcessID = spm.SubProcessID,
+                             SubProcessName = spm.SubProcessName
+                         };
+            return Result.ToList();
+        }
+
         public List<SubProcessEmployee> GetSubProcessEmployee(int LabID)
         {
             List<SubProcessEmployee> sbe = new List<SubProcessEmployee>();
