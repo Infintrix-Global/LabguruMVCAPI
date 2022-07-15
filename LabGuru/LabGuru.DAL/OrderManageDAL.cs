@@ -303,7 +303,7 @@ namespace LabGuru.DAL
             var result = (from od in dbContext.OrderDetails
                           join odep in dbContext.OrderDetailsByEmployeeProcess on od.OrderID equals odep.OrderID
                           join ppe in dbContext.ProductProcessEmployees on od.ProcessID equals ppe.ProcessID
-                          join lg in dbContext.Logins on ppe.LabEmployeeID equals lg.ReferanceID
+                          //join lg in dbContext.Logins on ppe.LabEmployeeID equals lg.ReferanceID
                           where odep.EmployeeID == currentEmployeeID.LabEmployeeID && odep.OrderID == OrderID && odep.OrderProcessStatus == 1
                           select new
                           {
