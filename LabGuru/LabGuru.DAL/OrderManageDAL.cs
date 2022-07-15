@@ -42,9 +42,9 @@ namespace LabGuru.DAL
             var Result = from OP in dbContext.ProductOrders
                          join PT in dbContext.ProductTypes on OP.ProductTypeID equals PT.ProductTypeID
                          join PS in dbContext.ProductShades on OP.ProductShadeID equals PS.ProductShadeID into PSlist
-                            from PS in PSlist.DefaultIfEmpty()
-                         join PM in dbContext.ProductMaterials on OP.ProductMaterialID equals PM.ProductMaterialID into PMlist 
-                            from PM in PMlist.DefaultIfEmpty()
+                         from PS in PSlist.DefaultIfEmpty()
+                         join PM in dbContext.ProductMaterials on OP.ProductMaterialID equals PM.ProductMaterialID into PMlist
+                         from PM in PMlist.DefaultIfEmpty()
                          where OP.OrderID == OrderID
                          select new ProductOrder
                          {
@@ -62,7 +62,7 @@ namespace LabGuru.DAL
                              productType = PT,
                              productMaterial = PM,
                              productShade = PS,
-                             
+
                          };
             var res = Result.ToList();
             return res;
@@ -142,13 +142,22 @@ namespace LabGuru.DAL
         public List<OrderListWithProduct> GetOrdersForEmployee(string userName, string userRole)
         {
 
+            var currentEmployeeID = (from log in dbContext.Logins
+                                    join le in dbContext.LabEmployees on log.ReferanceID equals le.LabEmployeeID
+                                    join r in dbContext.Roles on log.RoleID equals r.RoleID
+                                    where log.UserName == userName && r.RoleName == userRole
+                                    select new
+                                    {
+                                        le.LabEmployeeID
+                                    }).FirstOrDefault();
+
             var result = from ord in dbContext.OrderDetails
                          join ordProd in dbContext.ProductOrders on ord.OrderID equals ordProd.OrderID
                          join Prod in dbContext.ProductTypes on ordProd.ProductTypeID equals Prod.ProductTypeID
                          join odem in dbContext.OrderDetailsByEmployeeProcess on ordProd.OrderID equals odem.OrderID
-                         join lg in dbContext.Logins on odem.EmployeeID equals lg.ReferanceID 
+                         join lg in dbContext.Logins on odem.EmployeeID equals lg.ReferanceID
                          join r in dbContext.Roles on lg.RoleID equals r.RoleID
-                         where lg.UserName == userName && r.RoleName == userRole
+                         where odem.OrderProcessStatus==1 && odem.EmployeeID == currentEmployeeID.LabEmployeeID
                          orderby ord.CreatedDate descending
                          select new OrderListWithProduct
                          {
@@ -215,13 +224,13 @@ namespace LabGuru.DAL
                 //Thereafter assigning order to Process Manager
 
                 var ProcessID = (from ddo in dbContext.DoctorOrderPreferredProcesses
-                            join pros in dbContext.ProcessMasters on ddo.ProcessID equals pros.id
-                            where ddo.OrderID == OrderID && ddo.IsCompleted == false
-                            orderby pros.SortOrder
-                            select new
-                            {
-                                ddo.ProcessID
-                            }).FirstOrDefault();
+                                 join pros in dbContext.ProcessMasters on ddo.ProcessID equals pros.id
+                                 where ddo.OrderID == OrderID && ddo.IsCompleted == false
+                                 orderby pros.SortOrder
+                                 select new
+                                 {
+                                     ddo.ProcessID
+                                 }).FirstOrDefault();
 
                 var employeeProcess = from ppe in dbContext.ProductProcessEmployees
                                       join od in dbContext.OrderDetails on ppe.LabID equals od.LaboratiryID
@@ -281,6 +290,52 @@ namespace LabGuru.DAL
         public int OrderProcessCompleted(string Username, int OrderID, string Remarks)
         {
 
+            var currentEmployeeID = (from log in dbContext.Logins
+                                     join le in dbContext.LabEmployees on log.ReferanceID equals le.LabEmployeeID
+                                     join r in dbContext.Roles on log.RoleID equals r.RoleID
+                                     where log.UserName == Username && r.RoleID==4
+                                     select new
+                                     {
+                                         le.LabEmployeeID
+                                     }).FirstOrDefault();
+
+            //Updating old process if Process Manager has completed the process
+            var result = (from od in dbContext.OrderDetails
+                          join odep in dbContext.OrderDetailsByEmployeeProcess on od.OrderID equals odep.OrderID
+                          join ppe in dbContext.ProductProcessEmployees on od.ProcessID equals ppe.ProcessID
+                          join lg in dbContext.Logins on ppe.LabEmployeeID equals lg.ReferanceID
+                          where odep.EmployeeID == currentEmployeeID.LabEmployeeID && odep.OrderID == OrderID && odep.OrderProcessStatus == 1
+                          select new
+                          {
+                              odep.EmployeeOrderProcessID,
+                              odep.OrderID,
+                              odep.EmployeeID,
+                              ppe.ProcessID
+                          }).ToList().FirstOrDefault();
+
+            OrderDetailsByEmployeeProcess odep2 = new OrderDetailsByEmployeeProcess();
+            odep2.EmployeeOrderProcessID = result.EmployeeOrderProcessID;
+            odep2.Remarks = Remarks;
+            odep2.OrderProcessStatus = 2;
+            odep2.EmployeeID = result.EmployeeID;
+            odep2.OrderID = result.OrderID;
+            dbContext.OrderDetailsByEmployeeProcess.Update(odep2);
+            dbContext.SaveChanges();
+            
+
+
+            //Now updating the DoctorOrderPreferredProcesses table to mark the process completed
+
+            var resultDoctorSelectedProcess = (from t in dbContext.DoctorOrderPreferredProcesses
+                                              where t.OrderID == result.OrderID && t.ProcessID==result.ProcessID && t.IsCompleted==false
+                                              select t).FirstOrDefault();
+
+
+
+            resultDoctorSelectedProcess.IsCompleted = true;
+            resultDoctorSelectedProcess.Remarks = "Assigning to order to next process manager in the queue if any.";
+            dbContext.SaveChanges();
+
             var ProcessID = (from ddo in dbContext.DoctorOrderPreferredProcesses
                              join pros in dbContext.ProcessMasters on ddo.ProcessID equals pros.id
                              where ddo.OrderID == OrderID && ddo.IsCompleted == false
@@ -289,12 +344,77 @@ namespace LabGuru.DAL
                              {
                                  ddo.ProcessID
                              }).FirstOrDefault();
-            var ProcessComple = dbContext.DoctorOrderPreferredProcesses.Where(w => w.OrderID == OrderID && w.ProcessID == ProcessID.ProcessID).FirstOrDefault();
-            ProcessComple.IsCompleted = true;
+
+            var count = (from ddo in dbContext.DoctorOrderPreferredProcesses
+                         join pros in dbContext.ProcessMasters on ddo.ProcessID equals pros.id
+                         where ddo.OrderID == OrderID && ddo.IsCompleted == false
+                         orderby pros.SortOrder
+                         select new
+                         {
+                             ddo.ProcessID
+                         }).Count();
+
+            if (count == 0)
+            {
+                var resultOrderDetails = (from t in dbContext.OrderDetails
+                                          where t.OrderID == result.OrderID 
+                                          select t).FirstOrDefault();
+
+                var resultOrderStatusMaster = (from t in dbContext.OrderDetails
+                                               join l in dbContext.OrderStatusMasters on t.LaboratiryID equals l.LaboratoryID
+                                               where t.ProcessID == result.ProcessID && l.StatusText == "Completed"
+                                               select l).FirstOrDefault();
+
+                resultOrderDetails.CurrentOrderStatusID = resultOrderStatusMaster.id;
+                dbContext.SaveChanges();
+
+                return -2;
+            }
+
+            if (ProcessID.ProcessID > 0)
+            {
+
+                var nextProcessEmployeeID = (from dopp in dbContext.DoctorOrderPreferredProcesses
+                                             join ppe in dbContext.ProductProcessEmployees on dopp.ProcessID equals ppe.ProcessID
+                                             where dopp.OrderID == OrderID && dopp.IsCompleted == false
+                                             select new
+                                             {
+                                                 ppe.LabEmployeeID
+                                             }).FirstOrDefault();
 
 
+                var employeeProcess = (from ppe in dbContext.ProductProcessEmployees
+                                      join od in dbContext.OrderDetails on ppe.LabID equals od.LaboratiryID
+                                      //join p in dbContext.ProcessMasters on od.ProcessID equals p.id
+                                      join dopp in dbContext.DoctorOrderPreferredProcesses on od.OrderID equals dopp.OrderID
+                                      where dopp.OrderID == OrderID && dopp.IsCompleted == false
+                                      orderby dopp.DoctorOrderPeferredProcessID
+                                      select new OrderProcessEmployeeList
+                                      {
+                                          OrderID = od.OrderID,
+                                          LabID = od.LaboratiryID,
+                                          ProcessID = ProcessID.ProcessID,
+                                          LabEmployeeID = nextProcessEmployeeID.LabEmployeeID
+                                      }).FirstOrDefault();
 
-            throw new NotImplementedException();
+                var empList = employeeProcess;
+
+                if (employeeProcess != null)
+                {
+                    OrderDetailsByEmployeeProcess obep1 = new OrderDetailsByEmployeeProcess();
+                    obep1.OrderID = OrderID;
+                    obep1.EmployeeID = empList.LabEmployeeID;
+                    obep1.OrderProcessStatus = 1;
+                    obep1.Remarks = "Order assigned to Next Process Manager in queue.";
+
+                    dbContext.OrderDetailsByEmployeeProcess.Add(obep1);
+                    dbContext.SaveChanges();
+                    return 1;
+                }
+                else
+                    return -1;
+            }
+            return 0;
         }
     }
 }

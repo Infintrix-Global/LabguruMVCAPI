@@ -152,16 +152,16 @@ namespace LabGuru.DAL
             
         }
 
-        public List<LaboratoryEmployee> GetLabEmployeesbySubprocess()
+        public List<SubProcessEmployee> GetLabEmployeesbySubprocess()
         {
             var Result = from SPE in dbContext.SubProcessEmployees
                          join SP in dbContext.SubProcessMasters on SPE.SubProcessID equals SP.SubProcessID
                          select new SubProcessEmployee
                          {
                              SubProcessEmployeeID = SPE.SubProcessEmployeeID,
-                             SubProcessID = 
-                         }
-            throw new NotImplementedException();
+                             SubProcessID = SPE.SubProcessID
+                         };
+            return Result.ToList();
         }
     }
 }

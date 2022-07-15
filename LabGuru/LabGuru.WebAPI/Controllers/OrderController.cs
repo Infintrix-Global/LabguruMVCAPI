@@ -411,5 +411,54 @@ namespace LabGuru.WebAPI.Controllers
         //        return BadRequest(responceMessages);
         //    }
         //}
+
+        [HttpPost]
+        public IActionResult OrderProcessCompleted(int OrderID, string Remarks)
+        {
+
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var LoginUser = authentication.GetLogin(claimsIdentity.Name);
+            if (LoginUser.RoleID == 4)
+            {
+                var result = orderManage.OrderProcessCompleted(LoginUser.UserName, OrderID, Remarks);
+
+                if (result == 0)
+                {
+                    responceMessages.Success("All processes completed.");
+                    return Ok(responceMessages);
+                }
+                if (result == 1)
+                {
+                    responceMessages.Success("Order moved to next process manager in the doctor preferred queue.");
+                    return Ok(responceMessages);
+                }
+                if (result == 2)
+                {
+                    responceMessages.Success("Order is completed. Please collect payment and proceed with delivery.");
+                    return Ok(responceMessages);
+                }
+                else
+                {
+                    if (result == -1)
+                    {
+                        responceMessages.Failed("No process manager exist for this lab.");
+                        return BadRequest(responceMessages);
+                    }
+                    
+                    else
+                    {
+                        responceMessages.Failed("Oops something went wrong");
+                        return BadRequest(responceMessages);
+                    }
+                }                
+            }
+            else
+            {
+                responceMessages.Failed("Invalid User Login");
+                return BadRequest(responceMessages);
+            }
+
+
+        }
     }
 }
