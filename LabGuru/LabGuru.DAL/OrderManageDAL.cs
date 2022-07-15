@@ -155,8 +155,7 @@ namespace LabGuru.DAL
                          join ordProd in dbContext.ProductOrders on ord.OrderID equals ordProd.OrderID
                          join Prod in dbContext.ProductTypes on ordProd.ProductTypeID equals Prod.ProductTypeID
                          join odem in dbContext.OrderDetailsByEmployeeProcess on ordProd.OrderID equals odem.OrderID
-                         join lg in dbContext.Logins on odem.EmployeeID equals lg.ReferanceID
-                         join r in dbContext.Roles on lg.RoleID equals r.RoleID
+                        
                          where odem.OrderProcessStatus==1 && odem.EmployeeID == currentEmployeeID.LabEmployeeID
                          orderby ord.CreatedDate descending
                          select new OrderListWithProduct
