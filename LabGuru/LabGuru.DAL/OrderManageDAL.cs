@@ -374,7 +374,7 @@ namespace LabGuru.DAL
                 resultOrderDetails.CurrentOrderStatusID = resultOrderStatusMaster.id;
                 dbContext.SaveChanges();
 
-                return -2;
+                return 0;
             }
 
             if (ProcessID.ProcessID > 0)
