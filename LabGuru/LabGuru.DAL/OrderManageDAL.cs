@@ -299,6 +299,13 @@ namespace LabGuru.DAL
                                          le.LabEmployeeID
                                      }).FirstOrDefault();
 
+
+            //Get current Process ID
+            var currentProcessID = (from t in dbContext.DoctorOrderPreferredProcesses
+                                   join odep in dbContext.ProductProcessEmployees on t.ProcessID equals odep.ProcessID
+                                   where t.OrderID==OrderID && t.IsCompleted==false && odep.LabEmployeeID== currentEmployeeID.LabEmployeeID
+                                   select new { t.ProcessID}).FirstOrDefault();
+
             //Updating old process if Process Manager has completed the process
             var result = (from od in dbContext.OrderDetails
                           join odep in dbContext.OrderDetailsByEmployeeProcess on od.OrderID equals odep.OrderID
@@ -310,7 +317,7 @@ namespace LabGuru.DAL
                               odep.EmployeeOrderProcessID,
                               odep.OrderID,
                               odep.EmployeeID,
-                              ppe.ProcessID
+                              ProcessID = currentProcessID.ProcessID
                           }).ToList().FirstOrDefault();
 
             OrderDetailsByEmployeeProcess odep2 = new OrderDetailsByEmployeeProcess();
@@ -362,7 +369,7 @@ namespace LabGuru.DAL
 
                 var resultOrderStatusMaster = (from t in dbContext.OrderDetails
                                                join l in dbContext.OrderStatusMasters on t.LaboratiryID equals l.LaboratoryID
-                                               where t.ProcessID == result.ProcessID && l.StatusText == "Completed"
+                                               where t.OrderID== OrderID && l.StatusText == "Completed"
                                                select l).FirstOrDefault();
 
                 resultOrderDetails.CurrentOrderStatusID = resultOrderStatusMaster.id;
